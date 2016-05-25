@@ -24,15 +24,19 @@ public class MainActivity extends FragmentActivity {
     @Bind(R.id.detail_layout)
     FrameLayout detailLayout;
 
+    private ListAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        leftMenuList.setAdapter(new ListAdapter());
+        mAdapter = new ListAdapter();
+        leftMenuList.setAdapter(mAdapter);
         leftMenuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mAdapter.setSelectPosition(position);
                 if (position == 2) {
                     showFragment(FileFragment.class);
                 }
@@ -57,6 +61,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     class ListAdapter extends BaseAdapter {
+        private int selectPosition = 0;
 
         @Override
         public int getCount() {
@@ -73,6 +78,11 @@ public class MainActivity extends FragmentActivity {
             return position;
         }
 
+        public void setSelectPosition(int position){
+            selectPosition = position;
+            notifyDataSetChanged();
+        }
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
@@ -80,6 +90,13 @@ public class MainActivity extends FragmentActivity {
             }
             TextView tv = (TextView) convertView.findViewById(R.id.menu_txt);
             tv.setText(getItem(position));
+            if (position == selectPosition){
+                convertView.findViewById(R.id.iv_arrow).setVisibility(View.VISIBLE);
+                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(R.drawable.shape_button_select);
+            } else {
+                convertView.findViewById(R.id.iv_arrow).setVisibility(View.GONE);
+                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(R.drawable.shape_button_normal);
+            }
             return convertView;
         }
     }

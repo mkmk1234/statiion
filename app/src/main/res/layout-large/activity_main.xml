@@ -57,6 +57,7 @@
         android:layout_width="200dp"
         android:divider="@null"
         android:dividerHeight="0dp"
+        android:listSelector="null"
         android:background="@color/colorPrimary"
         android:layout_height="match_parent"></ListView>
 
