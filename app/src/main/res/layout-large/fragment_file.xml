@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:textSize="30sp"
         android:layout_margin="20dp"
+        android:textColor="#333333"
         android:text="当前目录://" />
 
     <ListView
@@ -18,5 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:dividerHeight="0dp"
+        android:background="@drawable/shape_bg_inside"
         android:divider="@null"></ListView>
 </LinearLayout>

@@ -51,15 +51,31 @@ public class HomeFragemnt extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.fst:
                 showFragment(NewFragment.class);
+                fst.setBackgroundResource(R.drawable.yellow);
+                sec.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                thd.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                forth.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 break;
             case R.id.sec:
                 showFragment(HFragment.class);
+                sec.setBackgroundResource(R.drawable.yellow);
+                fst.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                thd.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                forth.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 break;
             case R.id.thd:
                 showFragment(NewFragment.class);
+                thd.setBackgroundResource(R.drawable.yellow);
+                sec.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                fst.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                forth.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 break;
             case R.id.forth:
                 showFragment(NewFragment.class);
+                forth.setBackgroundResource(R.drawable.yellow);
+                sec.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                thd.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                fst.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 break;
         }
     }
