@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">station</string>
+    <string name="dir_path">当前目录:%s(根目录下)</string>
 </resources>
