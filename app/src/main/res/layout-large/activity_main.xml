@@ -1,10 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/titleBar"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="wifi状态：已关闭"
+            android:textColor="#ffffff"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="30dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="测试demo"
+            android:textColor="#ffffff"
+            android:layout_centerHorizontal="true"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/txt_time"
+            android:paddingRight="30dp"
+            android:textSize="20sp"
+            android:text="10%"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/txt_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10:10"
+            android:textSize="30sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:textColor="#ffffff" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <ListView
         android:id="@+id/left_menu_list"
         android:layout_width="200dp"
@@ -18,4 +65,5 @@
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="match_parent"></FrameLayout>
+    </LinearLayout>
 </LinearLayout>

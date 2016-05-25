@@ -38,6 +38,7 @@ public class FileFragment extends Fragment implements AdapterView.OnItemClickLis
         ButterKnife.bind(this, view);
         mAdapter = new FileListAdapter(getActivity(), dataList);
         list.setAdapter(mAdapter);
+        loadData("/");
         return view;
     }
 
