@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:text="wifi状态：已关闭"
             android:textColor="#ffffff"
+            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="30dp"
             android:textSize="20sp" />
@@ -34,7 +35,10 @@
             android:layout_toLeftOf="@+id/txt_time"
             android:paddingRight="30dp"
             android:textSize="20sp"
+            android:gravity="center"
+            android:layout_centerVertical="true"
             android:text="10%"
+            android:drawableRight="@drawable/ic_battery_50"
             android:textColor="#ffffff" />
 
         <TextView
@@ -42,7 +46,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="10:10"
-            android:textSize="30sp"
+            android:textSize="20sp"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:textColor="#ffffff" />
@@ -57,7 +62,7 @@
         android:layout_width="200dp"
         android:divider="@null"
         android:dividerHeight="0dp"
-        android:listSelector="null"
+        android:listSelector="@null"
         android:background="@color/colorPrimary"
         android:layout_height="match_parent"></ListView>
 

@@ -17,6 +17,7 @@
             android:layout_weight="1"
             android:textSize="30dp"
             android:gravity="center"
+            android:textColor="#333333"
             android:drawableTop="@mipmap/ic_launcher"
             android:text="岗位责任" />
 
@@ -26,6 +27,7 @@
             android:layout_weight="1"
             android:textSize="30dp"
             android:gravity="center"
+            android:textColor="#333333"
             android:drawableTop="@mipmap/ic_launcher"
             android:text="车站屏幕示意图" />
 
@@ -35,6 +37,7 @@
             android:layout_weight="1"
             android:textSize="30dp"
             android:gravity="center"
+            android:textColor="#333333"
             android:drawableTop="@mipmap/ic_launcher"
             android:text="岗位责任" />
     </LinearLayout>

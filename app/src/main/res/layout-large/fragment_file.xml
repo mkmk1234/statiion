@@ -3,8 +3,15 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e1e1e1">
+    android:padding="5dp"
+    android:background="#c3c3c3">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_bg_outside"
+        android:padding="10dp"
+        android:orientation="vertical">
     <TextView
         android:id="@+id/tv_dir_path"
         android:layout_width="wrap_content"
@@ -14,11 +21,18 @@
         android:textColor="#333333"
         android:text="当前目录://" />
 
-    <ListView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:dividerHeight="0dp"
-        android:background="@drawable/shape_bg_inside"
-        android:divider="@null"></ListView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:background="@drawable/shape_bg_inside">
+
+            <ListView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dividerHeight="0dp"
+                android:divider="@null" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

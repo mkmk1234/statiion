@@ -1,12 +1,12 @@
 package com.kun.station;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -32,14 +32,25 @@ public class GanWeiFragment extends Fragment implements View.OnClickListener {
     LinearLayout left;
     @Bind(R.id.layout)
     FrameLayout layout;
+    @Bind(R.id.myview)
+    MyView myview;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ganwei, container, false);
+        final View view = inflater.inflate(R.layout.fragment_ganwei, container, false);
         ButterKnife.bind(this, view);
+        ViewTreeObserver observer = view.getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                onClick(fst);
+            }
+        });
         return view;
     }
+
 
     @Override
     public void onDestroyView() {
@@ -51,32 +62,20 @@ public class GanWeiFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fst:
-                fst.setBackgroundColor(Color.parseColor("#ffffff"));
-                sec.setBackgroundColor(Color.parseColor("#e1e1e1"));
-                thd.setBackgroundColor(Color.parseColor("#e1e1e1"));
-                forth.setBackgroundColor(Color.parseColor("#e1e1e1"));
                 layout.removeAllViews();
                 layout.addView(LayoutInflater.from(getActivity()).inflate(R.layout.layout_renyuan, null));
+                myview.setData(fst.getLeft(), fst.getTop(), fst.getBottom(), fst.getRight());
                 break;
             case R.id.sec:
-                fst.setBackgroundColor(Color.parseColor("#e1e1e1"));
-                sec.setBackgroundColor(Color.parseColor("#ffffff"));
-                thd.setBackgroundColor(Color.parseColor("#e1e1e1"));
-                forth.setBackgroundColor(Color.parseColor("#e1e1e1"));
                 layout.removeAllViews();
                 layout.addView(LayoutInflater.from(getActivity()).inflate(R.layout.layout_tubiao, null));
+                myview.setData(sec.getLeft(), sec.getTop(), sec.getBottom(), sec.getRight());
                 break;
             case R.id.thd:
-                fst.setBackgroundColor(Color.parseColor("#e1e1e1"));
-                sec.setBackgroundColor(Color.parseColor("#e1e1e1"));
-                thd.setBackgroundColor(Color.parseColor("#ffffff"));
-                forth.setBackgroundColor(Color.parseColor("#e1e1e1"));
+                myview.setData(thd.getLeft(), thd.getTop(), thd.getBottom(), thd.getRight());
                 break;
             case R.id.forth:
-                fst.setBackgroundColor(Color.parseColor("#e1e1e1"));
-                sec.setBackgroundColor(Color.parseColor("#e1e1e1"));
-                thd.setBackgroundColor(Color.parseColor("#e1e1e1"));
-                forth.setBackgroundColor(Color.parseColor("#ffffff"));
+                myview.setData(forth.getLeft(), forth.getTop(), forth.getBottom(), forth.getRight());
                 break;
         }
     }

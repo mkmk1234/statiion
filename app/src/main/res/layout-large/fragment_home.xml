@@ -2,9 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_bg_outside"
-    android:paddingBottom="20dp">
+    android:background="#c3c3c3">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_bg_outside"
+        android:layout_margin="10dp">
     <LinearLayout
         android:id="@+id/left_layout"
         android:layout_width="match_parent"
@@ -39,6 +43,7 @@
                     android:src="@drawable/ic_account_balance" />
 
                 <TextView
+                    android:id="@+id/text1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
@@ -64,6 +69,7 @@
                     android:src="@drawable/ic_location_city" />
 
                 <TextView
+                    android:id="@+id/text2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
@@ -88,6 +94,7 @@
                     android:src="@drawable/ic_volume_up" />
 
                 <TextView
+                    android:id="@+id/text3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
@@ -112,6 +119,7 @@
                     android:src="@drawable/ic_access_time" />
 
                 <TextView
+                    android:id="@+id/text4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
@@ -144,10 +152,11 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/a"
+            android:adjustViewBounds="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -192,9 +201,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#333333"
             android:text="岗位： 调度长" />
 
         <LinearLayout
@@ -214,7 +225,7 @@
                 android:textSize="16sp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:text="设置照片" />
         </LinearLayout>
 
@@ -230,11 +241,11 @@
             android:gravity="center"
             android:drawablePadding="10dp"
             android:textColor="#333333"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:textSize="16sp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:text="设置照片" />
 
         <View
@@ -248,12 +259,12 @@
             android:drawableLeft="@mipmap/ic_launcher"
             android:gravity="center"
             android:drawablePadding="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:textColor="#333333"
             android:textSize="16sp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:text="资料下载" />
 
         <View
@@ -266,12 +277,12 @@
             android:drawableLeft="@mipmap/ic_launcher"
             android:gravity="center"
             android:drawablePadding="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:textColor="#333333"
             android:textSize="16sp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:text="作业上传" />
 
     </LinearLayout>
@@ -299,10 +310,6 @@
             android:drawableLeft="@mipmap/ic_launcher"
             android:padding="10dp"
             android:text="测试demo2016.05.26" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#9b9b9b" />
     </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>
