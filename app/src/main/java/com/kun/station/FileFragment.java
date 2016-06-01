@@ -39,6 +39,7 @@ public class FileFragment extends Fragment implements AdapterView.OnItemClickLis
         mAdapter = new FileListAdapter(getActivity(), dataList);
         list.setAdapter(mAdapter);
         loadData("/");
+
         list.setOnItemClickListener(this);
         return view;
     }

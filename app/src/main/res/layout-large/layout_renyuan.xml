@@ -23,12 +23,14 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:layout_marginTop="10dp"
+            android:textColor="#333333"
             android:text="姓名：测试" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:textColor="#333333"
             android:layout_marginTop="10dp"
             android:text="车间：测试" />
 
@@ -36,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:textColor="#333333"
             android:layout_marginTop="10dp"
             android:text="设备：测试" />
     </LinearLayout>
@@ -58,6 +61,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:layout_marginTop="10dp"
+            android:textColor="#333333"
             android:text="姓名：测试" />
 
         <TextView
@@ -65,12 +69,14 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:layout_marginTop="10dp"
+            android:textColor="#333333"
             android:text="车间：测试" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:textColor="#333333"
             android:layout_marginTop="10dp"
             android:text="设备：测试" />
     </LinearLayout>
@@ -92,6 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:textColor="#333333"
             android:layout_marginTop="10dp"
             android:text="姓名：测试" />
 
@@ -99,6 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:textColor="#333333"
             android:layout_marginTop="10dp"
             android:text="车间：测试" />
 
@@ -106,6 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:textColor="#333333"
             android:layout_marginTop="10dp"
             android:text="设备：测试" />
     </LinearLayout>

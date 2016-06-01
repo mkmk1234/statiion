@@ -20,6 +20,8 @@ import butterknife.ButterKnife;
  * Created by kun on 16/5/25.
  */
 public class NewFragment extends Fragment {
+
+
     @Bind(R.id.list)
     ListView list;
 

@@ -16,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:textColor="#333333"
         android:textSize="20sp"
         android:text="应急注意" />
 </LinearLayout>
