@@ -1,8 +1,6 @@
 package com.kun.station;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +11,14 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+import com.kun.station.base.BaseActivity;
+import com.kun.station.fragment.FileFragment;
+import com.kun.station.fragment.GanWeiFragment;
+import com.kun.station.fragment.HomeFragemnt;
 
-public class MainActivity extends FragmentActivity {
+import butterknife.Bind;
+
+public class MainActivity extends BaseActivity {
     String[] arr = {"系统首页", "岗位建设", "应急制度", "作业标准", "运输生产", "应急制度"};
 
     @Bind(R.id.left_menu_list)
@@ -26,11 +28,15 @@ public class MainActivity extends FragmentActivity {
 
     private ListAdapter mAdapter;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onSetContentView() {
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void setUpView() {
+        super.setUpView();
         mAdapter = new ListAdapter();
         leftMenuList.setAdapter(mAdapter);
         leftMenuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -49,7 +55,6 @@ public class MainActivity extends FragmentActivity {
             }
         });
         showFragment(HomeFragemnt.class);
-
     }
 
     private void showFragment(Class<?> clss) {

@@ -1,4 +1,4 @@
-package com.kun.station;
+package com.kun.station.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,6 +12,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.kun.station.R;
+import com.kun.station.base.BaseFragment;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -19,7 +22,7 @@ import butterknife.OnClick;
 /**
  * Created by kun on 16/5/25.
  */
-public class HomeFragemnt extends Fragment implements View.OnClickListener {
+public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     @Bind(R.id.fst)
     LinearLayout fst;
     @Bind(R.id.sec)
@@ -68,7 +71,8 @@ public class HomeFragemnt extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fst:
-                showFragment(NewFragment.class);
+                Bundle b1 = new Bundle();
+                showFragment(HomePageFragment.class, b1);
                 fst.setBackgroundResource(R.drawable.yellow);
                 sec.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 thd.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -79,7 +83,8 @@ public class HomeFragemnt extends Fragment implements View.OnClickListener {
                 text4.setTextColor(Color.parseColor("#ffffff"));
                 break;
             case R.id.sec:
-                showFragment(HFragment.class);
+                Bundle b2 = new Bundle();
+                showFragment(HomePageFragment.class, b2);
                 sec.setBackgroundResource(R.drawable.yellow);
                 fst.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 thd.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -90,7 +95,7 @@ public class HomeFragemnt extends Fragment implements View.OnClickListener {
                 text4.setTextColor(Color.parseColor("#ffffff"));
                 break;
             case R.id.thd:
-                showFragment(NewFragment.class);
+                showFragment(NewFragment.class, null);
                 thd.setBackgroundResource(R.drawable.yellow);
                 sec.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 fst.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -101,7 +106,7 @@ public class HomeFragemnt extends Fragment implements View.OnClickListener {
                 text4.setTextColor(Color.parseColor("#ffffff"));
                 break;
             case R.id.forth:
-                showFragment(NewFragment.class);
+                showFragment(NewFragment.class, null);
                 forth.setBackgroundResource(R.drawable.yellow);
                 sec.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 thd.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -114,10 +119,10 @@ public class HomeFragemnt extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void showFragment(Class<?> clss) {
+    private void showFragment(Class<?> clss, Bundle b) {
         FragmentTransaction ft = getActivity().getSupportFragmentManager()
                 .beginTransaction();
-        ft.replace(R.id.home_container, Fragment.instantiate(getActivity(), clss.getName(), null));
+        ft.replace(R.id.home_container, Fragment.instantiate(getActivity(), clss.getName(), b));
 
         ft.commitAllowingStateLoss();
     }
