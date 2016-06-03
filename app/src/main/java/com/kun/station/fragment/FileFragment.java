@@ -12,26 +12,40 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.kun.station.MyApplication;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
+import com.kun.station.db.DbManager;
 
 import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by kun on 16/5/25.
  */
-public class FileFragment extends BaseFragment implements AdapterView.OnItemClickListener {
+public class FileFragment extends BaseFragment implements AdapterView.OnItemClickListener{
     @Bind(R.id.list)
     ListView list;
     @Bind(R.id.tv_dir_path)
     TextView pathTv;
+    @Bind(R.id.btn_store)
+    TextView storeBtn;
 
     private ArrayList<FileItem> dataList = new ArrayList<>();
     private FileListAdapter mAdapter;
+    private DbManager mDbManager;
+    private FileItem mSelectFileItem;
+    private String currentPath;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDbManager = MyApplication.getInstance().getDbManager();
+    }
 
     @Nullable
     @Override
@@ -46,6 +60,16 @@ public class FileFragment extends BaseFragment implements AdapterView.OnItemClic
         return view;
     }
 
+    @OnClick(R.id.btn_store)
+    void handleClick(View v){
+        if (mSelectFileItem != null){
+            mDbManager.insertItemFile(mSelectFileItem.path, mSelectFileItem.dir, !mSelectFileItem.isStore, mSelectFileItem.imageId != R.drawable.file);
+            mAdapter.notifyDataSetChanged();
+            v.setVisibility(View.GONE);
+            loadData(currentPath);
+        }
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -53,15 +77,16 @@ public class FileFragment extends BaseFragment implements AdapterView.OnItemClic
     }
 
     private void loadData(String path) {
+        currentPath = path;
         pathTv.setText(String.format(getResources().getString(R.string.dir_path), path));
         dataList.removeAll(dataList);
         File file = new File(path);
+        if (!"/".equals(path)) {
+            addBack(file);
+        }
         File[] fileList = file.listFiles();
         if (fileList != null) {
             addFileAndDir(fileList);
-        }
-        if (!"/".equals(path)) {
-            addBack(file);
         }
         mAdapter.notifyDataSetChanged();
     }
@@ -72,6 +97,7 @@ public class FileFragment extends BaseFragment implements AdapterView.OnItemClic
         item.imageId = R.drawable.back;
         item.dir = "返回上一级";
         item.path = file.getParent();
+        item.isStore = false;
         dataList.add(item);
     }
 
@@ -81,25 +107,34 @@ public class FileFragment extends BaseFragment implements AdapterView.OnItemClic
                 continue;
             }
             FileItem item = new FileItem();
+            item.dir = fileList[i].getName();
+            item.path = fileList[i].getAbsolutePath();
             if (fileList[i].isDirectory()) {
                 if (fileList[i].list() != null) {
                     item.imageId = R.drawable.dir;
                 } else {
                     item.imageId = R.mipmap.ic_launcher;
                 }
+                item.isStore = false;
             } else {
                 item.imageId = R.drawable.file;
+                item.isStore = mDbManager.isStoreFile(item.path, item.dir);
             }
-            item.dir = fileList[i].getName();
-            item.path = fileList[i].getAbsolutePath();
             dataList.add(item);
         }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (dataList.get(position).imageId != R.drawable.file) {
-            loadData(dataList.get(position).path);
+        FileItem itemFile = dataList.get(position);
+        if (itemFile.imageId != R.drawable.file) {
+            loadData(itemFile.path);
+            storeBtn.setVisibility(View.GONE);
+            mSelectFileItem = null;
+        } else {
+            storeBtn.setVisibility(View.VISIBLE);
+            storeBtn.setText(itemFile.isStore ? "取消收藏":"收藏");
+            mSelectFileItem = itemFile;
         }
     }
 
@@ -107,6 +142,7 @@ public class FileFragment extends BaseFragment implements AdapterView.OnItemClic
         public int imageId;
         public String dir;
         public String path;
+        public boolean isStore;
     }
 
     class FileListAdapter extends BaseAdapter {
@@ -141,6 +177,7 @@ public class FileFragment extends BaseFragment implements AdapterView.OnItemClic
                 mHolder = new Holder();
                 mHolder.imageView = (ImageView) convertView.findViewById(R.id.iv_image);
                 mHolder.nameTv = (TextView) convertView.findViewById(R.id.tv_name);
+                mHolder.storeIv = (ImageView) convertView.findViewById(R.id.iv_store);
                 convertView.setTag(mHolder);
             } else {
                 mHolder = (Holder) convertView.getTag();
@@ -148,12 +185,14 @@ public class FileFragment extends BaseFragment implements AdapterView.OnItemClic
             FileItem fileItem = mDataList.get(position);
             mHolder.imageView.setImageResource(fileItem.imageId);
             mHolder.nameTv.setText(fileItem.dir);
+            mHolder.storeIv.setVisibility(fileItem.isStore ? View.VISIBLE : View.GONE);
             return convertView;
         }
 
         class Holder {
             ImageView imageView;
             TextView nameTv;
+            ImageView storeIv;
         }
     }
 }

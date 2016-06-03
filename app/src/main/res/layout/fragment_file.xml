@@ -37,7 +37,6 @@
             android:layout_height="match_parent"
             android:padding="5dp"
             android:background="@drawable/shape_bg_inside">
-
             <ListView
                 android:id="@+id/list"
                 android:layout_width="match_parent"

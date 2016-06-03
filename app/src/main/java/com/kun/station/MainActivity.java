@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 import com.kun.station.base.BaseActivity;
 import com.kun.station.fragment.FileFragment;
+import com.kun.station.fragment.FileStoreFragment;
 import com.kun.station.fragment.GanWeiFragment;
 import com.kun.station.fragment.HomeFragemnt;
+import com.kun.station.fragment.LookPictureFragment;
 
 import butterknife.Bind;
 
@@ -43,14 +45,22 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mAdapter.setSelectPosition(position);
-                if (position == 2) {
-                    showFragment(FileFragment.class);
-                }
-                if (position == 1) {
-                    showFragment(GanWeiFragment.class);
-                }
-                if (position == 0) {
-                    showFragment(HomeFragemnt.class);
+                switch (position){
+                    case 0:
+                        showFragment(HomeFragemnt.class);
+                        break;
+                    case 1:
+                        showFragment(GanWeiFragment.class);
+                        break;
+                    case 2:
+                        showFragment(FileFragment.class);
+                        break;
+                    case 3:
+                        showFragment(FileStoreFragment.class);
+                        break;
+                    case 4:
+                        showFragment(LookPictureFragment.class);
+                        break;
                 }
             }
         });
