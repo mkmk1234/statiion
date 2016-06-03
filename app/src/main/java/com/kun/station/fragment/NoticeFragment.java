@@ -1,9 +1,8 @@
-package com.kun.station;
+package com.kun.station.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +12,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kun.station.R;
+import com.kun.station.base.BaseFragment;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by kun on 16/5/25.
+ * Created by kun on 16/6/3.
  */
-public class NewFragment extends Fragment {
-
+public class NoticeFragment extends BaseFragment {
 
     @Bind(R.id.list)
     ListView list;

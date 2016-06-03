@@ -1,9 +1,8 @@
-package com.kun.station;
+package com.kun.station.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.kun.station.R;
+import com.kun.station.base.BaseFragment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ import butterknife.ButterKnife;
 /**
  * Created by kun on 16/5/25.
  */
-public class FileFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class FileFragment extends BaseFragment implements AdapterView.OnItemClickListener {
     @Bind(R.id.list)
     ListView list;
     @Bind(R.id.tv_dir_path)
@@ -55,10 +57,10 @@ public class FileFragment extends Fragment implements AdapterView.OnItemClickLis
         dataList.removeAll(dataList);
         File file = new File(path);
         File[] fileList = file.listFiles();
-        if(fileList!=null){
+        if (fileList != null) {
             addFileAndDir(fileList);
         }
-        if(!"/".equals(path)){
+        if (!"/".equals(path)) {
             addBack(file);
         }
         mAdapter.notifyDataSetChanged();
@@ -74,18 +76,18 @@ public class FileFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     private void addFileAndDir(File[] fileList) {
-        for(int i = 0 ; i < fileList.length ; i++){
-            if(fileList[i].isFile() && !fileList[i].canRead()){
+        for (int i = 0; i < fileList.length; i++) {
+            if (fileList[i].isFile() && !fileList[i].canRead()) {
                 continue;
             }
             FileItem item = new FileItem();
-            if(fileList[i].isDirectory()){
-                if(fileList[i].list() != null){
+            if (fileList[i].isDirectory()) {
+                if (fileList[i].list() != null) {
                     item.imageId = R.drawable.dir;
-                }else{
+                } else {
                     item.imageId = R.mipmap.ic_launcher;
                 }
-            }else{
+            } else {
                 item.imageId = R.drawable.file;
             }
             item.dir = fileList[i].getName();
@@ -96,7 +98,7 @@ public class FileFragment extends Fragment implements AdapterView.OnItemClickLis
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (dataList.get(position).imageId != R.drawable.file){
+        if (dataList.get(position).imageId != R.drawable.file) {
             loadData(dataList.get(position).path);
         }
     }
@@ -111,7 +113,7 @@ public class FileFragment extends Fragment implements AdapterView.OnItemClickLis
         private LayoutInflater mInflater;
         private ArrayList<FileItem> mDataList;
 
-        public FileListAdapter(Context context, ArrayList<FileItem> dataList){
+        public FileListAdapter(Context context, ArrayList<FileItem> dataList) {
             mInflater = LayoutInflater.from(context);
             this.mDataList = dataList;
         }
@@ -134,7 +136,7 @@ public class FileFragment extends Fragment implements AdapterView.OnItemClickLis
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             Holder mHolder;
-            if (convertView == null){
+            if (convertView == null) {
                 convertView = mInflater.inflate(R.layout.item_file, null);
                 mHolder = new Holder();
                 mHolder.imageView = (ImageView) convertView.findViewById(R.id.iv_image);
@@ -149,7 +151,7 @@ public class FileFragment extends Fragment implements AdapterView.OnItemClickLis
             return convertView;
         }
 
-        class Holder{
+        class Holder {
             ImageView imageView;
             TextView nameTv;
         }

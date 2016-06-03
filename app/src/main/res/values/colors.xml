@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="titleBar">#0035a8</color>
+
+    <color name="textBlack">#333333</color>
+    <color name="textGrey">#9b9b9b</color>
 </resources>

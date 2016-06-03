@@ -1,14 +1,17 @@
-package com.kun.station;
+package com.kun.station.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import com.kun.station.R;
+import com.kun.station.base.BaseFragment;
+import com.kun.station.widget.MyView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -17,7 +20,7 @@ import butterknife.OnClick;
 /**
  * Created by kun on 16/5/25.
  */
-public class GanWeiFragment extends Fragment implements View.OnClickListener {
+public class GanWeiFragment extends BaseFragment implements View.OnClickListener {
     @Bind(R.id.top)
     LinearLayout top;
     @Bind(R.id.fst)
