@@ -73,10 +73,10 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
             case R.id.fst:
                 Bundle b1 = new Bundle();
                 showFragment(HomePageFragment.class, b1);
-                fst.setBackgroundResource(R.drawable.yellow);
-                sec.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                thd.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                forth.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                fst.setBackgroundResource(R.drawable.img_notice_current);
+                sec.setBackgroundColor(getResources().getColor(R.color.titleColor));
+                thd.setBackgroundColor(getResources().getColor(R.color.titleColor));
+                forth.setBackgroundColor(getResources().getColor(R.color.titleColor));
                 text1.setTextColor(Color.parseColor("#333333"));
                 text2.setTextColor(Color.parseColor("#ffffff"));
                 text3.setTextColor(Color.parseColor("#ffffff"));
@@ -85,21 +85,21 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
             case R.id.sec:
                 Bundle b2 = new Bundle();
                 showFragment(HomePageFragment.class, b2);
-                sec.setBackgroundResource(R.drawable.yellow);
-                fst.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                thd.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                forth.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                sec.setBackgroundResource(R.drawable.img_notice_current);
+                fst.setBackgroundColor(getResources().getColor(R.color.titleColor));
+                thd.setBackgroundColor(getResources().getColor(R.color.titleColor));
+                forth.setBackgroundColor(getResources().getColor(R.color.titleColor));
                 text1.setTextColor(Color.parseColor("#ffffff"));
                 text2.setTextColor(Color.parseColor("#333333"));
                 text3.setTextColor(Color.parseColor("#ffffff"));
                 text4.setTextColor(Color.parseColor("#ffffff"));
                 break;
             case R.id.thd:
-                showFragment(NewFragment.class, null);
-                thd.setBackgroundResource(R.drawable.yellow);
-                sec.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                fst.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                forth.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                showFragment(NoticeFragment.class, null);
+                thd.setBackgroundResource(R.drawable.img_notice_current);
+                sec.setBackgroundColor(getResources().getColor(R.color.titleColor));
+                fst.setBackgroundColor(getResources().getColor(R.color.titleColor));
+                forth.setBackgroundColor(getResources().getColor(R.color.titleColor));
                 text1.setTextColor(Color.parseColor("#ffffff"));
                 text2.setTextColor(Color.parseColor("#ffffff"));
                 text3.setTextColor(Color.parseColor("#333333"));
@@ -107,10 +107,10 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.forth:
                 showFragment(NewFragment.class, null);
-                forth.setBackgroundResource(R.drawable.yellow);
-                sec.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                thd.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                fst.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                forth.setBackgroundResource(R.drawable.img_notice_current);
+                sec.setBackgroundColor(getResources().getColor(R.color.titleColor));
+                thd.setBackgroundColor(getResources().getColor(R.color.titleColor));
+                fst.setBackgroundColor(getResources().getColor(R.color.titleColor));
                 text1.setTextColor(Color.parseColor("#ffffff"));
                 text2.setTextColor(Color.parseColor("#ffffff"));
                 text3.setTextColor(Color.parseColor("#ffffff"));

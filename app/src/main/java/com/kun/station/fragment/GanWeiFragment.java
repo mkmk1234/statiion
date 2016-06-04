@@ -65,19 +65,19 @@ public class GanWeiFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fst:
-                layout.removeAllViews();
-                layout.addView(LayoutInflater.from(getActivity()).inflate(R.layout.layout_renyuan, null));
+                showFragment(PersonnelFragment.class, null, R.id.layout);
                 myview.setData(fst.getLeft(), fst.getTop(), fst.getBottom(), fst.getRight());
                 break;
             case R.id.sec:
-                layout.removeAllViews();
-                layout.addView(LayoutInflater.from(getActivity()).inflate(R.layout.layout_tubiao, null));
+                showFragment(PersonnelFragment.class, null, R.id.layout);
                 myview.setData(sec.getLeft(), sec.getTop(), sec.getBottom(), sec.getRight());
                 break;
             case R.id.thd:
+                showFragment(PersonnelFragment.class, null, R.id.layout);
                 myview.setData(thd.getLeft(), thd.getTop(), thd.getBottom(), thd.getRight());
                 break;
             case R.id.forth:
+                showFragment(PersonnelFragment.class, null, R.id.layout);
                 myview.setData(forth.getLeft(), forth.getTop(), forth.getBottom(), forth.getRight());
                 break;
         }

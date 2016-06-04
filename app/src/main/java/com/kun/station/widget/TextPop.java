@@ -28,6 +28,7 @@ public class TextPop extends PopupWindow {
     TextView txtTitle;
     @Bind(R.id.txt_content)
     TextView txtContent;
+    View rootView;
 
     public TextPop(Activity activity) {
         super(activity);
@@ -36,7 +37,7 @@ public class TextPop extends PopupWindow {
     }
 
     private void initView(Context context) {
-        View rootView = LayoutInflater.from(context).inflate(R.layout.pop_text, null);
+        rootView = LayoutInflater.from(context).inflate(R.layout.pop_text, null);
         ButterKnife.bind(rootView);
         setContentView(rootView);
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
@@ -64,15 +65,17 @@ public class TextPop extends PopupWindow {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-
+                TextPop.super.dismiss();
             }
         });
+        rootView.startAnimation(animation);
     }
 
     public void show() {
         Animation trans = AnimationUtils.loadAnimation(mActivity, R.anim.anim_enter);
-        trans.setDuration(260);
+        trans.setDuration(300);
         trans.setInterpolator(new AccelerateDecelerateInterpolator());
-        showAtLocation(mActivity.getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+        showAtLocation(mActivity.getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+        rootView.startAnimation(trans);
     }
 }

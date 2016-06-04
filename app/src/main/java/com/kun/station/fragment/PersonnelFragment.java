@@ -1,44 +1,32 @@
 package com.kun.station.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.GridView;
 
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
-import com.kun.station.widget.TextPop;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by kun on 16/6/3.
+ * Created by kun on 16/6/4.
  */
-public class NoticeFragment extends BaseFragment {
-
-    @Bind(R.id.list)
-    ListView list;
+public class PersonnelFragment extends BaseFragment {
+    @Bind(R.id.grid_personnel)
+    GridView gridPersonnel;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_new, container, false);
+        View view = inflater.inflate(R.layout.fragment_personnel, null, false);
         ButterKnife.bind(this, view);
-        list.setAdapter(new ListAdapter());
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) view.findViewById(R.id.title)).setTextColor(Color.parseColor("#9b9b9b"));
-                new TextPop(getActivity()).show();
-            }
-        });
+        gridPersonnel.setAdapter(new PersonnelGridAdapter());
         return view;
     }
 
@@ -48,11 +36,11 @@ public class NoticeFragment extends BaseFragment {
         ButterKnife.unbind(this);
     }
 
-    class ListAdapter extends BaseAdapter {
+    class PersonnelGridAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return 10;
+            return 8;
         }
 
         @Override
@@ -67,9 +55,7 @@ public class NoticeFragment extends BaseFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getActivity()).inflate(R.layout.item_new, parent, false);
-            }
+            convertView = LayoutInflater.from(getActivity()).inflate(R.layout.item_personnel, parent, false);
             return convertView;
         }
     }

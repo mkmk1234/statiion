@@ -25,7 +25,7 @@ public class HomePageFragment extends BaseFragment {
     @Bind(R.id.viewpager)
     LoopViewPager viewpager;
     MyLoopViewPageAdapter adapter;
-    List<String> data;
+    List<Integer> data;
 
     @Nullable
     @Override
@@ -34,6 +34,7 @@ public class HomePageFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         adapter = new MyLoopViewPageAdapter();
         viewpager.setAdapter(adapter);
+        viewpager.setAutoPagerFlipAnimaionTime(400);
         viewpager.startAutoScroll();
         loadData();
         return view;
@@ -47,9 +48,9 @@ public class HomePageFragment extends BaseFragment {
 
     private void loadData() {
         data = new ArrayList<>();
-        data.add("http://image.baidu.com/search/detail?ct=503316480&z=0&tn=baiduimagedetail&ipn=d&cl=2&cm=1&sc=0&lm=-1&ie=gbk&pn=0&rn=1&di=113882360460&ln=30&word=%CD%BC%C6%AC&os=665726132,356480541&cs=4236942158,2307642402&objurl=http%3A%2F%2Fpic32.nipic.com%2F20130829%2F12906030_124355855000_2.png&bdtype=0&simid=3444347259,284796380&fr=ala&ala=1&alatpl=others&pos=1");
-        data.add("http://image.baidu.com/search/detail?ct=503316480&z=0&tn=baiduimagedetail&ipn=d&cl=2&cm=1&sc=0&lm=-1&ie=gbk&pn=0&rn=1&di=113882360460&ln=30&word=%CD%BC%C6%AC&os=665726132,356480541&cs=4236942158,2307642402&objurl=http%3A%2F%2Fpic32.nipic.com%2F20130829%2F12906030_124355855000_2.png&bdtype=0&simid=3444347259,284796380&fr=ala&ala=1&alatpl=others&pos=1");
-        data.add("http://image.baidu.com/search/detail?ct=503316480&z=0&tn=baiduimagedetail&ipn=d&cl=2&cm=1&sc=0&lm=-1&ie=gbk&pn=0&rn=1&di=113882360460&ln=30&word=%CD%BC%C6%AC&os=665726132,356480541&cs=4236942158,2307642402&objurl=http%3A%2F%2Fpic32.nipic.com%2F20130829%2F12906030_124355855000_2.png&bdtype=0&simid=3444347259,284796380&fr=ala&ala=1&alatpl=others&pos=1");
+        data.add(R.drawable.home_viewpager_one);
+        data.add(R.drawable.home_viewpager_two);
+        data.add(R.drawable.home_viewpager_three);
         adapter.notifyDataSetChanged();
     }
 
@@ -68,7 +69,8 @@ public class HomePageFragment extends BaseFragment {
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_loop_page, container, false);
             }
-            ((ImageView) convertView).setImageResource(R.mipmap.ic_launcher);
+
+            ((ImageView) convertView).setImageResource(data.get(position));
 //            Glide.with(getContext())
 //                    .load(data.get(position))
 //                    .crossFade()

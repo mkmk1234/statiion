@@ -9,6 +9,11 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Interpolator;
+import android.widget.Scroller;
+
+import java.lang.reflect.Field;
 
 
 public class LoopViewPager extends ViewPager {
@@ -190,6 +195,63 @@ public class LoopViewPager extends ViewPager {
             }
         } else {
             throw new IllegalArgumentException("adapter must be instanceof LoopPageAdapter");
+        }
+    }
+
+    public void setAutoPagerFlipAnimaionTime(int time) {
+        if (time >= 300) {
+            time = 300;
+        }
+        try {
+            Field mField = ViewPager.class.getDeclaredField("mScroller");
+            mField.setAccessible(true);
+            FixSpeedScroll mScroller = new FixSpeedScroll(this.getContext(), new AccelerateInterpolator(), time);
+            mField.set(this, mScroller);
+        } catch (NoSuchFieldException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private class FixSpeedScroll extends Scroller {
+        private int animTime = 300;
+
+        public FixSpeedScroll(Context context) {
+            super(context);
+        }
+
+        public FixSpeedScroll(Context context, int animTime) {
+            super(context);
+            this.animTime = animTime;
+        }
+
+        public FixSpeedScroll(Context context, Interpolator interpolator) {
+            super(context, interpolator);
+        }
+
+        public FixSpeedScroll(Context context, Interpolator interpolator, int animTime) {
+            super(context, interpolator);
+            this.animTime = animTime;
+        }
+
+        @Override
+        public void startScroll(int startX, int startY, int dx, int dy, int duration) {
+            super.startScroll(startX, startY, dx, dy, animTime);
+        }
+
+        @Override
+        public void startScroll(int startX, int startY, int dx, int dy) {
+            super.startScroll(startX, startY, dx, dy, animTime);
+        }
+
+        public void setmDuration(int animTime) {
+            this.animTime = animTime;
         }
     }
 

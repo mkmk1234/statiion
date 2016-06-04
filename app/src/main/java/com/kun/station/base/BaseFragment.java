@@ -3,6 +3,7 @@ package com.kun.station.base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 
 /**
  * Created by kun on 16/6/3.
@@ -16,6 +17,13 @@ public abstract class BaseFragment extends Fragment {
         setUpView();
     }
 
+    protected void showFragment(Class<?> clss, Bundle b, int container) {
+        FragmentTransaction ft = getActivity().getSupportFragmentManager()
+                .beginTransaction();
+        ft.replace(container, Fragment.instantiate(getActivity(), clss.getName(), b));
+
+        ft.commitAllowingStateLoss();
+    }
     protected void setUpView() {
 
     }
