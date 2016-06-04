@@ -130,7 +130,7 @@ public class MyView extends View {
     private void drawLeft(Canvas canvas) {
         int realLeft = left - padding;
         int realRight = right + padding;
-        canvas.drawLine(realLeft + lineWidth, getHeight() - width / 2, realLeft + lineWidth, 0 + width / 2, linePaint2);
+        canvas.drawLine(realLeft + lineWidth * 2, getHeight() - width / 2, realLeft + lineWidth * 2, 0 + width / 2, linePaint2);
         canvas.drawLine(realLeft + width / 2, getHeight() - lineWidth / 2, realRight - width / 2, getHeight() - lineWidth / 2, linePaint2);
         canvas.drawLine(realLeft + width / 2, 0 + lineWidth / 2, realRight - width / 2, 0 + lineWidth / 2, linePaint2);
         RectF oval1 = new RectF();

@@ -6,16 +6,12 @@
     android:orientation="vertical"
     android:padding="5dp">
 
-    <FrameLayout
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/basic_large_bg"></FrameLayout>
+        android:src="@drawable/pda_post_bg"
+        android:adjustViewBounds="true" />
 
-    <com.kun.station.widget.MyView
-        android:id="@+id/backgroud"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

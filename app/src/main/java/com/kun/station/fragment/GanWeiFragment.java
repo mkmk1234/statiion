@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
-import com.kun.station.widget.MyView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,8 +32,6 @@ public class GanWeiFragment extends BaseFragment implements View.OnClickListener
     LinearLayout left;
     @Bind(R.id.layout)
     FrameLayout layout;
-    @Bind(R.id.backgroud)
-    MyView myview;
 
 
     @Nullable
@@ -57,10 +54,9 @@ public class GanWeiFragment extends BaseFragment implements View.OnClickListener
         switch (view.getId()) {
             case R.id.fst:
                 showFragment(PersonnelFragment.class, null, R.id.layout);
-                myview.setData(fst.getLeft(), fst.getTop(), fst.getBottom(), fst.getRight());
                 break;
             case R.id.sec:
-                showFragment(PersonnelFragment.class, null, R.id.layout);
+                showFragment(LookPictureFragment.class, null, R.id.layout);
                 break;
             case R.id.thd:
                 showFragment(PersonnelFragment.class, null, R.id.layout);
