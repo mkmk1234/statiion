@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -21,8 +20,7 @@ import butterknife.OnClick;
  * Created by kun on 16/5/25.
  */
 public class GanWeiFragment extends BaseFragment implements View.OnClickListener {
-    @Bind(R.id.top)
-    LinearLayout top;
+
     @Bind(R.id.fst)
     LinearLayout fst;
     @Bind(R.id.sec)
@@ -35,7 +33,7 @@ public class GanWeiFragment extends BaseFragment implements View.OnClickListener
     LinearLayout left;
     @Bind(R.id.layout)
     FrameLayout layout;
-    @Bind(R.id.myview)
+    @Bind(R.id.backgroud)
     MyView myview;
 
     @Nullable
@@ -43,14 +41,6 @@ public class GanWeiFragment extends BaseFragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_ganwei, container, false);
         ButterKnife.bind(this, view);
-        ViewTreeObserver observer = view.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                onClick(fst);
-            }
-        });
         return view;
     }
 
@@ -70,15 +60,12 @@ public class GanWeiFragment extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.sec:
                 showFragment(PersonnelFragment.class, null, R.id.layout);
-                myview.setData(sec.getLeft(), sec.getTop(), sec.getBottom(), sec.getRight());
                 break;
             case R.id.thd:
                 showFragment(PersonnelFragment.class, null, R.id.layout);
-                myview.setData(thd.getLeft(), thd.getTop(), thd.getBottom(), thd.getRight());
                 break;
             case R.id.forth:
                 showFragment(PersonnelFragment.class, null, R.id.layout);
-                myview.setData(forth.getLeft(), forth.getTop(), forth.getBottom(), forth.getRight());
                 break;
         }
     }

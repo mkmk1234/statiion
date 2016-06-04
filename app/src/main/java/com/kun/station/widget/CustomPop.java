@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -22,7 +21,6 @@ import com.senab.photoview.PhotoView;
 import com.senab.photoview.PhotoViewAttacher;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by kun on 16/6/3.

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <com.senab.photoview.PhotoView
+    android:layout_height="match_parent"
+    android:background="#c3c3c3">
+    <ListView
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_test"/>
+        android:dividerHeight="0dp"
+        android:divider="@null" />
 </LinearLayout>

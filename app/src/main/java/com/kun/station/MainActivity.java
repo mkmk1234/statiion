@@ -13,21 +13,23 @@ import android.widget.TextView;
 
 import com.kun.station.base.BaseActivity;
 import com.kun.station.fragment.FileCombineFragment;
-import com.kun.station.fragment.FileFragment;
-import com.kun.station.fragment.FileStoreFragment;
 import com.kun.station.fragment.GanWeiFragment;
 import com.kun.station.fragment.HomeFragemnt;
 import com.kun.station.fragment.LookPictureFragment;
+import com.kun.station.model.Model;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 
 public class MainActivity extends BaseActivity {
-    String[] arr = {"系统首页", "岗位建设", "应急制度", "作业标准", "运输生产", "应急制度"};
 
     @Bind(R.id.left_menu_list)
     ListView leftMenuList;
     @Bind(R.id.detail_layout)
     FrameLayout detailLayout;
+    List<Model> list;
 
     private ListAdapter mAdapter;
     private FileCombineFragment mFileCombineFragment;
@@ -37,10 +39,22 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
     }
 
+    private void initData() {
+        mAdapter = new ListAdapter();
+        list = new ArrayList<>();
+        list.add(new Model("系统首页", R.drawable.main_function_home_down, R.drawable.main_function_home));
+        list.add(new Model("岗位建设", R.drawable.main_function_post_constrution_down, R.drawable.main_function_post_constrution));
+        list.add(new Model("应急制度", R.drawable.main_function_book_down, R.drawable.main_function_book));
+        list.add(new Model("作业标准", R.drawable.main_function_standard_down, R.drawable.main_function_standard));
+        list.add(new Model("运输生产", R.drawable.main_function_pda_down, R.drawable.main_function_pda));
+        list.add(new Model("运输生产", R.drawable.main_function_pda_down, R.drawable.main_function_pda));
+
+    }
+
     @Override
     protected void setUpView() {
         super.setUpView();
-        mAdapter = new ListAdapter();
+        initData();
         leftMenuList.setAdapter(mAdapter);
         leftMenuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,12 +98,12 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return arr.length;
+            return list.size();
         }
 
         @Override
-        public String getItem(int position) {
-            return arr[position];
+        public Model getItem(int position) {
+            return list.get(position);
         }
 
         @Override
@@ -108,13 +122,13 @@ public class MainActivity extends BaseActivity {
                 convertView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_menu, parent, false);
             }
             TextView tv = (TextView) convertView.findViewById(R.id.menu_txt);
-            tv.setText(getItem(position));
+            tv.setText(getItem(position).name);
             if (position == selectPosition){
                 convertView.findViewById(R.id.iv_arrow).setVisibility(View.VISIBLE);
-                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(R.drawable.shape_button_select);
+                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(getItem(position).selectedImg);
             } else {
                 convertView.findViewById(R.id.iv_arrow).setVisibility(View.GONE);
-                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(R.drawable.shape_button_normal);
+                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(getItem(position).unSelectedImg);
             }
             return convertView;
         }
