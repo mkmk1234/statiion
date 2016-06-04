@@ -36,6 +36,7 @@ public class GanWeiFragment extends BaseFragment implements View.OnClickListener
     @Bind(R.id.backgroud)
     MyView myview;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
