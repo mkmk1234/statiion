@@ -39,6 +39,7 @@ public class GanWeiFragment extends BaseFragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_ganwei, container, false);
         ButterKnife.bind(this, view);
+        onClick(fst);
         return view;
     }
 
@@ -54,15 +55,31 @@ public class GanWeiFragment extends BaseFragment implements View.OnClickListener
         switch (view.getId()) {
             case R.id.fst:
                 showFragment(PersonnelFragment.class, null, R.id.layout);
+                fst.setBackgroundResource(R.drawable.img_pda_dirselect);
+                sec.setBackgroundResource(0);
+                thd.setBackgroundResource(0);
+                forth.setBackgroundResource(0);
                 break;
             case R.id.sec:
-                showFragment(LookPictureFragment.class, null, R.id.layout);
+                showFragment(ChartHangingFragment.class, null, R.id.layout);
+                sec.setBackgroundResource(R.drawable.img_pda_dirselect);
+                fst.setBackgroundResource(0);
+                thd.setBackgroundResource(0);
+                forth.setBackgroundResource(0);
                 break;
             case R.id.thd:
-                showFragment(PersonnelFragment.class, null, R.id.layout);
+                showFragment(FileFrament.class, null, R.id.layout);
+                thd.setBackgroundResource(R.drawable.img_pda_dirselect);
+                sec.setBackgroundResource(0);
+                fst.setBackgroundResource(0);
+                forth.setBackgroundResource(0);
                 break;
             case R.id.forth:
-                showFragment(PersonnelFragment.class, null, R.id.layout);
+                showFragment(FileFrament.class, null, R.id.layout);
+                forth.setBackgroundResource(R.drawable.img_pda_dirselect);
+                sec.setBackgroundResource(0);
+                thd.setBackgroundResource(0);
+                fst.setBackgroundResource(0);
                 break;
         }
     }

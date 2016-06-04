@@ -15,15 +15,15 @@ import com.kun.station.base.BaseFragment;
 import com.kun.station.widget.CustomPop;
 
 /**
- * Created by admin on 2016/6/4.
+ * Created by kun on 16/6/5.
  */
-public class LookPictureFragment extends BaseFragment{
+public class FileFrament extends BaseFragment {
     private ListView mListView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_look_picture, null);
+        View view = inflater.inflate(R.layout.fragment_file, null);
         mListView = (ListView) view.findViewById(R.id.list);
         mListView.setAdapter(new PictureAdapter(getActivity()));
         mListView.setOnItemClickListener(mItemClickListener);
@@ -39,10 +39,10 @@ public class LookPictureFragment extends BaseFragment{
         }
     };
 
-    private class PictureAdapter extends BaseAdapter{
+    private class PictureAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
 
-        public PictureAdapter(Context context){
+        public PictureAdapter(Context context) {
             mInflater = LayoutInflater.from(context);
         }
 
@@ -63,7 +63,7 @@ public class LookPictureFragment extends BaseFragment{
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return mInflater.inflate(R.layout.item_picture_layout, null);
+            return mInflater.inflate(R.layout.item_file, null);
         }
     }
 }

@@ -15,7 +15,6 @@ import com.kun.station.base.BaseActivity;
 import com.kun.station.fragment.FileCombineFragment;
 import com.kun.station.fragment.GanWeiFragment;
 import com.kun.station.fragment.HomeFragemnt;
-import com.kun.station.fragment.LookPictureFragment;
 import com.kun.station.model.Model;
 
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mAdapter.setSelectPosition(position);
-                switch (position){
+                switch (position) {
                     case 0:
                         showFragment(HomeFragemnt.class);
                         break;
@@ -68,7 +67,7 @@ public class MainActivity extends BaseActivity {
                         showFragment(GanWeiFragment.class);
                         break;
                     case 2:
-                        if (mFileCombineFragment == null){
+                        if (mFileCombineFragment == null) {
                             mFileCombineFragment = new FileCombineFragment();
                         }
                         FragmentTransaction ft = getSupportFragmentManager()
@@ -77,7 +76,6 @@ public class MainActivity extends BaseActivity {
                         ft.commitAllowingStateLoss();
                         break;
                     case 3:
-                        showFragment(LookPictureFragment.class);
                         break;
                 }
             }
@@ -111,7 +109,7 @@ public class MainActivity extends BaseActivity {
             return position;
         }
 
-        public void setSelectPosition(int position){
+        public void setSelectPosition(int position) {
             selectPosition = position;
             notifyDataSetChanged();
         }
@@ -123,7 +121,7 @@ public class MainActivity extends BaseActivity {
             }
             TextView tv = (TextView) convertView.findViewById(R.id.menu_txt);
             tv.setText(getItem(position).name);
-            if (position == selectPosition){
+            if (position == selectPosition) {
                 convertView.findViewById(R.id.iv_arrow).setVisibility(View.VISIBLE);
                 convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(getItem(position).selectedImg);
             } else {

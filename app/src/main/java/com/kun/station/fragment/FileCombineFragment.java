@@ -23,7 +23,7 @@ public class FileCombineFragment extends BaseFragment {
     private ViewPager mContentPager;
     private RadioGroup mRadioGroup;
     private List<Fragment> dataList = new ArrayList<>();
-    private FileFragment mFileFragment;
+    private CatalogFragment mCatalogFragment;
     private FileSearchFragment mFileSearchFragment;
     private FileStoreFragment mFileStoreFragment;
 
@@ -31,8 +31,8 @@ public class FileCombineFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataList.clear();
-        mFileFragment = new FileFragment();
-        dataList.add(mFileFragment);
+        mCatalogFragment = new CatalogFragment();
+        dataList.add(mCatalogFragment);
         dataList.add(new FileSearchFragment());
         dataList.add(new FileStoreFragment());
     }
@@ -54,7 +54,7 @@ public class FileCombineFragment extends BaseFragment {
         Fragment itemFragment = null;
         switch (position) {
             case 0:
-                itemFragment = new FileFragment();
+                itemFragment = new CatalogFragment();
                 break;
             case 1:
                 itemFragment = new FileSearchFragment();
