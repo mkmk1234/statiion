@@ -30,7 +30,7 @@ public class MainActivity extends BaseActivity {
     FrameLayout detailLayout;
 
     private ListAdapter mAdapter;
-
+    private FileCombineFragment mFileCombineFragment;
 
     @Override
     protected void onSetContentView() {
@@ -54,7 +54,13 @@ public class MainActivity extends BaseActivity {
                         showFragment(GanWeiFragment.class);
                         break;
                     case 2:
-                        showFragment(FileCombineFragment.class);
+                        if (mFileCombineFragment == null){
+                            mFileCombineFragment = new FileCombineFragment();
+                        }
+                        FragmentTransaction ft = getSupportFragmentManager()
+                                .beginTransaction();
+                        ft.replace(R.id.detail_layout, mFileCombineFragment, null);
+                        ft.commitAllowingStateLoss();
                         break;
                     case 3:
                         showFragment(LookPictureFragment.class);

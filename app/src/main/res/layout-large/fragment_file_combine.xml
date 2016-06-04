@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#17487d"
+        android:orientation="horizontal"
         android:checkedButton="@+id/rb_file">
         <RadioButton
             android:id="@+id/rb_file"

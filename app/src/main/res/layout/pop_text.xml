@@ -4,20 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#33ffffff">
-
-    <TextView
-        android:id="@+id/txt_title"
+    <LinearLayout
+        android:id="@+id/ll_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:gravity="center"
-        android:textColor="@color/textBlack" />
-
-    <TextView
-        android:id="@+id/txt_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:textColor="@color/textBlack" />
+        <TextView
+            android:id="@+id/txt_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textBlack"
+            android:padding="20dp"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <com.senab.photoview.PhotoView
+        android:id="@+id/iv_img"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textBlack"
-        android:padding="20dp"
-        android:textSize="20sp" />
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 </LinearLayout>

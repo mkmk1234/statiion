@@ -23,11 +23,16 @@ public class FileCombineFragment extends BaseFragment{
     private ViewPager mContentPager;
     private RadioGroup mRadioGroup;
     private List<Fragment> dataList = new ArrayList<>();
+    private FileFragment mFileFragment;
+    private FileSearchFragment mFileSearchFragment;
+    private FileStoreFragment mFileStoreFragment;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dataList.add(new FileFragment());
+        dataList.clear();
+        mFileFragment = new FileFragment();
+        dataList.add(mFileFragment);
         dataList.add(new FileSearchFragment());
         dataList.add(new FileStoreFragment());
     }
@@ -41,7 +46,24 @@ public class FileCombineFragment extends BaseFragment{
         mContentPager.addOnPageChangeListener(mPagerChangeListener);
         mRadioGroup = (RadioGroup) view.findViewById(R.id.rg_radio);
         mRadioGroup.setOnCheckedChangeListener(mCheckedChangeListener);
+        addItemFragment(0);
         return view;
+    }
+
+    private void addItemFragment(int position){
+        Fragment itemFragment = null;
+        switch (position){
+            case 0:
+                itemFragment = new FileFragment();
+                break;
+            case 1:
+                itemFragment = new FileSearchFragment();
+                break;
+            case 2:
+                itemFragment = new FileStoreFragment();
+                break;
+        }
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ll_container, itemFragment).commit();
     }
 
     private RadioGroup.OnCheckedChangeListener mCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
@@ -49,12 +71,15 @@ public class FileCombineFragment extends BaseFragment{
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             switch (checkedId){
                 case R.id.rb_file:
+                    addItemFragment(0);
                     mContentPager.setCurrentItem(0);
                     break;
                 case R.id.rb_search:
+                    addItemFragment(1);
                     mContentPager.setCurrentItem(1);
                     break;
                 case R.id.rb_store:
+                    addItemFragment(2);
                     mContentPager.setCurrentItem(2);
                     break;
             }

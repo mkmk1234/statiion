@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
-import com.kun.station.widget.TextPop;
+import com.kun.station.widget.CustomPop;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,7 +36,7 @@ public class NoticeFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ((TextView) view.findViewById(R.id.title)).setTextColor(Color.parseColor("#9b9b9b"));
-                new TextPop(getActivity()).show();
+                new CustomPop(getActivity()).show();
             }
         });
         return view;
