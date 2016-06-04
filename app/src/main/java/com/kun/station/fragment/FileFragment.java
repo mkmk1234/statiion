@@ -82,7 +82,8 @@ public class FileFragment extends BaseFragment implements AdapterView.OnItemClic
         pathTv.setText(String.format(getResources().getString(R.string.dir_path), path));
         dataList.removeAll(dataList);
         File file = new File(path);
-        if (!"/".equals(path)) {
+//        if (!"/".equals(path)) {
+        if (!FileUtil.getExternalDir().getPath().equals(path)){
             addBack(file);
         }
         File[] fileList = file.listFiles();
