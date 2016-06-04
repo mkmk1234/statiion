@@ -31,11 +31,16 @@ public class FileStoreFragment extends BaseFragment{
 
     private DbManager mDbManager;
     private ArrayList<FileItem> mDataList = new ArrayList<FileItem>();
+    private FileStoreAdapter mAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDbManager = MyApplication.getInstance().getDbManager();
+        getCursorData();
+    }
+
+    private void getCursorData() {
         Cursor cursor = mDbManager.getStoreList(true);
         if (cursor != null && cursor.getCount() > 0){
             while (cursor.moveToNext()){
@@ -53,8 +58,15 @@ public class FileStoreFragment extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_store_file, null);
         ButterKnife.bind(this, view);
-        list.setAdapter(new FileStoreAdapter(getActivity(), mDataList));
+        mAdapter = new FileStoreAdapter(getActivity(), mDataList);
+        list.setAdapter(mAdapter);
         return view;
+    }
+
+    public void refreshData(){
+        mDataList.clear();
+        getCursorData();
+        mAdapter.notifyDataSetChanged();
     }
 
     private class FileItem{

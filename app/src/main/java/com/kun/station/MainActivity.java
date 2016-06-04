@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.kun.station.base.BaseActivity;
+import com.kun.station.fragment.FileCombineFragment;
 import com.kun.station.fragment.FileFragment;
 import com.kun.station.fragment.FileStoreFragment;
 import com.kun.station.fragment.GanWeiFragment;
@@ -53,12 +54,9 @@ public class MainActivity extends BaseActivity {
                         showFragment(GanWeiFragment.class);
                         break;
                     case 2:
-                        showFragment(FileFragment.class);
+                        showFragment(FileCombineFragment.class);
                         break;
                     case 3:
-                        showFragment(FileStoreFragment.class);
-                        break;
-                    case 4:
                         showFragment(LookPictureFragment.class);
                         break;
                 }
