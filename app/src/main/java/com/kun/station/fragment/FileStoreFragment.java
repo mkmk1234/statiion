@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -47,6 +48,15 @@ public class FileStoreFragment extends BaseFragment{
                 FileItem item = new FileItem();
                 item.fileName = cursor.getString(cursor.getColumnIndex(SqlConstants.Key_FileName));
                 item.filePath = cursor.getString(cursor.getColumnIndex(SqlConstants.Key_FilePath));
+                if(item.fileName.endsWith(".pdf")){
+                    item.imageId = R.drawable.pdf_pic;
+                } else if(item.fileName.endsWith(".doc")){
+                    item.imageId = R.drawable.word_pic;
+                } else if(item.fileName.endsWith(".png")){
+                    item.imageId = R.drawable.png_pic;
+                } else {
+                    item.imageId = R.drawable.file;
+                }
                 mDataList.add(item);
             }
             cursor.close();
@@ -72,6 +82,7 @@ public class FileStoreFragment extends BaseFragment{
     private class FileItem{
         String fileName;
         String filePath;
+        int imageId;
     }
 
     private class FileStoreAdapter extends BaseAdapter{
@@ -106,12 +117,14 @@ public class FileStoreFragment extends BaseFragment{
                 mHolder = new ViewHolder();
                 mHolder.nameTv = (TextView) convertView.findViewById(R.id.tv_name);
                 mHolder.pathTv = (TextView) convertView.findViewById(R.id.tv_path);
+                mHolder.imageIv = (ImageView) convertView.findViewById(R.id.iv_image);
                 convertView.setTag(mHolder);
             } else {
                 mHolder = (ViewHolder) convertView.getTag();
             }
             FileItem item = mDataList.get(position);
             mHolder.nameTv.setText(item.fileName);
+            mHolder.imageIv.setImageResource(item.imageId);
             mHolder.pathTv.setText(item.filePath);
             return convertView;
         }
@@ -119,6 +132,7 @@ public class FileStoreFragment extends BaseFragment{
         class ViewHolder{
             TextView nameTv;
             TextView pathTv;
+            ImageView imageIv;
         }
     }
 }

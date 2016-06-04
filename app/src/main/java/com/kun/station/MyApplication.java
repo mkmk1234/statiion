@@ -4,6 +4,9 @@ import android.app.Application;
 
 import com.kun.station.db.DbManager;
 import com.kun.station.db.DbOpenHelper;
+import com.kun.station.util.FileUtil;
+
+import java.io.File;
 
 /**
  * Created by admin on 2016/6/3.
@@ -16,6 +19,7 @@ public class MyApplication extends Application{
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        addTestFile();
     }
 
     public static MyApplication getInstance(){
@@ -27,5 +31,22 @@ public class MyApplication extends Application{
             mDbManager = new DbManager(mInstance);
         }
         return mDbManager;
+    }
+
+    private void addTestFile(){
+        File dir = FileUtil.getExternalDir();
+        try {
+            File file = new File(dir, "人员001.png");
+            if (!file.exists()){
+                file.createNewFile();
+                new File(dir, "人员002.doc").createNewFile();
+                new File(dir, "人员003.pdf").createNewFile();
+                new File(dir, "人员004.pdf").createNewFile();
+                new File(dir, "人员005.doc").createNewFile();
+                new File(dir, "人员006.png").createNewFile();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

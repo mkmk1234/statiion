@@ -1,7 +1,13 @@
 package com.kun.station.util;
 
+import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
+import android.widget.Toast;
+
+import com.kun.station.MyApplication;
+import com.kun.station.R;
 
 import java.io.File;
 
@@ -74,5 +80,18 @@ public class FileUtil {
         return intent;
     }
 
-
+    public static File getExternalDir() {
+        if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            Toast.makeText(MyApplication.getInstance(), "no sd", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        File external = Environment.getExternalStorageDirectory();
+        if (external == null)
+            return null;
+        File ext = new File(Environment.getExternalStorageDirectory(), "Station");
+        if(ext != null && !ext.exists()){
+            ext.mkdirs();
+        }
+        return ext;
+    }
 }

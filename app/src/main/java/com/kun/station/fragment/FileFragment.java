@@ -16,6 +16,7 @@ import com.kun.station.MyApplication;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
 import com.kun.station.db.DbManager;
+import com.kun.station.util.FileUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,8 +55,8 @@ public class FileFragment extends BaseFragment implements AdapterView.OnItemClic
         ButterKnife.bind(this, view);
         mAdapter = new FileListAdapter(getActivity(), dataList);
         list.setAdapter(mAdapter);
-        loadData("/");
-
+//        loadData("/");
+        loadData(FileUtil.getExternalDir().getPath());
         list.setOnItemClickListener(this);
         return view;
     }
@@ -118,7 +119,15 @@ public class FileFragment extends BaseFragment implements AdapterView.OnItemClic
                 }
                 item.isStore = false;
             } else {
-                item.imageId = R.drawable.file;
+                if(item.dir.endsWith(".pdf")){
+                    item.imageId = R.drawable.pdf_pic;
+                } else if(item.dir.endsWith(".doc")){
+                    item.imageId = R.drawable.word_pic;
+                } else if(item.dir.endsWith(".png")){
+                    item.imageId = R.drawable.png_pic;
+                } else {
+                    item.imageId = R.drawable.file;
+                }
                 item.isStore = mDbManager.isStoreFile(item.path, item.dir);
             }
             dataList.add(item);
@@ -128,7 +137,7 @@ public class FileFragment extends BaseFragment implements AdapterView.OnItemClic
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         FileItem itemFile = dataList.get(position);
-        if (itemFile.imageId != R.drawable.file) {
+        if (itemFile.imageId == R.drawable.dir || itemFile.imageId == R.drawable.back) {
             loadData(itemFile.path);
             storeBtn.setVisibility(View.GONE);
             mSelectFileItem = null;
