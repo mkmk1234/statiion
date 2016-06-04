@@ -113,7 +113,8 @@ public class FileFragment extends BaseFragment implements AdapterView.OnItemClic
                 if (fileList[i].list() != null) {
                     item.imageId = R.drawable.dir;
                 } else {
-                    item.imageId = R.mipmap.ic_launcher;
+//                    item.imageId = R.mipmap.ic_launcher;
+                    item.imageId = R.drawable.dir;
                 }
                 item.isStore = false;
             } else {
