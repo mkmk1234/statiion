@@ -18,6 +18,7 @@ import com.kun.station.fragment.FileStoreFragment;
 import com.kun.station.fragment.GanWeiFragment;
 import com.kun.station.fragment.HomeFragemnt;
 import com.kun.station.fragment.LookPictureFragment;
+import com.kun.station.fragment.ToolsFragment;
 
 import butterknife.Bind;
 
@@ -63,7 +64,7 @@ public class MainActivity extends BaseActivity {
                         ft.commitAllowingStateLoss();
                         break;
                     case 3:
-                        showFragment(LookPictureFragment.class);
+                        showFragment(ToolsFragment.class);
                         break;
                 }
             }
