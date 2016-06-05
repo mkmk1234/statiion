@@ -15,12 +15,14 @@ import com.kun.station.base.BaseActivity;
 import com.kun.station.fragment.FileCombineFragment;
 import com.kun.station.fragment.GanWeiFragment;
 import com.kun.station.fragment.HomeFragemnt;
+import com.kun.station.fragment.ToolsFragment;
 import com.kun.station.model.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+
 
 public class MainActivity extends BaseActivity {
 
@@ -76,6 +78,7 @@ public class MainActivity extends BaseActivity {
                         ft.commitAllowingStateLoss();
                         break;
                     case 3:
+                        showFragment(ToolsFragment.class);
                         break;
                 }
             }

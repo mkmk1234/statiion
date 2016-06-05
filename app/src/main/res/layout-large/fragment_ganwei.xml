@@ -41,7 +41,7 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/emoji_1f690"
+                    android:src="@drawable/post_personlist_ico"
                     android:adjustViewBounds="true" />
 
                 <TextView
@@ -63,7 +63,7 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/emoji_1f690"
+                    android:src="@drawable/post_environment_ico"
                     android:adjustViewBounds="true" />
 
                 <TextView
@@ -85,7 +85,7 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/emoji_1f690"
+                    android:src="@drawable/post_customization_ico"
                     android:adjustViewBounds="true" />
 
                 <TextView
@@ -107,7 +107,7 @@
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/emoji_1f690"
+                    android:src="@drawable/post_duty_ico"
                     android:adjustViewBounds="true" />
 
                 <TextView

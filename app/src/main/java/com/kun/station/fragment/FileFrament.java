@@ -34,7 +34,7 @@ public class FileFrament extends BaseFragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             CustomPop pop = new CustomPop(getActivity());
-            pop.setImageResource(R.drawable.ic_test);
+            pop.setImageResource(R.drawable.home_viewpager_one);
             pop.show();
         }
     };
