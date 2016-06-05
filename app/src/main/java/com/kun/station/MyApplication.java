@@ -36,7 +36,11 @@ public class MyApplication extends Application{
     private void addTestFile(){
         File dir = FileUtil.getExternalDir();
         try {
-            File file = new File(dir, "人员001.png");
+            File dirFile = new File(dir, "人员文档");
+            if (!dirFile.exists()){
+                dirFile.mkdir();
+            }
+            File file = new File(dirFile, "人员001.png");
             if (!file.exists()){
                 file.createNewFile();
                 new File(dir, "人员002.doc").createNewFile();
