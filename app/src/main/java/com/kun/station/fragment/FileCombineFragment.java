@@ -19,11 +19,11 @@ import java.util.List;
 /**
  * Created by admin on 2016/6/4.
  */
-public class FileCombineFragment extends BaseFragment{
+public class FileCombineFragment extends BaseFragment {
     private ViewPager mContentPager;
     private RadioGroup mRadioGroup;
     private List<Fragment> dataList = new ArrayList<>();
-    private FileFragment mFileFragment;
+    private CatalogFragment mCatalogFragment;
     private FileSearchFragment mFileSearchFragment;
     private FileStoreFragment mFileStoreFragment;
 
@@ -31,8 +31,8 @@ public class FileCombineFragment extends BaseFragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataList.clear();
-        mFileFragment = new FileFragment();
-        dataList.add(mFileFragment);
+        mCatalogFragment = new CatalogFragment();
+        dataList.add(mCatalogFragment);
         dataList.add(new FileSearchFragment());
         dataList.add(new FileStoreFragment());
     }
@@ -50,11 +50,11 @@ public class FileCombineFragment extends BaseFragment{
         return view;
     }
 
-    private void addItemFragment(int position){
+    private void addItemFragment(int position) {
         Fragment itemFragment = null;
-        switch (position){
+        switch (position) {
             case 0:
-                itemFragment = new FileFragment();
+                itemFragment = new CatalogFragment();
                 break;
             case 1:
                 itemFragment = new FileSearchFragment();
@@ -69,7 +69,7 @@ public class FileCombineFragment extends BaseFragment{
     private RadioGroup.OnCheckedChangeListener mCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
-            switch (checkedId){
+            switch (checkedId) {
                 case R.id.rb_file:
                     addItemFragment(0);
                     mContentPager.setCurrentItem(0);
@@ -102,7 +102,6 @@ public class FileCombineFragment extends BaseFragment{
                     mRadioGroup.check(R.id.rb_search);
                     break;
                 case 2:
-                    ((FileStoreFragment)dataList.get(2)).refreshData();
                     mRadioGroup.check(R.id.rb_store);
                     break;
             }

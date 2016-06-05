@@ -70,6 +70,10 @@ public class NoticeFragment extends BaseFragment {
             if (convertView == null) {
                 convertView = LayoutInflater.from(getActivity()).inflate(R.layout.item_new, parent, false);
             }
+            TextView title = (TextView) convertView.findViewById(R.id.title);
+            TextView content = (TextView) convertView.findViewById(R.id.content);
+            title.setText("公告题目");
+            content.setText("这是公告内容。公告内容。");
             return convertView;
         }
     }

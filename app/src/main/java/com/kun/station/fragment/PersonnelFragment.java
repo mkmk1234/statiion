@@ -40,7 +40,7 @@ public class PersonnelFragment extends BaseFragment {
 
         @Override
         public int getCount() {
-            return 8;
+            return 16;
         }
 
         @Override

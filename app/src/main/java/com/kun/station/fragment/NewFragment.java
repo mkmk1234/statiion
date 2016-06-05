@@ -38,6 +38,7 @@ public class NewFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ((TextView) view.findViewById(R.id.title)).setTextColor(Color.parseColor("#9b9b9b"));
+                view.findViewById(R.id.txt_read).setVisibility(View.VISIBLE);
             }
         });
         return view;

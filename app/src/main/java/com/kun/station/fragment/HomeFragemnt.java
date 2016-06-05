@@ -2,6 +2,8 @@ package com.kun.station.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -51,6 +53,18 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     View lineSu;
     @Bind(R.id.layout_botoom)
     LinearLayout layoutBotoom;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+//            DialogUtils.showOneButtonCenterAlert(getActivity(), "有最近文件更新，请及时查看。", "确定", new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    HomeFragemnt.this.onClick(forth);
+//                }
+//            });
+        }
+    };
 
     @Nullable
     @Override
@@ -58,6 +72,18 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
         onClick(fst);
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                handler.sendEmptyMessage(1);
+            }
+        }.start();
         return view;
     }
 
@@ -125,5 +151,9 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
         ft.replace(R.id.home_container, Fragment.instantiate(getActivity(), clss.getName(), b));
 
         ft.commitAllowingStateLoss();
+    }
+
+    private void showDialog() {
+
     }
 }
