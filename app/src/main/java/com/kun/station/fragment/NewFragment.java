@@ -15,6 +15,9 @@ import android.widget.Toast;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -38,12 +41,21 @@ public class NewFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ((TextView) view.findViewById(R.id.title)).setTextColor(Color.parseColor("#9b9b9b"));
-                view.findViewById(R.id.txt_read).setVisibility(View.VISIBLE);
+                ((TextView) view.findViewById(R.id.txt_read)).setTextColor(Color.parseColor("#9b9b9b"));
+                ((TextView) view.findViewById(R.id.txt_read)).setText("已阅");
+                ((TextView) view.findViewById(R.id.txt_read_time)).setText(getDate());
+                ((TextView) view.findViewById(R.id.txt_read_time)).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.img_right).setVisibility(View.GONE);
             }
         });
         return view;
     }
 
+    private String getDate() {
+        Date d = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日");
+        return df.format(d);
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

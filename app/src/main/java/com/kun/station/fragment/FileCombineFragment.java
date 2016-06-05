@@ -12,6 +12,7 @@ import android.widget.RadioGroup;
 import com.kun.station.R;
 import com.kun.station.adapter.PageFragmentAdapter;
 import com.kun.station.base.BaseFragment;
+import com.kun.station.util.FileUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,15 +55,18 @@ public class FileCombineFragment extends BaseFragment {
         Fragment itemFragment = null;
         switch (position) {
             case 0:
-                itemFragment = new CatalogFragment();
+                Bundle b = new Bundle();
+                b.putString(CatalogFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/规章资料");
+                itemFragment = Fragment.instantiate(getActivity(), CatalogFragment.class.getName(), b);
                 break;
             case 1:
-                itemFragment = new FileSearchFragment();
+                itemFragment = Fragment.instantiate(getActivity(), FileSearchFragment.class.getName(), null);
                 break;
             case 2:
-                itemFragment = new FileStoreFragment();
+                itemFragment = Fragment.instantiate(getActivity(), FileStoreFragment.class.getName(), null);
                 break;
         }
+
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ll_container, itemFragment).commit();
     }
 

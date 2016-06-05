@@ -2,7 +2,6 @@ package com.kun.station.widget;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,18 +19,11 @@ import com.kun.station.R;
 /**
  * Created by kun on 16/6/5.
  */
-public class DialogPop extends PopupWindow implements View.OnClickListener {
+public class DialogPop extends PopupWindow {
     Activity mActivity;
     TextView confirm;
+    TextView message;
     View rootView;
-
-    private Type mShowType;
-    private Bitmap mBitmap;
-    private int mResource = -1;
-
-    public enum Type {
-        Type_Txt, Type_Img
-    }
 
     public DialogPop(Activity activity) {
         super(activity);
@@ -43,9 +35,8 @@ public class DialogPop extends PopupWindow implements View.OnClickListener {
     private void initView(Context context) {
         rootView = LayoutInflater.from(context).inflate(R.layout.pop_dialog, null);
         setContentView(rootView);
-//        ButterKnife.bind(rootView);
         confirm = (TextView) rootView.findViewById(R.id.confirm);
-        confirm.setOnClickListener(this);
+        message = (TextView) rootView.findViewById(R.id.message);
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         setFocusable(true);
@@ -53,10 +44,6 @@ public class DialogPop extends PopupWindow implements View.OnClickListener {
         setTouchable(true);
     }
 
-    @Override
-    public void onClick(View v) {
-        this.dismiss();
-    }
 
     @Override
     public void dismiss() {
@@ -82,7 +69,9 @@ public class DialogPop extends PopupWindow implements View.OnClickListener {
         rootView.startAnimation(animation);
     }
 
-    public void show() {
+    public void show(String messageStr, View.OnClickListener onClickListener) {
+        message.setText(messageStr);
+        confirm.setOnClickListener(onClickListener);
         Animation trans = AnimationUtils.loadAnimation(mActivity, R.anim.anim_enter);
         trans.setDuration(300);
         trans.setInterpolator(new AccelerateDecelerateInterpolator());

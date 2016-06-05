@@ -3,6 +3,7 @@ package com.kun.station.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import butterknife.OnClick;
  * Created by kun on 16/5/25.
  */
 public class CatalogFragment extends BaseFragment implements AdapterView.OnItemClickListener {
+    public static final String ExtraPATH = "extra_path";
     @Bind(R.id.list)
     ListView list;
     @Bind(R.id.tv_dir_path)
@@ -41,6 +43,7 @@ public class CatalogFragment extends BaseFragment implements AdapterView.OnItemC
     private DbManager mDbManager;
     private FileItem mSelectFileItem;
     private String currentPath;
+    private String firstPath;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,11 +58,15 @@ public class CatalogFragment extends BaseFragment implements AdapterView.OnItemC
         ButterKnife.bind(this, view);
         mAdapter = new FileListAdapter(getActivity(), dataList);
         list.setAdapter(mAdapter);
-//        loadData("/");
-        loadData(FileUtil.getExternalDir().getPath());
+        firstPath = getStringParam(ExtraPATH);
+        if (TextUtils.isEmpty(firstPath)) {
+            firstPath = FileUtil.getExternalDir().getPath();
+        }
+        loadData(firstPath);
         list.setOnItemClickListener(this);
         return view;
     }
+
 
     @OnClick(R.id.btn_store)
     void handleClick(View v) {
@@ -79,11 +86,11 @@ public class CatalogFragment extends BaseFragment implements AdapterView.OnItemC
 
     private void loadData(String path) {
         currentPath = path;
-        pathTv.setText(String.format(getResources().getString(R.string.dir_path), path));
+        pathTv.setText(String.format(getResources().getString(R.string.dir_path), path.replace(FileUtil.getExternalDir().getPath(), "/乔司站")));
         dataList.removeAll(dataList);
         File file = new File(path);
 //        if (!"/".equals(path)) {
-        if (!FileUtil.getExternalDir().getPath().equals(path)) {
+        if (!firstPath.equals(path)) {
             addBack(file);
         }
         File[] fileList = file.listFiles();

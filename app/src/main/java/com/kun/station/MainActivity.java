@@ -1,5 +1,8 @@
 package com.kun.station;
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -12,11 +15,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.kun.station.base.BaseActivity;
+import com.kun.station.fragment.CatalogFragment;
 import com.kun.station.fragment.FileCombineFragment;
 import com.kun.station.fragment.GanWeiFragment;
 import com.kun.station.fragment.HomeFragemnt;
 import com.kun.station.fragment.ToolsFragment;
 import com.kun.station.model.Model;
+import com.kun.station.util.FileUtil;
+import com.kun.station.widget.DialogPop;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +40,24 @@ public class MainActivity extends BaseActivity {
 
     private ListAdapter mAdapter;
     private FileCombineFragment mFileCombineFragment;
+    private HomeFragemnt homeFragemnt;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            final DialogPop dialogPop = new DialogPop(MainActivity.this);
+            dialogPop.show("您有新文件更新，请及时查看。", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (homeFragemnt != null && homeFragemnt.isResumed()) {
+                        homeFragemnt.hasNew();
+                    }
+                    dialogPop.dismiss();
+                }
+            });
 
+        }
+    };
     @Override
     protected void onSetContentView() {
         setContentView(R.layout.activity_main);
@@ -44,8 +67,9 @@ public class MainActivity extends BaseActivity {
         mAdapter = new ListAdapter();
         list = new ArrayList<>();
         list.add(new Model("系统首页", R.drawable.main_function_home_down, R.drawable.main_function_home));
+        list.add(new Model("企业简介", R.drawable.main_function_enterprise_down, R.drawable.main_function_enterprise));
+        list.add(new Model("规章资料", R.drawable.main_function_book_down, R.drawable.main_function_book));
         list.add(new Model("岗位建设", R.drawable.main_function_post_constrution_down, R.drawable.main_function_post_constrution));
-        list.add(new Model("应急制度", R.drawable.main_function_book_down, R.drawable.main_function_book));
         list.add(new Model("作业标准", R.drawable.main_function_standard_down, R.drawable.main_function_standard));
         list.add(new Model("运输生产", R.drawable.main_function_pda_down, R.drawable.main_function_pda));
         list.add(new Model("运输生产", R.drawable.main_function_pda_down, R.drawable.main_function_pda));
@@ -61,12 +85,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mAdapter.setSelectPosition(position);
+                Bundle b = new Bundle();
                 switch (position) {
                     case 0:
-                        showFragment(HomeFragemnt.class);
+                        showHomeFragment();
                         break;
                     case 1:
-                        showFragment(GanWeiFragment.class);
+                        b.putString(CatalogFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/企业简介");
+                        showFragment(CatalogFragment.class, b);
                         break;
                     case 2:
                         if (mFileCombineFragment == null) {
@@ -78,22 +104,54 @@ public class MainActivity extends BaseActivity {
                         ft.commitAllowingStateLoss();
                         break;
                     case 3:
-                        showFragment(ToolsFragment.class);
+                        showFragment(GanWeiFragment.class, null);
+                        break;
+                    case 4:
+                        b.putString(CatalogFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/作业标准");
+                        showFragment(CatalogFragment.class, b);
+                        break;
+                    case 5:
+                        showFragment(ToolsFragment.class, null);
                         break;
                 }
             }
         });
-        showFragment(HomeFragemnt.class);
+        showHomeFragment();
+        hasNew();
     }
 
-    private void showFragment(Class<?> clss) {
+    private void hasNew() {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                handler.sendEmptyMessage(1);
+            }
+        }.start();
+    }
+
+    private void showFragment(Class<?> clss, Bundle b) {
         FragmentTransaction ft = getSupportFragmentManager()
                 .beginTransaction();
-        ft.replace(R.id.detail_layout, Fragment.instantiate(this, clss.getName(), null));
+        ft.replace(R.id.detail_layout, Fragment.instantiate(this, clss.getName(), b));
 
         ft.commitAllowingStateLoss();
     }
 
+    private void showHomeFragment() {
+        if (homeFragemnt == null) {
+            homeFragemnt = new HomeFragemnt();
+        }
+        FragmentTransaction ft = getSupportFragmentManager()
+                .beginTransaction();
+        ft.replace(R.id.detail_layout, homeFragemnt, null);
+        ft.commitAllowingStateLoss();
+    }
     class ListAdapter extends BaseAdapter {
         private int selectPosition = 0;
 
