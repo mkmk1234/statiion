@@ -19,7 +19,7 @@
                 android:id="@+id/tv_dir_path"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_big"
+                android:textSize="@dimen/text_size_special"
                 android:layout_margin="10dp"
                 android:textColor="#333333"
                 android:text="当前目录://" />

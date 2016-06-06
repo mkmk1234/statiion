@@ -173,7 +173,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:textColor="#333333"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -184,7 +184,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="#333333"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:text="设备： 099" />
@@ -194,7 +194,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="#333333"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:text="车间： 到达场车间" />
@@ -205,7 +205,7 @@
             android:textSize="16sp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:textColor="#333333"
             android:text="岗位： 调度长" />
 
@@ -220,14 +220,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ico_set_wifi"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="20dp" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/img_close_3g"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="10dp" />
         </LinearLayout>
 
@@ -244,11 +244,30 @@
             android:drawablePadding="10dp"
             android:textColor="#333333"
             android:textSize="16sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="设置照片" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#9b9b9b" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ico_home_down"
+            android:gravity="center"
+            android:drawablePadding="10dp"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:text="资料下载" />
 
     </LinearLayout>
 
