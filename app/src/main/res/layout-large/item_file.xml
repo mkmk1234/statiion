@@ -20,6 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:textColor="#333333"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_siz_small"
         android:text="平面图.png" />
 </LinearLayout>

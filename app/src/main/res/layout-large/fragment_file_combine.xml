@@ -17,7 +17,7 @@
             android:paddingRight="10dp"
             android:gravity="center"
             android:text="目录浏览"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_big"
             android:button="@null"
             android:textColor="@color/tab_text_color"
             android:background="@drawable/selector_bg_tab"
@@ -30,7 +30,7 @@
             android:layout_height="match_parent"
             android:button="@null"
             android:text="搜索"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_big"
             android:textColor="@color/tab_text_color"
             android:background="@drawable/selector_bg_tab"
             android:drawableLeft="@drawable/book_ico_search"/>
@@ -42,7 +42,7 @@
             android:paddingRight="10dp"
             android:button="@null"
             android:text="收藏夹"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_big"
             android:textColor="@color/tab_text_color"
             android:background="@drawable/selector_bg_tab"
             android:drawableLeft="@drawable/book_ico_favorites"/>

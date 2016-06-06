@@ -46,7 +46,7 @@
                     android:id="@+id/text1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_siz_small"
+                    android:textSize="@dimen/text_size_special"
                     android:gravity="center"
                     android:textColor="#ffffff"
                     android:text="车间" />
@@ -72,7 +72,7 @@
                     android:id="@+id/text2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_siz_small"
+                    android:textSize="@dimen/text_size_special"
                     android:textColor="#ffffff"
                     android:text="首页" />
             </LinearLayout>
@@ -97,7 +97,7 @@
                     android:id="@+id/text3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_siz_small"
+                    android:textSize="@dimen/text_size_special"
                     android:textColor="#ffffff"
                     android:text="公告" />
             </LinearLayout>
@@ -122,7 +122,7 @@
                     android:id="@+id/text4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_siz_small"
+                    android:textSize="@dimen/text_size_special"
                     android:textColor="#ffffff"
                     android:text="最近更新" />
             </LinearLayout>
@@ -148,11 +148,11 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_above="@+id/layout_botoom"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="80dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/img_picturebg"
@@ -163,9 +163,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:textColor="#333333"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="16dp"
             android:text="工号： 123456789000" />
 
@@ -175,8 +175,8 @@
             android:textSize="16sp"
             android:layout_marginTop="10dp"
             android:textColor="#333333"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="姓名： 测试" />
 
         <TextView
@@ -185,8 +185,8 @@
             android:textSize="16sp"
             android:textColor="#333333"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="设备： 099" />
 
         <TextView
@@ -195,16 +195,16 @@
             android:textSize="16sp"
             android:textColor="#333333"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="车间： 到达场车间" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:textColor="#333333"
             android:text="岗位： 调度长" />
@@ -243,11 +243,10 @@
             android:gravity="center"
             android:drawablePadding="10dp"
             android:textColor="#333333"
-            android:layout_marginTop="10dp"
             android:textSize="16sp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
             android:text="设置照片" />
 
 
@@ -259,7 +258,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="15dp"
-        android:layout_marginTop="15dp"
         android:orientation="vertical">
 
         <View
@@ -270,11 +268,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_special"
             android:textColor="#333333"
             android:gravity="center"
-            android:layout_marginLeft="50dp"
-            android:drawablePadding="20dp"
+            android:layout_marginLeft="30dp"
+            android:drawablePadding="10dp"
             android:drawableLeft="@drawable/wuhu_logo"
             android:padding="10dp"
             android:text="乔司站  爱站 奉献 诚信 创新" />

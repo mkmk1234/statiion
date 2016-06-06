@@ -36,7 +36,7 @@
             android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_nomal"
+            android:textSize="@dimen/text_siz_small"
             android:singleLine="true"
             android:text="行车资料／行车资料／行车资料／行车资料"
             android:textColor="#9b9b9b" />

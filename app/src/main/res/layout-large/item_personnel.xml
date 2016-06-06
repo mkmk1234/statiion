@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
     android:background="@drawable/post_personlist_bg">
 
     <ImageView
@@ -11,7 +12,6 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:layout_marginLeft="20dp"
         android:layout_gravity="center_vertical"
         android:src="@drawable/post_personlist_photo" />
 
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="姓名：  测试"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_siz_small"
             android:layout_marginTop="10dp"
             android:textColor="@color/textBlack" />
 
@@ -35,14 +35,14 @@
             android:layout_height="wrap_content"
             android:text="职位：  测试"
             android:layout_marginTop="10dp"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_siz_small"
             android:textColor="@color/textBlack" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="工号：  123456789"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_siz_small"
             android:layout_marginTop="10dp"
             android:textColor="@color/textBlack" />
 
