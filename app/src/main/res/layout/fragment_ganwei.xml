@@ -48,7 +48,7 @@
 
         <LinearLayout
             android:id="@+id/left"
-            android:layout_width="230dp"
+            android:layout_width="225dp"
             android:layout_height="match_parent"
             android:padding="10dp"
             android:orientation="vertical"
