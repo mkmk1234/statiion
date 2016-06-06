@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c3c3c3"
+    android:background="@drawable/bg_all"
     android:orientation="vertical"
     android:padding="5dp">
 
@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/pda_post_bg"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:visibility="gone"/>
 
 
     <LinearLayout
@@ -27,6 +28,7 @@
             android:layout_below="@+id/top"
             android:layout_marginTop="40dp"
             android:padding="10dp"
+            android:background="@drawable/bg_left"
             android:orientation="vertical">
 
 
@@ -129,6 +131,7 @@
             android:layout_marginTop="50dp"
             android:layout_marginBottom="30dp"
             android:layout_marginRight="30dp"
+            android:background="@drawable/bg_right"
             android:layout_toRightOf="@+id/left"></FrameLayout>
 
     </LinearLayout>
