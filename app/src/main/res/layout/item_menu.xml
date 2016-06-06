@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/iv_item_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginTop="10dp"
             android:adjustViewBounds="true" />
 
@@ -23,7 +23,7 @@
             android:id="@+id/menu_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_siz_small"
+            android:textSize="20sp"
             android:layout_marginTop="10dp"
             android:textColor="#ffffff" />
     </LinearLayout>
