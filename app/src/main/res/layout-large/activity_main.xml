@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/main_title_bg"
-        android:padding="10dp">
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -18,7 +19,7 @@
             android:textColor="#ffffff"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="15dp"
             android:textSize="@dimen/text_siz_small" />
 
         <TextView
@@ -29,6 +30,7 @@
             android:textColor="#ffffff"
             android:drawableLeft="@drawable/wuhu_logo"
             android:drawablePadding="10dp"
+            android:gravity="center"
             android:layout_centerInParent="true"
             android:textSize="@dimen/text_size_big" />
 
@@ -46,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/txt_time"
-            android:paddingRight="20dp"
+            android:layout_marginRight="10dp"
             android:textSize="@dimen/text_siz_small"
             android:gravity="center"
             android:layout_centerVertical="true"
@@ -62,7 +64,7 @@
             android:textSize="@dimen/text_siz_small"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="15dp"
             android:textColor="#ffffff" />
     </RelativeLayout>
 
