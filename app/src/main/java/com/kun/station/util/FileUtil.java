@@ -1,7 +1,9 @@
 package com.kun.station.util;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Environment;
 import android.widget.Toast;
@@ -9,7 +11,12 @@ import android.widget.Toast;
 import com.kun.station.MyApplication;
 import com.kun.station.R;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by kun on 16/6/3.
@@ -93,5 +100,33 @@ public class FileUtil {
             ext.mkdirs();
         }
         return ext;
+    }
+
+    public static String loadRawString(Context context , int resId) {
+        StringBuffer stringBuffer = new StringBuffer();
+        InputStream is = null;
+        BufferedReader br = null;
+        try {
+            is = context.getResources().openRawResource(resId);
+            String temp = null;
+            br = new BufferedReader(new InputStreamReader(is, "utf-8"));
+            while ((temp = br.readLine()) != null) {
+                stringBuffer.append(temp);
+                stringBuffer.append("\n");
+            }
+        } catch (Resources.NotFoundException e) {
+        } catch (UnsupportedEncodingException e) {
+        } catch (IOException e) {
+        } finally {
+            try {
+                if (is != null)
+                    is.close();
+                if (br != null)
+                    br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return stringBuffer.toString();
     }
 }

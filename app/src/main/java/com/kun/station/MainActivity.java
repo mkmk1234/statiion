@@ -14,6 +14,8 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.util.Util;
+import com.google.gson.reflect.TypeToken;
 import com.kun.station.base.BaseActivity;
 import com.kun.station.fragment.CatalogFragment;
 import com.kun.station.fragment.FileCombineFragment;
@@ -21,6 +23,7 @@ import com.kun.station.fragment.GanWeiFragment;
 import com.kun.station.fragment.HomeFragemnt;
 import com.kun.station.fragment.ToolsFragment;
 import com.kun.station.model.Model;
+import com.kun.station.response.MenuItemResponse;
 import com.kun.station.util.FileUtil;
 import com.kun.station.widget.DialogPop;
 
@@ -64,6 +67,10 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initData() {
+
+        ArrayList<MenuItemResponse> menuList = MyApplication.mGson.fromJson(FileUtil.loadRawString(this, R.raw.localdata), new TypeToken<ArrayList<MenuItemResponse>>(){}.getType());
+
+
         mAdapter = new ListAdapter();
         list = new ArrayList<>();
         list.add(new Model("系统首页", R.drawable.main_function_home_down, R.drawable.main_function_home));
