@@ -51,7 +51,8 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     View lineSu;
     @Bind(R.id.layout_botoom)
     LinearLayout layoutBotoom;
-
+    @Bind(R.id.tv_download)
+    LinearLayout downloadTv;
 
     @Nullable
     @Override
@@ -72,9 +73,11 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
         onClick(forth);
     }
 
-    @OnClick({R.id.fst, R.id.sec, R.id.thd, R.id.forth})
+    @OnClick({R.id.fst, R.id.sec, R.id.thd, R.id.forth, R.id.tv_download})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.tv_download:
+                break;
             case R.id.fst:
                 Bundle b1 = new Bundle();
                 showFragment(HomePageFragment.class, b1);
