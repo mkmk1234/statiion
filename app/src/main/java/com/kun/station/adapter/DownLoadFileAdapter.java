@@ -39,6 +39,10 @@ public class DownLoadFileAdapter extends BaseAdapter{
         currentPath = path;
     }
 
+    public String getCurrentPath(){
+        return currentPath;
+    }
+
     @Override
     public int getCount() {
         return mDataList.size();

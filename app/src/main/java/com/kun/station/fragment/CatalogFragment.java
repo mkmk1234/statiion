@@ -100,7 +100,6 @@ public class CatalogFragment extends BaseFragment implements AdapterView.OnItemC
         mAdapter.notifyDataSetChanged();
     }
 
-
     private void addBack(File file) {
         FileItem item = new FileItem();
         item.imageId = R.drawable.back;
