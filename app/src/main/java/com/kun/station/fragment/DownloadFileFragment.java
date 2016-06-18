@@ -3,6 +3,7 @@ package com.kun.station.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +31,13 @@ public class DownloadFileFragment extends BaseFragment{
     private Context mContext;
     private ArrayList<FileShowModel> fileShowList = new ArrayList<>();
     private DownLoadFileAdapter mAdapter;
+    private String parentPath;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
-        fileList = MyApplication.mGson.fromJson(FileUtil.loadRawString(mContext, R.raw.localdata), new TypeToken<ArrayList<FileModel>>() {}.getType());
+        fileList = MyApplication.mGson.fromJson(FileUtil.loadRawString(mContext, R.raw.localdata_list), new TypeToken<ArrayList<FileModel>>() {}.getType());
     }
 
     @Nullable
@@ -50,11 +52,19 @@ public class DownloadFileFragment extends BaseFragment{
         return view;
     }
 
+    public void backData(){
+        if (mAdapter.getCurrentPath().equals(FileUtil.getExternalDir().getAbsolutePath())){
+            getActivity().finish();
+        }
+        if (!TextUtils.isEmpty(parentPath)){
+            loadData(parentPath);
+        }
+    }
+
     private void loadData(String path) {
-//        pathTv.setText(String.format(getResources().getString(R.string.dir_path), path.replace(FileUtil.getExternalDir().getPath(), "/乔司站")));
         fileShowList.removeAll(fileShowList);
         File file = new File(path);
-//        if (!"/".equals(path)) {
+        parentPath = file.getParent();
         File[] fileList = file.listFiles();
         if (fileList != null) {
             addDir(fileList);
@@ -105,4 +115,5 @@ public class DownloadFileFragment extends BaseFragment{
             }
         }
     };
+
 }
