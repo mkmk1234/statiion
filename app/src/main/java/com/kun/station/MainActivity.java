@@ -22,11 +22,13 @@ import com.kun.station.fragment.FileCombineFragment;
 import com.kun.station.fragment.GanWeiFragment;
 import com.kun.station.fragment.HomeFragemnt;
 import com.kun.station.fragment.ToolsFragment;
+import com.kun.station.model.FileModel;
 import com.kun.station.model.Model;
 import com.kun.station.response.MenuItemResponse;
 import com.kun.station.util.FileUtil;
 import com.kun.station.widget.DialogPop;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class MainActivity extends BaseActivity {
     ListView leftMenuList;
     @Bind(R.id.detail_layout)
     FrameLayout detailLayout;
-    List<Model> list;
+    List<MenuItemResponse> list;
 
     private ListAdapter mAdapter;
     private FileCombineFragment mFileCombineFragment;
@@ -67,20 +69,34 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initData() {
-
-        ArrayList<MenuItemResponse> menuList = MyApplication.mGson.fromJson(FileUtil.loadRawString(this, R.raw.localdata), new TypeToken<ArrayList<MenuItemResponse>>(){}.getType());
-
-
         mAdapter = new ListAdapter();
-        list = new ArrayList<>();
-        list.add(new Model("系统首页", R.drawable.main_function_home_down, R.drawable.main_function_home));
-        list.add(new Model("企业简介", R.drawable.main_function_enterprise_down, R.drawable.main_function_enterprise));
-        list.add(new Model("规章资料", R.drawable.main_function_book_down, R.drawable.main_function_book));
-        list.add(new Model("岗位建设", R.drawable.main_function_post_constrution_down, R.drawable.main_function_post_constrution));
-        list.add(new Model("作业标准", R.drawable.main_function_standard_down, R.drawable.main_function_standard));
-        list.add(new Model("运输生产", R.drawable.main_function_pda_down, R.drawable.main_function_pda));
-        list.add(new Model("运输生产", R.drawable.main_function_pda_down, R.drawable.main_function_pda));
+        list = MyApplication.mGson.fromJson(FileUtil.loadRawString(this, R.raw.localdata), new TypeToken<ArrayList<MenuItemResponse>>(){}.getType());
+        createDir();
+//        list.add(new Model("系统首页", R.drawable.main_function_home_down, R.drawable.main_function_home));
+//        list.add(new Model("企业简介", R.drawable.main_function_enterprise_down, R.drawable.main_function_enterprise));
+//        list.add(new Model("规章资料", R.drawable.main_function_book_down, R.drawable.main_function_book));
+//        list.add(new Model("岗位建设", R.drawable.main_function_post_constrution_down, R.drawable.main_function_post_constrution));
+//        list.add(new Model("作业标准", R.drawable.main_function_standard_down, R.drawable.main_function_standard));
+//        list.add(new Model("运输生产", R.drawable.main_function_pda_down, R.drawable.main_function_pda));
+//        list.add(new Model("运输生产", R.drawable.main_function_pda_down, R.drawable.main_function_pda));
+    }
 
+    private void createDir(){
+        if (list == null || list.size() == 0){
+            return;
+        }
+        File stationDir = FileUtil.getExternalDir();
+        File dirFile;
+        for (MenuItemResponse itemResponse : list){
+            if (itemResponse.type == 1 &&itemResponse.fileList.size() > 0){
+                for (FileModel itemFile : itemResponse.fileList){
+                    dirFile = new File(stationDir, itemFile.dirName);
+                    if (!dirFile.exists()){
+                        dirFile.mkdirs();
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -93,34 +109,57 @@ public class MainActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mAdapter.setSelectPosition(position);
                 Bundle b = new Bundle();
-                switch (position) {
+                MenuItemResponse itemResponse = list.get(position);
+                switch (itemResponse.type){
                     case 0:
                         showHomeFragment();
                         break;
                     case 1:
-                        b.putString(CatalogFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/企业简介");
-                        showFragment(CatalogFragment.class, b);
-                        break;
-                    case 2:
-                        if (mFileCombineFragment == null) {
+//                        if (mFileCombineFragment == null) {
                             mFileCombineFragment = new FileCombineFragment();
-                        }
+//                        }
+                        File rootFile = new File(FileUtil.getExternalDir(), itemResponse.title);
+                        Bundle mBundle = new Bundle();
+                        mBundle.putString(CatalogFragment.ExtraPATH, rootFile.getAbsolutePath());
+                        mFileCombineFragment.setArguments(mBundle);
                         FragmentTransaction ft = getSupportFragmentManager()
                                 .beginTransaction();
                         ft.replace(R.id.detail_layout, mFileCombineFragment, null);
                         ft.commitAllowingStateLoss();
                         break;
-                    case 3:
-                        showFragment(GanWeiFragment.class, null);
-                        break;
-                    case 4:
-                        b.putString(CatalogFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/作业标准");
+                    case 2:
+                        b.putString(CatalogFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/企业简介");
                         showFragment(CatalogFragment.class, b);
                         break;
-                    case 5:
-                        showFragment(ToolsFragment.class, null);
-                        break;
                 }
+//                switch (position) {
+//                    case 0:
+//                        showHomeFragment();
+//                        break;
+//                    case 1:
+//                        b.putString(CatalogFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/企业简介");
+//                        showFragment(CatalogFragment.class, b);
+//                        break;
+//                    case 2:
+//                        if (mFileCombineFragment == null) {
+//                            mFileCombineFragment = new FileCombineFragment();
+//                        }
+//                        FragmentTransaction ft = getSupportFragmentManager()
+//                                .beginTransaction();
+//                        ft.replace(R.id.detail_layout, mFileCombineFragment, null);
+//                        ft.commitAllowingStateLoss();
+//                        break;
+//                    case 3:
+//                        showFragment(GanWeiFragment.class, null);
+//                        break;
+//                    case 4:
+//                        b.putString(CatalogFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/作业标准");
+//                        showFragment(CatalogFragment.class, b);
+//                        break;
+//                    case 5:
+//                        showFragment(ToolsFragment.class, null);
+//                        break;
+//                }
             }
         });
         showHomeFragment();
@@ -159,16 +198,17 @@ public class MainActivity extends BaseActivity {
         ft.replace(R.id.detail_layout, homeFragemnt, null);
         ft.commitAllowingStateLoss();
     }
+
     class ListAdapter extends BaseAdapter {
         private int selectPosition = 0;
 
         @Override
         public int getCount() {
-            return list.size();
+            return list == null ? 0 : list.size();
         }
 
         @Override
-        public Model getItem(int position) {
+        public MenuItemResponse getItem(int position) {
             return list.get(position);
         }
 
@@ -188,13 +228,14 @@ public class MainActivity extends BaseActivity {
                 convertView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_menu, parent, false);
             }
             TextView tv = (TextView) convertView.findViewById(R.id.menu_txt);
-            tv.setText(getItem(position).name);
+            tv.setText(getItem(position).title);
+            convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(R.drawable.main_function_home_down);
             if (position == selectPosition) {
                 convertView.findViewById(R.id.iv_arrow).setVisibility(View.VISIBLE);
-                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(getItem(position).selectedImg);
+//                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(getItem(position).selectedImg);
             } else {
                 convertView.findViewById(R.id.iv_arrow).setVisibility(View.GONE);
-                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(getItem(position).unSelectedImg);
+//                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(getItem(position).unSelectedImg);
             }
             return convertView;
         }

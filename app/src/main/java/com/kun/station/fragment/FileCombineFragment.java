@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +28,15 @@ public class FileCombineFragment extends BaseFragment {
     private CatalogFragment mCatalogFragment;
     private FileSearchFragment mFileSearchFragment;
     private FileStoreFragment mFileStoreFragment;
+    private String rootPath;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dataList.clear();
+        if (getArguments() != null){
+            rootPath = getArguments().getString(CatalogFragment.ExtraPATH);
+        }
         mCatalogFragment = new CatalogFragment();
         dataList.add(mCatalogFragment);
         dataList.add(new FileSearchFragment());
@@ -56,7 +61,7 @@ public class FileCombineFragment extends BaseFragment {
         switch (position) {
             case 0:
                 Bundle b = new Bundle();
-                b.putString(CatalogFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/规章资料");
+                b.putString(CatalogFragment.ExtraPATH, TextUtils.isEmpty(rootPath) ? FileUtil.getExternalDir().getPath() : rootPath);
                 itemFragment = Fragment.instantiate(getActivity(), CatalogFragment.class.getName(), b);
                 break;
             case 1:
