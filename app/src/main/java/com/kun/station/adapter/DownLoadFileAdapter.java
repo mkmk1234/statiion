@@ -1,6 +1,7 @@
 package com.kun.station.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +25,18 @@ public class DownLoadFileAdapter extends BaseAdapter{
     private ArrayList<FileModel> mOnLineList;
     private ArrayList<FileShowModel> mDataList;
     private LayoutInflater mInflater;
+    private String currentPath;
+    private String rootPath;
 
     public DownLoadFileAdapter(Context context, ArrayList<FileModel> dataList, ArrayList<FileShowModel> fileDataList){
         this.mOnLineList = dataList;
         mDataList = fileDataList;
         mInflater = LayoutInflater.from(context);
+        rootPath = FileUtil.getExternalDir().getAbsolutePath() + "/";
+    }
+
+    public void setCurrentPath(String path){
+        currentPath = path;
     }
 
     @Override
@@ -44,6 +52,21 @@ public class DownLoadFileAdapter extends BaseAdapter{
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        if(!TextUtils.isEmpty(currentPath) && mDataList != null){
+            for(FileModel itemModel : mOnLineList){
+                if (currentPath.equals(rootPath + itemModel.dirName)){
+                    FileShowModel matchFile = new FileShowModel();
+                    matchFile.dir = itemModel.fileName;
+                    matchFile.path = rootPath + "/" + itemModel.dirName + "/" + itemModel.fileName;
+                    mDataList.add(matchFile);
+                }
+            }
+        }
+        super.notifyDataSetChanged();
     }
 
     @Override

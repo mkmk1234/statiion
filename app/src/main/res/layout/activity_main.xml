@@ -8,11 +8,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/main_title_bg"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp">
+        android:background="@drawable/main_title_bg">
 
         <TextView
+            android:id="@+id/txt_wifi_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="wifi状态：已关闭"
@@ -23,26 +22,15 @@
             android:textSize="@dimen/text_siz_small" />
 
         <TextView
-            android:id="@+id/txt_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="乔司站"
+            android:text="乔司站系统"
             android:textColor="#ffffff"
             android:drawableLeft="@drawable/wuhu_logo"
             android:drawablePadding="10dp"
             android:gravity="center"
             android:layout_centerInParent="true"
             android:textSize="@dimen/text_size_big" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:layout_toRightOf="@+id/txt_title"
-            android:layout_marginLeft="20dp"
-            android:layout_centerVertical="true"
-            android:text="爱站 奉献 诚信 创新"
-            android:textSize="@dimen/text_siz_small" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -74,7 +62,7 @@
         android:orientation="horizontal">
     <ListView
         android:id="@+id/left_menu_list"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:divider="@null"
         android:dividerHeight="0dp"
         android:listSelector="#00000000"

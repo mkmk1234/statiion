@@ -150,6 +150,9 @@ public class CatalogFragment extends BaseFragment implements AdapterView.OnItemC
             storeBtn.setVisibility(View.GONE);
             mSelectFileItem = null;
         } else {
+            if (itemFile.dir.contains("doc")) {
+                startActivity(FileUtil.getWordFileIntent(itemFile.path));
+            }
             storeBtn.setVisibility(View.VISIBLE);
             storeBtn.setText(itemFile.isStore ? "取消收藏" : "收藏");
             mSelectFileItem = itemFile;

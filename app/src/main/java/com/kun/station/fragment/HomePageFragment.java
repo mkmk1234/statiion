@@ -27,6 +27,7 @@ public class HomePageFragment extends BaseFragment {
     MyLoopViewPageAdapter adapter;
     List<Integer> data;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

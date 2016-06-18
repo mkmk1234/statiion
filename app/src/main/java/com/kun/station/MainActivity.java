@@ -14,16 +14,12 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bumptech.glide.util.Util;
 import com.google.gson.reflect.TypeToken;
 import com.kun.station.base.BaseActivity;
 import com.kun.station.fragment.CatalogFragment;
 import com.kun.station.fragment.FileCombineFragment;
-import com.kun.station.fragment.GanWeiFragment;
 import com.kun.station.fragment.HomeFragemnt;
-import com.kun.station.fragment.ToolsFragment;
 import com.kun.station.model.FileModel;
-import com.kun.station.model.Model;
 import com.kun.station.response.MenuItemResponse;
 import com.kun.station.util.FileUtil;
 import com.kun.station.widget.DialogPop;
@@ -42,6 +38,10 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.detail_layout)
     FrameLayout detailLayout;
     List<MenuItemResponse> list;
+    @Bind(R.id.txt_time)
+    TextView txtTime;
+    @Bind(R.id.txt_wifi_state)
+    TextView txtWifiState;
 
     private ListAdapter mAdapter;
     private FileCombineFragment mFileCombineFragment;
@@ -50,19 +50,20 @@ public class MainActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            final DialogPop dialogPop = new DialogPop(MainActivity.this);
-            dialogPop.show("您有新文件更新，请及时查看。", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (homeFragemnt != null && homeFragemnt.isResumed()) {
-                        homeFragemnt.hasNew();
-                    }
-                    dialogPop.dismiss();
-                }
-            });
+            final DialogPop dialogPop = new DialogPop(MainActivity.this, false);
+//            dialogPop.show("您有新文件更新，请及时查看。", new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (homeFragemnt != null && homeFragemnt.isResumed()) {
+//                        homeFragemnt.hasNew();
+//                    }
+//                    dialogPop.dismiss();
+//                }
+//            });
 
         }
     };
+
     @Override
     protected void onSetContentView() {
         setContentView(R.layout.activity_main);
@@ -70,7 +71,8 @@ public class MainActivity extends BaseActivity {
 
     private void initData() {
         mAdapter = new ListAdapter();
-        list = MyApplication.mGson.fromJson(FileUtil.loadRawString(this, R.raw.localdata), new TypeToken<ArrayList<MenuItemResponse>>(){}.getType());
+        list = MyApplication.mGson.fromJson(FileUtil.loadRawString(this, R.raw.localdata), new TypeToken<ArrayList<MenuItemResponse>>() {
+        }.getType());
         createDir();
 //        list.add(new Model("系统首页", R.drawable.main_function_home_down, R.drawable.main_function_home));
 //        list.add(new Model("企业简介", R.drawable.main_function_enterprise_down, R.drawable.main_function_enterprise));
@@ -81,17 +83,17 @@ public class MainActivity extends BaseActivity {
 //        list.add(new Model("运输生产", R.drawable.main_function_pda_down, R.drawable.main_function_pda));
     }
 
-    private void createDir(){
-        if (list == null || list.size() == 0){
+    private void createDir() {
+        if (list == null || list.size() == 0) {
             return;
         }
         File stationDir = FileUtil.getExternalDir();
         File dirFile;
-        for (MenuItemResponse itemResponse : list){
-            if (itemResponse.type == 1 &&itemResponse.fileList.size() > 0){
-                for (FileModel itemFile : itemResponse.fileList){
+        for (MenuItemResponse itemResponse : list) {
+            if (itemResponse.type == 1 && itemResponse.fileList.size() > 0) {
+                for (FileModel itemFile : itemResponse.fileList) {
                     dirFile = new File(stationDir, itemFile.dirName);
-                    if (!dirFile.exists()){
+                    if (!dirFile.exists()) {
                         dirFile.mkdirs();
                     }
                 }
@@ -110,13 +112,13 @@ public class MainActivity extends BaseActivity {
                 mAdapter.setSelectPosition(position);
                 Bundle b = new Bundle();
                 MenuItemResponse itemResponse = list.get(position);
-                switch (itemResponse.type){
+                switch (itemResponse.type) {
                     case 0:
                         showHomeFragment();
                         break;
                     case 1:
 //                        if (mFileCombineFragment == null) {
-                            mFileCombineFragment = new FileCombineFragment();
+                        mFileCombineFragment = new FileCombineFragment();
 //                        }
                         File rootFile = new File(FileUtil.getExternalDir(), itemResponse.title);
                         Bundle mBundle = new Bundle();
@@ -197,6 +199,14 @@ public class MainActivity extends BaseActivity {
                 .beginTransaction();
         ft.replace(R.id.detail_layout, homeFragemnt, null);
         ft.commitAllowingStateLoss();
+    }
+
+    public void changeWifiState(boolean isOpen) {
+        if (isOpen) {
+            txtWifiState.setText("wifi状态：已开启");
+        } else {
+            txtWifiState.setText("wifi状态：已关闭");
+        }
     }
 
     class ListAdapter extends BaseAdapter {

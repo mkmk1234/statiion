@@ -1,6 +1,8 @@
 package com.kun.station.fragment;
 
-import android.graphics.Color;
+import android.app.Service;
+import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,11 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.kun.station.DownLoadFileActivity;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
+import com.kun.station.util.PreferencesUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,34 +29,19 @@ import butterknife.OnClick;
  * Created by kun on 16/5/25.
  */
 public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
-    @Bind(R.id.fst)
-    LinearLayout fst;
-    @Bind(R.id.sec)
-    LinearLayout sec;
-    @Bind(R.id.thd)
-    LinearLayout thd;
-    @Bind(R.id.forth)
-    LinearLayout forth;
     @Bind(R.id.home_container)
     FrameLayout homeContainer;
-    @Bind(R.id.righ_layout)
-    LinearLayout righLayout;
-    @Bind(R.id.text1)
-    TextView text1;
-    @Bind(R.id.text2)
-    TextView text2;
-    @Bind(R.id.text3)
-    TextView text3;
-    @Bind(R.id.text4)
-    TextView text4;
     @Bind(R.id.top_menu)
-    LinearLayout topMenu;
+    RadioGroup topMenu;
     @Bind(R.id.left_layout)
     LinearLayout leftLayout;
     @Bind(R.id.line_su)
     View lineSu;
-    @Bind(R.id.layout_botoom)
-    LinearLayout layoutBotoom;
+    @Bind(R.id.txt_deviceID)
+    TextView txtDeviceID;
+    String deviceID;
+    @Bind(R.id.btn_wifi)
+    ImageView btnWifi;
     @Bind(R.id.tv_download)
     LinearLayout downloadTv;
 
@@ -59,7 +50,26 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
-        onClick(fst);
+        getDeviceID();
+        txtDeviceID.setText("设备： " + deviceID);
+        topMenu.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rb_fst:
+                        Bundle b1 = new Bundle();
+                        showFragment(HomePageFragment.class, b1);
+                        break;
+                    case R.id.rb_sec:
+                        showFragment(NoticeFragment.class, null);
+                        break;
+                    case R.id.rb_thd:
+                        showFragment(NewFragment.class, null);
+
+                        break;
+                }
+            }
+        });
         return view;
     }
 
@@ -70,61 +80,18 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     }
 
     public void hasNew() {
-        onClick(forth);
+        topMenu.check(R.id.rb_thd);
     }
 
-    @OnClick({R.id.fst, R.id.sec, R.id.thd, R.id.forth, R.id.tv_download})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_download:
-                break;
-            case R.id.fst:
-                Bundle b1 = new Bundle();
-                showFragment(HomePageFragment.class, b1);
-                fst.setBackgroundResource(R.drawable.img_notice_current);
-                sec.setBackgroundColor(getResources().getColor(R.color.titleColor));
-                thd.setBackgroundColor(getResources().getColor(R.color.titleColor));
-                forth.setBackgroundColor(getResources().getColor(R.color.titleColor));
-                text1.setTextColor(Color.parseColor("#333333"));
-                text2.setTextColor(Color.parseColor("#ffffff"));
-                text3.setTextColor(Color.parseColor("#ffffff"));
-                text4.setTextColor(Color.parseColor("#ffffff"));
-                break;
-            case R.id.sec:
-                Bundle b2 = new Bundle();
-                showFragment(HomePageFragment.class, b2);
-                sec.setBackgroundResource(R.drawable.img_notice_current);
-                fst.setBackgroundColor(getResources().getColor(R.color.titleColor));
-                thd.setBackgroundColor(getResources().getColor(R.color.titleColor));
-                forth.setBackgroundColor(getResources().getColor(R.color.titleColor));
-                text1.setTextColor(Color.parseColor("#ffffff"));
-                text2.setTextColor(Color.parseColor("#333333"));
-                text3.setTextColor(Color.parseColor("#ffffff"));
-                text4.setTextColor(Color.parseColor("#ffffff"));
-                break;
-            case R.id.thd:
-                showFragment(NoticeFragment.class, null);
-                thd.setBackgroundResource(R.drawable.img_notice_current);
-                sec.setBackgroundColor(getResources().getColor(R.color.titleColor));
-                fst.setBackgroundColor(getResources().getColor(R.color.titleColor));
-                forth.setBackgroundColor(getResources().getColor(R.color.titleColor));
-                text1.setTextColor(Color.parseColor("#ffffff"));
-                text2.setTextColor(Color.parseColor("#ffffff"));
-                text3.setTextColor(Color.parseColor("#333333"));
-                text4.setTextColor(Color.parseColor("#ffffff"));
-                break;
-            case R.id.forth:
-                showFragment(NewFragment.class, null);
-                forth.setBackgroundResource(R.drawable.img_notice_current);
-                sec.setBackgroundColor(getResources().getColor(R.color.titleColor));
-                thd.setBackgroundColor(getResources().getColor(R.color.titleColor));
-                fst.setBackgroundColor(getResources().getColor(R.color.titleColor));
-                text1.setTextColor(Color.parseColor("#ffffff"));
-                text2.setTextColor(Color.parseColor("#ffffff"));
-                text3.setTextColor(Color.parseColor("#ffffff"));
-                text4.setTextColor(Color.parseColor("#333333"));
-                break;
-        }
+    private void getDeviceID() {
+        deviceID = PreferencesUtils.getString(getActivity(), "deviceID");
+    }
+
+    private void getWifiState() {
+        WifiManager wifiManger = (WifiManager) getActivity().getSystemService(Service.WIFI_SERVICE);
+        wifiManger.setWifiEnabled(true);
+        wifiManger.setWifiEnabled(false);
+        wifiManger.getWifiState();
     }
 
     private void showFragment(Class<?> clss, Bundle b) {
@@ -138,4 +105,15 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     private void showDialog() {
 
     }
+
+    @OnClick({R.id.btn_wifi, R.id.tv_download})
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_download:
+                startActivity(new Intent(getActivity(), DownLoadFileActivity.class));
+                break;
+        }
+    }
+
 }

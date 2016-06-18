@@ -23,7 +23,6 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.android.volley.VolleyLog.MarkerLog;
-//import com.siyanhui.mechat.util.LogUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -463,7 +462,7 @@ public abstract class Request<T> implements Comparable<Request<T>> {
                 encodedParams.append(URLEncoder.encode(entry.getValue(), paramsEncoding));
                 encodedParams.append('&');
             }
-//            LogUtils.d("Volley:body", encodedParams.toString());
+
             return encodedParams.toString().getBytes(paramsEncoding);
         } catch (UnsupportedEncodingException uee) {
             throw new RuntimeException("Encoding not supported: " + paramsEncoding, uee);

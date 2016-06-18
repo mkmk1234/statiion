@@ -36,7 +36,6 @@ public class DownloadFileFragment extends BaseFragment{
         super.onCreate(savedInstanceState);
         mContext = getActivity();
         fileList = MyApplication.mGson.fromJson(FileUtil.loadRawString(mContext, R.raw.localdata), new TypeToken<ArrayList<FileModel>>() {}.getType());
-        loadData(FileUtil.getExternalDir().getAbsolutePath());
     }
 
     @Nullable
@@ -47,11 +46,11 @@ public class DownloadFileFragment extends BaseFragment{
         listView.setOnItemClickListener(mItemClickListener);
         mAdapter = new DownLoadFileAdapter(mContext, fileList, fileShowList);
         listView.setAdapter(mAdapter);
+        loadData(FileUtil.getExternalDir().getAbsolutePath());
         return view;
     }
 
     private void loadData(String path) {
-//        currentPath = path;
 //        pathTv.setText(String.format(getResources().getString(R.string.dir_path), path.replace(FileUtil.getExternalDir().getPath(), "/乔司站")));
         fileShowList.removeAll(fileShowList);
         File file = new File(path);
@@ -60,6 +59,7 @@ public class DownloadFileFragment extends BaseFragment{
         if (fileList != null) {
             addDir(fileList);
         }
+        mAdapter.setCurrentPath(path);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -72,7 +72,7 @@ public class DownloadFileFragment extends BaseFragment{
                 continue;
             }
             FileShowModel item = new FileShowModel();
-                item.dir = fileList[i].getName();
+            item.dir = fileList[i].getName();
             item.path = fileList[i].getAbsolutePath();
             if (fileList[i].list() != null) {
                 item.imageId = R.drawable.dir;
