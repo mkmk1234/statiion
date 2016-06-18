@@ -79,9 +79,9 @@ public class NoticeFragment extends BaseFragment {
             public void run() {
                 super.run();
                 try {
-                    sleep(1500);
+                    sleep(1000);
                     for (int i = 0; i < 10; i++) {
-                        datas.add(new NoticeModel(1, "这是一个公告", "第" + i + 1 + "个公告", "公告内容"));
+                        datas.add(new NoticeModel(1, "这是一个公告", "第" + (i + 1) + "个公告", "公告内容"));
                     }
                     handler.sendEmptyMessage(1);
                 } catch (InterruptedException e) {

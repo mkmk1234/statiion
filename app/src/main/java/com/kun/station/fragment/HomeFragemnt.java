@@ -10,10 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -32,36 +29,22 @@ import butterknife.OnClick;
 public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
 
 
-    @Bind(R.id.rb_fst)
-    RadioButton rbFst;
-    @Bind(R.id.rb_sec)
-    RadioButton rbSec;
-    @Bind(R.id.rb_thd)
-    RadioButton rbThd;
     @Bind(R.id.top_menu)
     RadioGroup topMenu;
-    @Bind(R.id.home_container)
-    FrameLayout homeContainer;
-    @Bind(R.id.left_layout)
-    LinearLayout leftLayout;
-    @Bind(R.id.line_su)
-    View lineSu;
     @Bind(R.id.txt_deviceID)
     TextView txtDeviceID;
     @Bind(R.id.btn_wifi)
     ImageView btnWifi;
-    @Bind(R.id.tv_download)
-    TextView tvDownload;
-    @Bind(R.id.righ_layout)
-    LinearLayout righLayout;
-
     String deviceID;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
         getDeviceID();
+        showWifiBtn();
         txtDeviceID.setText("设备： " + deviceID);
         topMenu.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -98,11 +81,14 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
         deviceID = PreferencesUtils.getString(getActivity(), "deviceID");
     }
 
-    //    WIFI_STATE_DISABLED 1WIFI网卡不可用
-//    WIFI_STATE_DISABLING 0WIFI正在关闭
-//    WIFI_STATE_ENABLED 3WIFI网卡可用
-//    WIFI_STATE_ENABLING 2WIFI网卡正在打开
-//    WIFI_STATE_UNKNOWN 4未知网卡状态
+    private void showWifiBtn() {
+        if (getWifiState() == WifiManager.WIFI_STATE_DISABLED || getWifiState() == WifiManager.WIFI_STATE_DISABLING) {
+            btnWifi.setImageResource(R.drawable.img_close_3g);
+
+        } else if (getWifiState() == WifiManager.WIFI_STATE_ENABLED || getWifiState() == WifiManager.WIFI_STATE_ENABLING) {
+            btnWifi.setImageResource(R.drawable.img_open_3g);
+        }
+    }
     private int getWifiState() {
         WifiManager wifiManger = (WifiManager) getActivity().getSystemService(Service.WIFI_SERVICE);
         return wifiManger.getWifiState();
@@ -140,8 +126,11 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                 }
                 if (getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
                     openWifi();
+                    btnWifi.setImageResource(R.drawable.img_open_3g);
+
                 } else {
                     closeWifi();
+                    btnWifi.setImageResource(R.drawable.img_close_3g);
                 }
                 break;
 
