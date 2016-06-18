@@ -17,117 +17,63 @@
         android:background="@drawable/stationsignrecord_list_bg"
         android:padding="10dp"
         android:layout_margin="15dp"
-        android:layout_above="@+id/layout_botoom"
         android:layout_toLeftOf="@+id/righ_layout">
-        <LinearLayout
+
+        <RadioGroup
             android:id="@+id/top_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="4"
-            android:background="@color/titleColor"
+            android:weightSum="3"
+            android:background="@color/colorPrimary"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/fst"
+            <RadioButton
+                android:id="@+id/rb_fst"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:orientation="horizontal">
+                android:text="首页"
+                android:layout_weight="1"
+                android:textSize="@dimen/text_size_special"
+                android:button="@null"
+                android:textColor="@drawable/selector_text_color"
+                android:checked="true"
+                android:background="@drawable/home_tab_selector"
+                android:drawableLeft="@drawable/ic_location_city" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_account_balance" />
-
-                <TextView
-                    android:id="@+id/text1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_special"
-                    android:gravity="center"
-                    android:textColor="#ffffff"
-                    android:text="车间" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/sec"
+            <RadioButton
+                android:id="@+id/rb_sec"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:background="@color/colorPrimary"
-                android:orientation="horizontal">
+                android:text="公告"
+                android:layout_weight="1"
+                android:textSize="@dimen/text_size_special"
+                android:button="@null"
+                android:textColor="@drawable/selector_text_color"
+                android:background="@drawable/home_tab_selector"
+                android:drawableLeft="@drawable/ic_volume_up" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_location_city" />
-
-                <TextView
-                    android:id="@+id/text2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_special"
-                    android:textColor="#ffffff"
-                    android:text="首页" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/thd"
+            <RadioButton
+                android:id="@+id/rb_thd"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:background="@color/colorPrimary"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_volume_up" />
-
-                <TextView
-                    android:id="@+id/text3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_special"
-                    android:textColor="#ffffff"
-                    android:text="公告" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/forth"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:text="最近更新"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:background="@color/colorPrimary"
-                android:orientation="horizontal">
+                android:textSize="@dimen/text_size_special"
+                android:button="@null"
+                android:textColor="@drawable/selector_text_color"
+                android:background="@drawable/home_tab_selector"
+                android:drawableLeft="@drawable/ic_access_time" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_access_time" />
-
-                <TextView
-                    android:id="@+id/text4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_special"
-                    android:textColor="#ffffff"
-                    android:text="最近更新" />
-            </LinearLayout>
-
-        </LinearLayout>
+        </RadioGroup>
 
         <FrameLayout
             android:id="@+id/home_container"
@@ -271,30 +217,5 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layout_botoom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#9b9b9b" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_special"
-            android:textColor="#333333"
-            android:gravity="center"
-            android:layout_marginLeft="30dp"
-            android:drawablePadding="10dp"
-            android:drawableLeft="@drawable/wuhu_logo"
-            android:padding="10dp"
-            android:text="乔司站  爱站 奉献 诚信 创新" />
-    </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

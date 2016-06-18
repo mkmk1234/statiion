@@ -46,18 +46,19 @@ public class MainActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             final DialogPop dialogPop = new DialogPop(MainActivity.this);
-            dialogPop.show("您有新文件更新，请及时查看。", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (homeFragemnt != null && homeFragemnt.isResumed()) {
-                        homeFragemnt.hasNew();
-                    }
-                    dialogPop.dismiss();
-                }
-            });
+//            dialogPop.show("您有新文件更新，请及时查看。", new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (homeFragemnt != null && homeFragemnt.isResumed()) {
+//                        homeFragemnt.hasNew();
+//                    }
+//                    dialogPop.dismiss();
+//                }
+//            });
 
         }
     };
+
     @Override
     protected void onSetContentView() {
         setContentView(R.layout.activity_main);
@@ -152,6 +153,7 @@ public class MainActivity extends BaseActivity {
         ft.replace(R.id.detail_layout, homeFragemnt, null);
         ft.commitAllowingStateLoss();
     }
+
     class ListAdapter extends BaseAdapter {
         private int selectPosition = 0;
 
