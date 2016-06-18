@@ -1,6 +1,7 @@
 package com.kun.station.fragment;
 
 import android.app.Service;
+import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,9 +13,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.kun.station.DownLoadFileActivity;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
 import com.kun.station.util.PreferencesUtils;
@@ -27,23 +30,32 @@ import butterknife.OnClick;
  * Created by kun on 16/5/25.
  */
 public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
-    @Bind(R.id.home_container)
-    FrameLayout homeContainer;
-    @Bind(R.id.righ_layout)
-    LinearLayout righLayout;
+
+
+    @Bind(R.id.rb_fst)
+    RadioButton rbFst;
+    @Bind(R.id.rb_sec)
+    RadioButton rbSec;
+    @Bind(R.id.rb_thd)
+    RadioButton rbThd;
     @Bind(R.id.top_menu)
     RadioGroup topMenu;
+    @Bind(R.id.home_container)
+    FrameLayout homeContainer;
     @Bind(R.id.left_layout)
     LinearLayout leftLayout;
     @Bind(R.id.line_su)
     View lineSu;
     @Bind(R.id.txt_deviceID)
     TextView txtDeviceID;
-    String deviceID;
     @Bind(R.id.btn_wifi)
     ImageView btnWifi;
+    @Bind(R.id.tv_download)
+    TextView tvDownload;
+    @Bind(R.id.righ_layout)
+    LinearLayout righLayout;
 
-
+    String deviceID;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -118,7 +130,7 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
 
     }
 
-    @OnClick(R.id.btn_wifi)
+    @OnClick({R.id.btn_wifi, R.id.tv_download})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -131,6 +143,10 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                 } else {
                     closeWifi();
                 }
+                break;
+
+            case R.id.tv_download:
+                startActivity(new Intent(getActivity(), DownLoadFileActivity.class));
                 break;
         }
     }
