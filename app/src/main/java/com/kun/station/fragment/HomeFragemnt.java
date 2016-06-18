@@ -86,13 +86,24 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
         deviceID = PreferencesUtils.getString(getActivity(), "deviceID");
     }
 
-    private void getWifiState() {
+    //    WIFI_STATE_DISABLED 1WIFI网卡不可用
+//    WIFI_STATE_DISABLING 0WIFI正在关闭
+//    WIFI_STATE_ENABLED 3WIFI网卡可用
+//    WIFI_STATE_ENABLING 2WIFI网卡正在打开
+//    WIFI_STATE_UNKNOWN 4未知网卡状态
+    private int getWifiState() {
+        WifiManager wifiManger = (WifiManager) getActivity().getSystemService(Service.WIFI_SERVICE);
+        return wifiManger.getWifiState();
+    }
+
+    private void openWifi() {
         WifiManager wifiManger = (WifiManager) getActivity().getSystemService(Service.WIFI_SERVICE);
         wifiManger.setWifiEnabled(true);
+    }
+
+    private void closeWifi() {
+        WifiManager wifiManger = (WifiManager) getActivity().getSystemService(Service.WIFI_SERVICE);
         wifiManger.setWifiEnabled(false);
-        wifiManger.getWifiState();
-
-
     }
 
     private void showFragment(Class<?> clss, Bundle b) {
@@ -110,7 +121,18 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     @OnClick(R.id.btn_wifi)
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.btn_wifi:
+                if (getWifiState() == WifiManager.WIFI_STATE_ENABLING || getWifiState() == WifiManager.WIFI_STATE_DISABLING || getWifiState() == WifiManager.WIFI_STATE_UNKNOWN) {
+                    return;
+                }
+                if (getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
+                    openWifi();
+                } else {
+                    closeWifi();
+                }
+                break;
+        }
     }
 
 }
