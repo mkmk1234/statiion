@@ -23,20 +23,34 @@ public class DialogPop extends PopupWindow {
     Activity mActivity;
     TextView confirm;
     TextView message;
+    TextView cancel;
     View rootView;
+    View btn_divider;
 
-    public DialogPop(Activity activity) {
+    public DialogPop(Activity activity, boolean hasCancel) {
         super(activity);
         mActivity = activity;
-        initView(activity);
+        initView(activity, hasCancel);
     }
 
 
-    private void initView(Context context) {
+    private void initView(Context context, boolean hasCancel) {
         rootView = LayoutInflater.from(context).inflate(R.layout.pop_dialog, null);
         setContentView(rootView);
         confirm = (TextView) rootView.findViewById(R.id.confirm);
         message = (TextView) rootView.findViewById(R.id.message);
+        cancel = (TextView) rootView.findViewById(R.id.cancel);
+        btn_divider = rootView.findViewById(R.id.btn_divider);
+        if (hasCancel) {
+            btn_divider.setVisibility(View.VISIBLE);
+            cancel.setVisibility(View.VISIBLE);
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
+        }
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         setFocusable(true);

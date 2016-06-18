@@ -462,6 +462,7 @@ public abstract class Request<T> implements Comparable<Request<T>> {
                 encodedParams.append(URLEncoder.encode(entry.getValue(), paramsEncoding));
                 encodedParams.append('&');
             }
+
             return encodedParams.toString().getBytes(paramsEncoding);
         } catch (UnsupportedEncodingException uee) {
             throw new RuntimeException("Encoding not supported: " + paramsEncoding, uee);
