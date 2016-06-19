@@ -40,18 +40,19 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
     private List<FileModel> selectedFile = new ArrayList<>();
     private Button btn_download;
     boolean isDownload;
+    boolean hasDownAll;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             for (int i = 0; i < selectedFile.size(); i++) {
                 selectedFile.get(i).prograss += 5;
+                selectedFile.get(i).hasDownload = true;
                 if (selectedFile.get(i).prograss >= 100) {
                     selectedFile.get(i).prograss = 100;
                     File dir = FileUtil.getExternalDir();
                     File dirFile1 = new File(dir, selectedFile.get(i).dirName);
                     String filename = selectedFile.get(i).fileName;
-                    selectedFile.remove(i);
                     try {
                         new File(dirFile1, filename).createNewFile();
                     } catch (IOException e) {
@@ -59,7 +60,14 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
                     }
                 }
             }
-            if (selectedFile.size() == 0) {
+            hasDownAll = true;
+            for (int i = 0; i < selectedFile.size(); i++) {
+                if (selectedFile.get(i).prograss < 100) {
+                    hasDownAll = false;
+                    break;
+                }
+            }
+            if (hasDownAll) {
                 isDownload = false;
                 btn_download.setText("下载");
             } else {

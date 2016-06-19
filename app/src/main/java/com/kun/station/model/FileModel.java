@@ -14,4 +14,5 @@ public class FileModel {
     public String fileVesion;
     public int prograss;
     public boolean isChecked;
+    public boolean hasDownload;
 }
