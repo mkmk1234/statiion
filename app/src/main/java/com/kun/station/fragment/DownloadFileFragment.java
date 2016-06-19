@@ -26,7 +26,7 @@ import java.util.ArrayList;
 /**
  * Created by admin on 2016/6/18.
  */
-public class DownloadFileFragment extends BaseFragment{
+public class DownloadFileFragment extends BaseFragment implements View.OnClickListener{
     private ArrayList<FileModel> fileList;
     private Context mContext;
     private ArrayList<FileShowModel> fileShowList = new ArrayList<>();
@@ -44,12 +44,26 @@ public class DownloadFileFragment extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_download_file, null);
-        ListView listView = (ListView) view.findViewById(R.id.lv_list);
-        listView.setOnItemClickListener(mItemClickListener);
+        ListView mListView = (ListView) view.findViewById(R.id.lv_list);
+        mListView.setOnItemClickListener(mItemClickListener);
         mAdapter = new DownLoadFileAdapter(mContext, fileList, fileShowList);
-        listView.setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
         loadData(FileUtil.getExternalDir().getAbsolutePath());
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_download:
+                ArrayList<FileShowModel> selectPath = mAdapter.getSelectPaths();
+                for(FileShowModel itemModel : selectPath){
+                    if(itemModel.imageId != R.drawable.dir){
+
+                    }
+                }
+                break;
+        }
     }
 
     public void backData(){

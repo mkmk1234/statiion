@@ -34,13 +34,15 @@ import java.util.List;
  * Created by kun on 16/6/19.
  */
 public class NewDownloadFileFragment extends BaseFragment implements AdapterView.OnItemClickListener {
-    private ArrayList<FileModel> fileList;
+    private ArrayList<FileModel> fileList = new ArrayList<>();
     private Context mContext;
     private DownloadFileAdapter mAdapter;
     private List<FileModel> selectedFile = new ArrayList<>();
     private Button btn_download;
     boolean isDownload;
     boolean hasDownAll;
+    private String rootPath;
+
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -54,6 +56,8 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
                     File dirFile1 = new File(dir, selectedFile.get(i).dirName);
                     String filename = selectedFile.get(i).fileName;
                     try {
+//                        MyApplication.getInstance().getDbManager().insertDownloadedFile(dirFile1.getAbsolutePath(), filename, selectedFile.get(i).fileVersion);
+                        MyApplication.getInstance().getDbManager().insertDownloadedFile(dirFile1.getAbsolutePath(), filename, "1");
                         new File(dirFile1, filename).createNewFile();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -81,8 +85,14 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
-        fileList = MyApplication.mGson.fromJson(FileUtil.loadRawString(mContext, R.raw.localdata_list), new TypeToken<ArrayList<FileModel>>() {
+        rootPath = FileUtil.getExternalDir() + "/";
+        ArrayList<FileModel> allList = MyApplication.mGson.fromJson(FileUtil.loadRawString(mContext, R.raw.localdata_list), new TypeToken<ArrayList<FileModel>>() {
         }.getType());
+        for (FileModel itemModel : allList) {
+            if (!MyApplication.getInstance().getDbManager().isDownLoadedFile(rootPath + itemModel.dirName, itemModel.fileName, itemModel.fileVersion)) {
+                fileList.add(itemModel);
+            }
+        }
     }
 
     @Nullable
@@ -106,6 +116,7 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
     }
 
     private void startDownload() {
+
         new Thread() {
             @Override
             public void run() {

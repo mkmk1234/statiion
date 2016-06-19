@@ -33,11 +33,33 @@ public class DbManager {
         }
     }
 
+    public void insertDownloadedFile(String filePath, String fileName, String version){
+        ContentValues itemValues = new ContentValues();
+        itemValues.put(SqlConstants.Key_FilePath, filePath);
+        itemValues.put(SqlConstants.Key_FileName, fileName);
+        itemValues.put(SqlConstants.Key_Isdir, false);
+        itemValues.put(SqlConstants.Key_status, SqlConstants.Status_Downloaded);
+        itemValues.put(SqlConstants.Key_version, version);
+        mDbOpenHelper.insert(SqlConstants.Table_Name, itemValues);
+    }
+
     public boolean isStoreFile(String filePath, String fileName){
         if(TextUtils.isEmpty(filePath) || TextUtils.isEmpty(fileName)){
             return false;
         }
         Cursor mCursor = mDbOpenHelper.query(SqlConstants.StoreQuerySql, filePath, fileName);
+        if (mCursor != null && mCursor.getCount() > 0){
+            mCursor.close();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isDownLoadedFile(String filePath, String fileName, String version){
+        if(TextUtils.isEmpty(filePath) || TextUtils.isEmpty(fileName)){
+            return false;
+        }
+        Cursor mCursor = mDbOpenHelper.query(SqlConstants.DownLoadFileQuerySql, filePath, fileName, "1", String.valueOf(SqlConstants.Status_Downloaded));
         if (mCursor != null && mCursor.getCount() > 0){
             mCursor.close();
             return true;

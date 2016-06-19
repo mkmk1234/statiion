@@ -11,7 +11,7 @@ public class FileModel {
     public String fileName;
     public String fileUrl;
     public String dirName;
-    public String fileVesion;
+    public String fileVersion;
     public int prograss;
     public boolean isChecked;
     public boolean hasDownload;
