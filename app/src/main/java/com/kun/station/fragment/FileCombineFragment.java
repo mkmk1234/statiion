@@ -29,6 +29,7 @@ public class FileCombineFragment extends BaseFragment {
     private FileSearchFragment mFileSearchFragment;
     private FileStoreFragment mFileStoreFragment;
     private String rootPath;
+    private Fragment currentFragment;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class FileCombineFragment extends BaseFragment {
         }
 
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ll_container, itemFragment).commit();
+        currentFragment = itemFragment;
     }
 
     private RadioGroup.OnCheckedChangeListener mCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
@@ -94,6 +96,10 @@ public class FileCombineFragment extends BaseFragment {
             }
         }
     };
+
+    public Fragment getCurrentFragment() {
+        return currentFragment;
+    }
 
     private ViewPager.OnPageChangeListener mPagerChangeListener = new ViewPager.OnPageChangeListener() {
         @Override

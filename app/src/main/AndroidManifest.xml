@@ -22,7 +22,9 @@
             android:name=".FirstActivity"
             android:screenOrientation="landscape">
         </activity>
-        <activity android:name=".DownLoadFileActivity">
+        <activity
+            android:name=".DownLoadFileActivity"
+            android:screenOrientation="landscape">
         </activity>
         <activity
             android:name=".MainActivity"
