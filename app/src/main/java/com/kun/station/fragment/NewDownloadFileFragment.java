@@ -40,6 +40,7 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
     private List<FileModel> selectedFile = new ArrayList<>();
     private Button btn_download;
     boolean isDownload;
+    boolean hasDownAll;
     private String rootPath;
 
     private Handler handler = new Handler() {
@@ -48,12 +49,12 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
             super.handleMessage(msg);
             for (int i = 0; i < selectedFile.size(); i++) {
                 selectedFile.get(i).prograss += 5;
+                selectedFile.get(i).hasDownload = true;
                 if (selectedFile.get(i).prograss >= 100) {
                     selectedFile.get(i).prograss = 100;
                     File dir = FileUtil.getExternalDir();
                     File dirFile1 = new File(dir, selectedFile.get(i).dirName);
                     String filename = selectedFile.get(i).fileName;
-                    selectedFile.remove(i);
                     try {
 //                        MyApplication.getInstance().getDbManager().insertDownloadedFile(dirFile1.getAbsolutePath(), filename, selectedFile.get(i).fileVersion);
                         MyApplication.getInstance().getDbManager().insertDownloadedFile(dirFile1.getAbsolutePath(), filename, "1");
@@ -63,7 +64,14 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
                     }
                 }
             }
-            if (selectedFile.size() == 0) {
+            hasDownAll = true;
+            for (int i = 0; i < selectedFile.size(); i++) {
+                if (selectedFile.get(i).prograss < 100) {
+                    hasDownAll = false;
+                    break;
+                }
+            }
+            if (hasDownAll) {
                 isDownload = false;
                 btn_download.setText("下载");
             } else {
@@ -78,9 +86,10 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
         super.onCreate(savedInstanceState);
         mContext = getActivity();
         rootPath = FileUtil.getExternalDir() + "/";
-        ArrayList<FileModel> allList = MyApplication.mGson.fromJson(FileUtil.loadRawString(mContext, R.raw.localdata_list), new TypeToken<ArrayList<FileModel>>() {}.getType());
-        for(FileModel itemModel : allList){
-            if(!MyApplication.getInstance().getDbManager().isDownLoadedFile(rootPath + itemModel.dirName, itemModel.fileName, itemModel.fileVersion)){
+        ArrayList<FileModel> allList = MyApplication.mGson.fromJson(FileUtil.loadRawString(mContext, R.raw.localdata_list), new TypeToken<ArrayList<FileModel>>() {
+        }.getType());
+        for (FileModel itemModel : allList) {
+            if (!MyApplication.getInstance().getDbManager().isDownLoadedFile(rootPath + itemModel.dirName, itemModel.fileName, itemModel.fileVersion)) {
                 fileList.add(itemModel);
             }
         }

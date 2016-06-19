@@ -14,4 +14,5 @@ public class FileModel {
     public String fileVersion;
     public int prograss;
     public boolean isChecked;
+    public boolean hasDownload;
 }

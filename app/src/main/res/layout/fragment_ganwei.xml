@@ -16,57 +16,58 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/wuhu_logo"
+            android:drawableLeft="@drawable/logo123"
             android:gravity="center"
             android:paddingLeft="10dp"
             android:drawablePadding="10dp"
             android:layout_marginBottom="10dp"
             android:textSize="@dimen/text_size_big"
             android:textColor="@color/textBlack"
-            android:text="企业文化" />
+            android:text="企业简介" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        android:clipChildren="true"
-        android:orientation="horizontal">
-        <FrameLayout
-            android:id="@+id/layout"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
             android:padding="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/bg_right"
-            android:layout_marginLeft="230dp"></FrameLayout>
-
-        <ImageView
-            android:layout_width="220dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_left"/>
-
-        <LinearLayout
-            android:id="@+id/left"
-            android:layout_width="243dp"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:orientation="vertical"
             android:clipChildren="true"
-            android:layout_marginRight="0dp">
+            android:orientation="horizontal">
 
-            <ListView
-                android:id="@+id/listview"
+            <FrameLayout
+                android:id="@+id/layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@null"
-                android:scrollbars="none"
-                android:dividerHeight="0dp" />
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/bg_right"
+                android:layout_marginLeft="230dp"></FrameLayout>
+
+            <ImageView
+                android:layout_width="220dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_left" />
+
+            <LinearLayout
+                android:id="@+id/left"
+                android:layout_width="243dp"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:orientation="vertical"
+                android:clipChildren="true"
+                android:layout_marginRight="0dp">
+
+                <ListView
+                    android:id="@+id/listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:scrollbars="none"
+                    android:dividerHeight="0dp" />
 
 
-        </LinearLayout>
+            </LinearLayout>
 
-    </RelativeLayout>
+        </RelativeLayout>
     </LinearLayout>
 
 </FrameLayout>

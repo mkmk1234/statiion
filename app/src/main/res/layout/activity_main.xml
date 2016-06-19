@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:text="乔司站系统"
             android:textColor="#ffffff"
-            android:drawableLeft="@drawable/wuhu_logo"
+            android:drawableLeft="@drawable/logo123"
             android:drawablePadding="10dp"
             android:gravity="center"
             android:layout_centerInParent="true"
