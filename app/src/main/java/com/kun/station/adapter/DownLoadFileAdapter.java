@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ public class DownLoadFileAdapter extends BaseAdapter{
     private LayoutInflater mInflater;
     private String currentPath;
     private String rootPath;
+    private ArrayList<FileShowModel> selectPaths = new ArrayList<>();
 
     public DownLoadFileAdapter(Context context, ArrayList<FileModel> dataList, ArrayList<FileShowModel> fileDataList){
         this.mOnLineList = dataList;
@@ -41,6 +43,10 @@ public class DownLoadFileAdapter extends BaseAdapter{
 
     public String getCurrentPath(){
         return currentPath;
+    }
+
+    public ArrayList<FileShowModel> getSelectPaths(){
+        return selectPaths;
     }
 
     @Override
@@ -66,6 +72,15 @@ public class DownLoadFileAdapter extends BaseAdapter{
                     FileShowModel matchFile = new FileShowModel();
                     matchFile.dir = itemModel.fileName;
                     matchFile.path = rootPath + "/" + itemModel.dirName + "/" + itemModel.fileName;
+                    if (matchFile.dir.endsWith(".pdf")) {
+                        matchFile.imageId = R.drawable.pdf_pic;
+                    } else if (matchFile.dir.endsWith(".doc")) {
+                        matchFile.imageId = R.drawable.word_pic;
+                    } else if (matchFile.dir.endsWith(".png")) {
+                        matchFile.imageId = R.drawable.png_pic;
+                    } else {
+                        matchFile.imageId = R.drawable.file;
+                    }
                     mDataList.add(matchFile);
                 }
             }
@@ -86,7 +101,18 @@ public class DownLoadFileAdapter extends BaseAdapter{
         } else {
             mHolder = (Holder) convertView.getTag();
         }
-        FileShowModel fileItem = mDataList.get(position);
+        final FileShowModel fileItem = mDataList.get(position);
+        mHolder.selectCb.setChecked(selectPaths.contains(fileItem.path));
+        mHolder.selectCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    selectPaths.add(fileItem);
+                } else {
+                    selectPaths.remove(fileItem);
+                }
+            }
+        });
         mHolder.imageView.setImageResource(fileItem.imageId);
         mHolder.nameTv.setText(fileItem.dir);
         return convertView;
