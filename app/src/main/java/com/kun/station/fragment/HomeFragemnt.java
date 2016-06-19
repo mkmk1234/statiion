@@ -64,6 +64,8 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                 }
             }
         });
+        Bundle b1 = new Bundle();
+        showFragment(HomePageFragment.class, b1);
         return view;
     }
 

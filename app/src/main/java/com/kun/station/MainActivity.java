@@ -24,6 +24,7 @@ import com.google.gson.reflect.TypeToken;
 import com.kun.station.base.BaseActivity;
 import com.kun.station.fragment.CatalogFragment;
 import com.kun.station.fragment.FileCombineFragment;
+import com.kun.station.fragment.GanWeiFragment;
 import com.kun.station.fragment.HomeFragemnt;
 import com.kun.station.model.FileModel;
 import com.kun.station.response.MenuItemResponse;
@@ -48,24 +49,32 @@ public class MainActivity extends BaseActivity {
     TextView txtTime;
     @Bind(R.id.txt_wifi_state)
     TextView txtWifiState;
+    WifiStateChangedReceiver wifiStateChangedReceiver;
+    Fragment currentFragment;
 
     private ListAdapter mAdapter;
     private FileCombineFragment mFileCombineFragment;
     private HomeFragemnt homeFragemnt;
+    int[] selelctedImg = {R.drawable.main_function_home_down, R.drawable.main_function_enterprise_down,
+            R.drawable.main_function_book_down, R.drawable.main_function_post_constrution_down
+            , R.drawable.main_function_standard_down, R.drawable.main_function_pda_down, R.drawable.main_function_pda_down, R.drawable.main_function_pda_down};
+    int[] unSelectedImg = {R.drawable.main_function_home, R.drawable.main_function_enterprise,
+            R.drawable.main_function_book, R.drawable.main_function_post_constrution
+            , R.drawable.main_function_standard, R.drawable.main_function_pda, R.drawable.main_function_pda, R.drawable.main_function_pda};
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             final DialogPop dialogPop = new DialogPop(MainActivity.this, false);
-//            dialogPop.show("您有新文件更新，请及时查看。", new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (homeFragemnt != null && homeFragemnt.isResumed()) {
-//                        homeFragemnt.hasNew();
-//                    }
-//                    dialogPop.dismiss();
-//                }
-//            });
+            dialogPop.show("您有新文件更新，请及时查看。", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (homeFragemnt != null && homeFragemnt.isResumed()) {
+                        homeFragemnt.hasNew();
+                    }
+                    dialogPop.dismiss();
+                }
+            });
 
         }
     };
@@ -122,11 +131,10 @@ public class MainActivity extends BaseActivity {
                 switch (itemResponse.type) {
                     case 0:
                         showHomeFragment();
+                        currentFragment = homeFragemnt;
                         break;
                     case 1:
-//                        if (mFileCombineFragment == null) {
                         mFileCombineFragment = new FileCombineFragment();
-//                        }
                         File rootFile = new File(FileUtil.getExternalDir(), itemResponse.title);
                         Bundle mBundle = new Bundle();
                         mBundle.putString(CatalogFragment.ExtraPATH, rootFile.getAbsolutePath());
@@ -135,40 +143,13 @@ public class MainActivity extends BaseActivity {
                                 .beginTransaction();
                         ft.replace(R.id.detail_layout, mFileCombineFragment, null);
                         ft.commitAllowingStateLoss();
+                        currentFragment = mFileCombineFragment;
                         break;
                     case 2:
-                        b.putString(CatalogFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/企业简介");
-                        showFragment(CatalogFragment.class, b);
+                        showFragment(GanWeiFragment.class, b);
                         break;
                 }
-//                switch (position) {
-//                    case 0:
-//                        showHomeFragment();
-//                        break;
-//                    case 1:
-//                        b.putString(CatalogFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/企业简介");
-//                        showFragment(CatalogFragment.class, b);
-//                        break;
-//                    case 2:
-//                        if (mFileCombineFragment == null) {
-//                            mFileCombineFragment = new FileCombineFragment();
-//                        }
-//                        FragmentTransaction ft = getSupportFragmentManager()
-//                                .beginTransaction();
-//                        ft.replace(R.id.detail_layout, mFileCombineFragment, null);
-//                        ft.commitAllowingStateLoss();
-//                        break;
-//                    case 3:
-//                        showFragment(GanWeiFragment.class, null);
-//                        break;
-//                    case 4:
-//                        b.putString(CatalogFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/作业标准");
-//                        showFragment(CatalogFragment.class, b);
-//                        break;
-//                    case 5:
-//                        showFragment(ToolsFragment.class, null);
-//                        break;
-//                }
+
             }
         });
         showHomeFragment();
@@ -193,9 +174,11 @@ public class MainActivity extends BaseActivity {
     private void showFragment(Class<?> clss, Bundle b) {
         FragmentTransaction ft = getSupportFragmentManager()
                 .beginTransaction();
-        ft.replace(R.id.detail_layout, Fragment.instantiate(this, clss.getName(), b));
+        Fragment fragment = Fragment.instantiate(this, clss.getName(), b);
+        ft.replace(R.id.detail_layout, fragment);
 
         ft.commitAllowingStateLoss();
+        currentFragment = fragment;
     }
 
     private void showHomeFragment() {
@@ -213,7 +196,24 @@ public class MainActivity extends BaseActivity {
         filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(new WifiStateChangedReceiver(), filter);
+        wifiStateChangedReceiver = new WifiStateChangedReceiver();
+        registerReceiver(wifiStateChangedReceiver, filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(wifiStateChangedReceiver);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragment != null && currentFragment instanceof FileCombineFragment) {
+            Fragment fragment = ((FileCombineFragment) currentFragment).getCurrentFragment();
+            if (fragment != null && fragment instanceof CatalogFragment)
+                ((CatalogFragment) fragment).back();
+        }
+
     }
 
     class ListAdapter extends BaseAdapter {
@@ -249,10 +249,10 @@ public class MainActivity extends BaseActivity {
             convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(R.drawable.main_function_home_down);
             if (position == selectPosition) {
                 convertView.findViewById(R.id.iv_arrow).setVisibility(View.VISIBLE);
-//                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(getItem(position).selectedImg);
+                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(selelctedImg[position]);
             } else {
                 convertView.findViewById(R.id.iv_arrow).setVisibility(View.GONE);
-//                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(getItem(position).unSelectedImg);
+                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(unSelectedImg[position]);
             }
             return convertView;
         }
@@ -283,3 +283,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 }
+
+
+

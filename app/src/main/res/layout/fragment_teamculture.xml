@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="乔司运转车间"
+        android:textSize="@dimen/text_size_big"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/textBlack" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="乔司运转车间班组文化内容"
+        android:textSize="@dimen/text_size_special"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/textBlack" />
+</LinearLayout>

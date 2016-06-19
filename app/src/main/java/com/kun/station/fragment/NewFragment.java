@@ -1,5 +1,6 @@
 package com.kun.station.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.kun.station.DownLoadFileActivity;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
 import com.kun.station.model.NoticeModel;
@@ -58,6 +60,8 @@ public class NewFragment extends BaseFragment {
                 ((TextView) view.findViewById(R.id.txt_read_time)).setText(getDate());
                 ((TextView) view.findViewById(R.id.txt_read_time)).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.img_right).setVisibility(View.GONE);
+                Intent i = new Intent(getActivity(), DownLoadFileActivity.class);
+                startActivity(i);
             }
         });
         getData();
