@@ -1,7 +1,6 @@
 package com.kun.station.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import com.kun.station.model.FileModel;
 import com.kun.station.model.FileShowModel;
 import com.kun.station.util.FileUtil;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -66,25 +64,24 @@ public class DownLoadFileAdapter extends BaseAdapter{
 
     @Override
     public void notifyDataSetChanged() {
-        if(!TextUtils.isEmpty(currentPath) && mDataList != null){
-            for(FileModel itemModel : mOnLineList){
-                if (currentPath.equals(rootPath + itemModel.dirName)){
-                    FileShowModel matchFile = new FileShowModel();
-                    matchFile.dir = itemModel.fileName;
-                    matchFile.path = rootPath + "/" + itemModel.dirName + "/" + itemModel.fileName;
-                    if (matchFile.dir.endsWith(".pdf")) {
-                        matchFile.imageId = R.drawable.pdf_pic;
-                    } else if (matchFile.dir.endsWith(".doc")) {
-                        matchFile.imageId = R.drawable.word_pic;
-                    } else if (matchFile.dir.endsWith(".png")) {
-                        matchFile.imageId = R.drawable.png_pic;
-                    } else {
-                        matchFile.imageId = R.drawable.file;
-                    }
-                    mDataList.add(matchFile);
-                }
-            }
-        }
+//        if(!TextUtils.isEmpty(currentPath) && mDataList != null){
+//            for(FileModel itemModel : mOnLineList){
+//                if (currentPath.equals(rootPath + itemModel.dirName)){
+//                    FileShowModel matchFile = new FileShowModel();
+//                    matchFile.dir = itemModel.fileName;
+//                    matchFile.path = rootPath + "/" + itemModel.dirName + "/" + itemModel.fileName;
+//                    if (matchFile.dir.endsWith(".pdf")) {
+//                        matchFile.imageId = R.drawable.pdf_pic;
+//                    } else if (matchFile.dir.endsWith(".doc")) {
+//                        matchFile.imageId = R.drawable.word_pic;
+//                    } else if (matchFile.dir.endsWith(".png")) {
+//                        matchFile.imageId = R.drawable.png_pic;
+//                    } else {
+//                        matchFile.imageId = R.drawable.file;
+//                    }
+//                    mDataList.add(matchFile);
+//                }
+////            }／／}
         super.notifyDataSetChanged();
     }
 
@@ -102,7 +99,7 @@ public class DownLoadFileAdapter extends BaseAdapter{
             mHolder = (Holder) convertView.getTag();
         }
         final FileShowModel fileItem = mDataList.get(position);
-        mHolder.selectCb.setChecked(selectPaths.contains(fileItem.path));
+        //／／   mHolder.selectCb.setChecked(selectPaths.contains(fileItem.path));
         mHolder.selectCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -114,7 +111,7 @@ public class DownLoadFileAdapter extends BaseAdapter{
             }
         });
         mHolder.imageView.setImageResource(fileItem.imageId);
-        mHolder.nameTv.setText(fileItem.dir);
+        // mHolder.nameTv.setText(fileItem.dir);
         return convertView;
     }
 

@@ -1,11 +1,11 @@
 package com.kun.station.fragment;
 
 import android.app.Service;
-import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +14,18 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.kun.station.DownLoadFileActivity;
+import com.google.gson.reflect.TypeToken;
+import com.kun.station.MyApplication;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
+import com.kun.station.db.DbManager;
+import com.kun.station.model.FileModel;
+import com.kun.station.model.FileShowModel;
+import com.kun.station.util.FileUtil;
 import com.kun.station.util.PreferencesUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,7 +44,9 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     @Bind(R.id.btn_wifi)
     ImageView btnWifi;
     String deviceID;
-
+    HomePageFragment homePageFragment;
+    NoticeFragment noticeFragment;
+    NewDownloadFileFragment newDownloadFileFragment;
 
     @Nullable
     @Override
@@ -46,27 +56,38 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
         getDeviceID();
         showWifiBtn();
         txtDeviceID.setText("设备： " + deviceID);
+        initFragment();
         topMenu.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rb_fst:
-                        Bundle b1 = new Bundle();
-                        showFragment(HomePageFragment.class, b1);
+                        showFragment(0);
                         break;
                     case R.id.rb_sec:
-                        showFragment(NoticeFragment.class, null);
+                        showFragment(1);
                         break;
                     case R.id.rb_thd:
-                        showFragment(NewFragment.class, null);
-
+                        showFragment(2);
                         break;
                 }
             }
         });
-        Bundle b1 = new Bundle();
-        showFragment(HomePageFragment.class, b1);
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+
+        }
     }
 
     @Override
@@ -75,10 +96,21 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
         ButterKnife.unbind(this);
     }
 
-    public void hasNew() {
-        topMenu.check(R.id.rb_thd);
-    }
+    private void initFragment() {
+        homePageFragment = (HomePageFragment) Fragment.instantiate(getActivity(), HomePageFragment.class.getName(), null);
+        noticeFragment = (NoticeFragment) Fragment.instantiate(getActivity(), NoticeFragment.class.getName(), null);
+        newDownloadFileFragment = (NewDownloadFileFragment) Fragment.instantiate(getActivity(), NewDownloadFileFragment.class.getName(), null);
+        FragmentTransaction ft = getActivity().getSupportFragmentManager()
+                .beginTransaction();
+        ft.add(R.id.home_container, homePageFragment, "homepage");
+        ft.add(R.id.home_container, noticeFragment, "notice");
+        ft.add(R.id.home_container, newDownloadFileFragment, "download");
+        ft.hide(newDownloadFileFragment);
+        ft.hide(noticeFragment);
+        ft.show(homePageFragment);
+        ft.commit();
 
+    }
     private void getDeviceID() {
         deviceID = PreferencesUtils.getString(getActivity(), "deviceID");
     }
@@ -106,18 +138,49 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
         wifiManger.setWifiEnabled(false);
     }
 
-    private void showFragment(Class<?> clss, Bundle b) {
+    private void showFragment(int flag) {
         FragmentTransaction ft = getActivity().getSupportFragmentManager()
                 .beginTransaction();
-        ft.replace(R.id.home_container, Fragment.instantiate(getActivity(), clss.getName(), b));
+        switch (flag) {
+            case 0:
+                ft.show(homePageFragment);
+                ft.hide(noticeFragment);
+                ft.hide(newDownloadFileFragment);
+                break;
+            case 1:
+                ft.show(noticeFragment);
+                ft.hide(homePageFragment);
+                ft.hide(newDownloadFileFragment);
+                break;
+            case 2:
+                ft.show(newDownloadFileFragment);
+                ft.hide(noticeFragment);
+                ft.hide(homePageFragment);
+                break;
+        }
 
-        ft.commitAllowingStateLoss();
+        ft.commit();
     }
 
-    private void showDialog() {
 
+    private List<FileShowModel> getNewFileList() {
+        List<FileShowModel> fileShowList = new ArrayList<>();
+        DbManager dbManager = new DbManager(getContext());
+        List<FileModel> list = MyApplication.mGson.fromJson(FileUtil.loadRawString(getContext(), R.raw.localdata_list), new TypeToken<ArrayList<FileModel>>() {
+        }.getType());
+        for (int i = 0; i < list.size(); i++) {
+            FileModel fileModel = list.get(i);
+            fileShowList.add(new FileShowModel(fileModel, 0, true, false, dbManager.isStore(fileModel.dirName, fileModel.fileName), false, ""));
+        }
+        for (int i = 0; i < fileShowList.size(); i++) {
+            MyApplication.getInstance().getDbManager().insertFile(fileShowList.get(i));
+        }
+        return fileShowList;
     }
 
+    private List<FileShowModel> getNoDownloadFileList() {
+        return MyApplication.getInstance().getDbManager().getShowFiles();
+    }
     @OnClick({R.id.btn_wifi, R.id.tv_download})
     @Override
     public void onClick(View v) {
@@ -137,7 +200,9 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                 break;
 
             case R.id.tv_download:
-                startActivity(new Intent(getActivity(), DownLoadFileActivity.class));
+                List<FileShowModel> list = getNewFileList();
+                list.addAll(getNoDownloadFileList());
+                newDownloadFileFragment.update(list);
                 break;
         }
     }

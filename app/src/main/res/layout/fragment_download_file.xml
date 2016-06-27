@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
     <Button
-        android:id="@+id/btn_download"
+        android:id="@+id/btn_clear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="15dp"
-        android:visibility="visible"
-        android:text="下载文件" />
+        android:text="清空" />
     <ListView
         android:id="@+id/lv_list"
         android:layout_width="match_parent"

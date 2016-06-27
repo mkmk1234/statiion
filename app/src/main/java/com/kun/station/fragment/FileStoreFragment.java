@@ -1,7 +1,6 @@
 package com.kun.station.fragment;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -16,9 +15,10 @@ import com.kun.station.MyApplication;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
 import com.kun.station.db.DbManager;
-import com.kun.station.db.SqlConstants;
+import com.kun.station.model.FileShowModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,7 +31,7 @@ public class FileStoreFragment extends BaseFragment{
     ListView list;
 
     private DbManager mDbManager;
-    private ArrayList<FileItem> mDataList = new ArrayList<FileItem>();
+    private List<FileShowModel> mDataList = new ArrayList<FileShowModel>();
     private FileStoreAdapter mAdapter;
 
     @Override
@@ -42,25 +42,7 @@ public class FileStoreFragment extends BaseFragment{
     }
 
     private void getCursorData() {
-        Cursor cursor = mDbManager.getStoreList(true);
-        if (cursor != null && cursor.getCount() > 0){
-            while (cursor.moveToNext()){
-                FileItem item = new FileItem();
-                item.fileName = cursor.getString(cursor.getColumnIndex(SqlConstants.Key_FileName));
-                item.filePath = cursor.getString(cursor.getColumnIndex(SqlConstants.Key_FilePath));
-                if(item.fileName.endsWith(".pdf")){
-                    item.imageId = R.drawable.pdf_pic;
-                } else if(item.fileName.endsWith(".doc")){
-                    item.imageId = R.drawable.word_pic;
-                } else if(item.fileName.endsWith(".png")){
-                    item.imageId = R.drawable.png_pic;
-                } else {
-                    item.imageId = R.drawable.file;
-                }
-                mDataList.add(item);
-            }
-            cursor.close();
-        }
+        mDataList = mDbManager.getStoreFiles();
     }
 
     @Nullable
@@ -68,7 +50,7 @@ public class FileStoreFragment extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_store_file, null);
         ButterKnife.bind(this, view);
-        mAdapter = new FileStoreAdapter(getActivity(), mDataList);
+        mAdapter = new FileStoreAdapter(getActivity());
         list.setAdapter(mAdapter);
         return view;
     }
@@ -79,19 +61,11 @@ public class FileStoreFragment extends BaseFragment{
         mAdapter.notifyDataSetChanged();
     }
 
-    private class FileItem{
-        String fileName;
-        String filePath;
-        int imageId;
-    }
-
     private class FileStoreAdapter extends BaseAdapter{
         private LayoutInflater mInflater;
-        private ArrayList<FileItem> mDataList;
 
-        public FileStoreAdapter(Context context, ArrayList<FileItem> dataList){
+        public FileStoreAdapter(Context context) {
             mInflater = LayoutInflater.from(context);
-            mDataList = dataList;
         }
 
         @Override
@@ -122,10 +96,10 @@ public class FileStoreFragment extends BaseFragment{
             } else {
                 mHolder = (ViewHolder) convertView.getTag();
             }
-            FileItem item = mDataList.get(position);
+            FileShowModel item = mDataList.get(position);
             mHolder.nameTv.setText(item.fileName);
             mHolder.imageIv.setImageResource(item.imageId);
-            mHolder.pathTv.setText(item.filePath);
+            mHolder.pathTv.setText(item.dirName);
             return convertView;
         }
 

@@ -7,10 +7,9 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.kun.station.base.BaseActivity;
@@ -29,7 +29,6 @@ import com.kun.station.fragment.HomeFragemnt;
 import com.kun.station.model.FileModel;
 import com.kun.station.response.MenuItemResponse;
 import com.kun.station.util.FileUtil;
-import com.kun.station.widget.DialogPop;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -61,23 +60,7 @@ public class MainActivity extends BaseActivity {
     int[] unSelectedImg = {R.drawable.main_function_home, R.drawable.main_function_enterprise,
             R.drawable.main_function_book, R.drawable.main_function_post_constrution
             , R.drawable.main_function_standard, R.drawable.main_function_pda, R.drawable.main_function_pda, R.drawable.main_function_pda};
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            final DialogPop dialogPop = new DialogPop(MainActivity.this, false);
-            dialogPop.show("您有新文件更新，请及时查看。", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (homeFragemnt != null && homeFragemnt.isResumed()) {
-                        homeFragemnt.hasNew();
-                    }
-                    dialogPop.dismiss();
-                }
-            });
 
-        }
-    };
 
     @Override
     protected void onSetContentView() {
@@ -153,23 +136,9 @@ public class MainActivity extends BaseActivity {
             }
         });
         showHomeFragment();
-        hasNew();
     }
 
-    private void hasNew() {
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                try {
-                    sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                handler.sendEmptyMessage(1);
-            }
-        }.start();
-    }
+
 
     private void showFragment(Class<?> clss, Bundle b) {
         FragmentTransaction ft = getSupportFragmentManager()
@@ -214,6 +183,17 @@ public class MainActivity extends BaseActivity {
                 ((CatalogFragment) fragment).back();
         }
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (KeyEvent.KEYCODE_HOME == keyCode) {
+            System.out.println("HOME has been pressed yet ...");
+            // android.os.Process.killProcess(android.os.Process.myPid());
+            Toast.makeText(getApplicationContext(), "HOME 键已被禁用...",
+                    Toast.LENGTH_LONG).show();
+        }
+        return true;
     }
 
     class ListAdapter extends BaseAdapter {

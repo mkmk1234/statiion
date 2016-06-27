@@ -17,7 +17,6 @@ import com.kun.station.adapter.DownLoadFileAdapter;
 import com.kun.station.base.BaseFragment;
 import com.kun.station.model.FileModel;
 import com.kun.station.model.FileShowModel;
-import com.kun.station.response.MenuItemResponse;
 import com.kun.station.util.FileUtil;
 
 import java.io.File;
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 /**
  * Created by admin on 2016/6/18.
  */
-public class DownloadFileFragment extends BaseFragment implements View.OnClickListener{
+public class DownloadFileFragment extends BaseFragment {
     private ArrayList<FileModel> fileList;
     private Context mContext;
     private ArrayList<FileShowModel> fileShowList = new ArrayList<>();
@@ -52,19 +51,7 @@ public class DownloadFileFragment extends BaseFragment implements View.OnClickLi
         return view;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_download:
-                ArrayList<FileShowModel> selectPath = mAdapter.getSelectPaths();
-                for(FileShowModel itemModel : selectPath){
-                    if(itemModel.imageId != R.drawable.dir){
 
-                    }
-                }
-                break;
-        }
-    }
 
     public void backData(){
         if (mAdapter.getCurrentPath().equals(FileUtil.getExternalDir().getAbsolutePath())){
@@ -88,35 +75,23 @@ public class DownloadFileFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void addDir(File[] fileList) {
-        for (int i = 0; i < fileList.length; i++) {
-            if (fileList[i].isFile() && !fileList[i].canRead()) {
-                continue;
-            }
-            if (!fileList[i].isDirectory()) {
-                continue;
-            }
-            FileShowModel item = new FileShowModel();
-            item.dir = fileList[i].getName();
-            item.path = fileList[i].getAbsolutePath();
-            if (fileList[i].list() != null) {
-                item.imageId = R.drawable.dir;
-            } else {
-//                    item.imageId = R.mipmap.ic_launcher;
-                item.imageId = R.drawable.dir;
-            }
-//            } else {
-//                if (item.dir.endsWith(".pdf")) {
-//                    item.imageId = R.drawable.pdf_pic;
-//                } else if (item.dir.endsWith(".doc")) {
-//                    item.imageId = R.drawable.word_pic;
-//                } else if (item.dir.endsWith(".png")) {
-//                    item.imageId = R.drawable.png_pic;
-//                } else {
-//                    item.imageId = R.drawable.file;
-//                }
+//        for (int i = 0; i < fileList.length; i++) {
+//            if (fileList[i].isFile() && !fileList[i].canRead()) {
+//                continue;
 //            }
-            fileShowList.add(item);
-        }
+//            if (!fileList[i].isDirectory()) {
+//                continue;
+//            }
+//            // FileShowModel item = new FileShowModel();
+//            //  item.dir = fileList[i].getName();
+//            //item.path = fileList[i].getAbsolutePath();
+//            if (fileList[i].list() != null) {
+//                item.imageId = R.drawable.dir;
+//            } else {
+//                item.imageId = R.drawable.dir;
+//            }
+//            fileShowList.add(item);
+//        }
     }
 
     private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
@@ -124,7 +99,7 @@ public class DownloadFileFragment extends BaseFragment implements View.OnClickLi
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             FileShowModel itemFile = fileShowList.get(position);
             if (itemFile.imageId == R.drawable.dir) {
-                loadData(itemFile.path);
+                //      loadData(itemFile.path);
             } else {
             }
         }
