@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.google.gson.Gson;
 import com.kun.station.db.DbManager;
+import com.kun.station.network.NetworkManager;
 
 /**
  * Created by admin on 2016/6/3.
@@ -11,6 +12,7 @@ import com.kun.station.db.DbManager;
 public class MyApplication extends Application{
     private static MyApplication mInstance;
     private DbManager mDbManager;
+    private NetworkManager networkManager;
     public static Gson mGson;
 
     @Override
@@ -23,11 +25,12 @@ public class MyApplication extends Application{
     public static MyApplication getInstance(){
         return mInstance;
     }
+    
 
-    public DbManager getDbManager(){
-        if (mDbManager == null){
-            mDbManager = new DbManager(mInstance);
+    public NetworkManager getNetworkManager() {
+        if (networkManager == null) {
+            networkManager = NetworkManager.getInstance(this);
         }
-        return mDbManager;
+        return networkManager;
     }
 }

@@ -1,7 +1,6 @@
 package com.kun.station.network;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -11,12 +10,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-//import com.siyanhui.mechat.Application;
 
 import org.apache.http.client.HttpClient;
 
 import java.lang.reflect.Type;
 import java.util.Map;
+
+//import com.siyanhui.mechat.Application;
 
 public class NetworkManager {
     private static NetworkManager mManager;
@@ -119,18 +119,7 @@ public class NetworkManager {
                 builder.append(item.getKey()).append("=").append(item.getValue()).append("&");
             }
         }
-//        try {
-//            for(Map.Entry<String, String> item : params.entrySet()){
-//                builder.append(item.getKey()).append("=").
-//                        append(URLEncoder.encode(item.getValue(), "UTF-8")).append("&");
-//            }
-//        } catch (UnsupportedEncodingException e){
-//            e.printStackTrace();
-//        }
         builder.append("timestamp_now=").append(System.currentTimeMillis());
-//        if(!TextUtils.isEmpty(Application.userToken)){
-//            builder.append("&user_token=").append(Application.userToken);
-//        }
         return builder.toString();
     }
 }

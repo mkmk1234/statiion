@@ -3,6 +3,7 @@ package com.kun.station.db;
 import android.content.Context;
 
 import com.kun.station.model.FileShowModel;
+import com.kun.station.model.NoticeModel;
 
 import net.tsz.afinal.FinalDb;
 
@@ -13,20 +14,34 @@ import java.util.List;
  * Created by admin on 2016/6/3.
  */
 public class DbManager {
-    private DbOpenHelper mDbOpenHelper;
-    private Context mContext;
+    private static DbManager dbManager;
     FinalDb db;
 
-    public DbManager(Context context){
-        mContext = context;
-        if (mDbOpenHelper == null){
-            mDbOpenHelper = new DbOpenHelper(context);
-        }
+    private DbManager(Context context) {
         if (db == null) {
-            db = FinalDb.create(mContext, "afinal_file.db");
+            db = FinalDb.create(context, "afinal_file.db");
         }
     }
 
+    public static DbManager getInstace(Context context) {
+        if (dbManager == null) {
+            dbManager = new DbManager(context);
+        }
+        return dbManager;
+    }
+
+
+    public void insertNotice(NoticeModel noticeModel) {
+        db.save(noticeModel);
+    }
+
+    public void updateNotice(NoticeModel noticeModel) {
+        db.update(noticeModel);
+    }
+
+    public List<NoticeModel> getNoitce() {
+        return db.findAll(NoticeModel.class);
+    }
 
     public void insertFile(FileShowModel fileShowModel) {
         if (isHas(fileShowModel.dirName, fileShowModel.fileName)) {
@@ -35,7 +50,6 @@ public class DbManager {
             db.save(fileShowModel);
         }
     }
-
     public void deleteFile(FileShowModel fileShowModel) {
         db.delete(fileShowModel);
     }

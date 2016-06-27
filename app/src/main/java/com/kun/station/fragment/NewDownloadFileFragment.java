@@ -14,9 +14,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kun.station.MyApplication;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
+import com.kun.station.db.DbManager;
 import com.kun.station.model.FileShowModel;
 import com.kun.station.util.FileUtil;
 import com.kun.station.widget.CustomPop;
@@ -65,8 +65,7 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
                     hasDownLoadList.add(fileShowList.get(i));
                     try {
                         new File(dirFile1, filename).createNewFile();
-
-                        MyApplication.getInstance().getDbManager().updateFile(fileShowList.get(i));
+                        DbManager.getInstace(getContext()).updateFile(fileShowList.get(i));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -150,7 +149,7 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
                 fileShowModel.isRead = true;
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
                 fileShowModel.readTime = sdf.format(new Date());
-                MyApplication.getInstance().getDbManager().updateFile(fileShowModel);
+                DbManager.getInstace(getContext()).updateFile(fileShowModel);
             } catch (Exception e) {
                 Toast.makeText(getActivity(), "请安装软件打开文件。", Toast.LENGTH_SHORT).show();
             }
@@ -175,7 +174,7 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
         for (int i = 0; i < fileShowList.size(); i++) {
             if (fileShowList.get(i).isDownload) {
                 fileShowList.get(i).isShow = false;
-                MyApplication.getInstance().getDbManager().updateFile(fileShowList.get(i));
+                DbManager.getInstace(getContext()).updateFile(fileShowList.get(i));
                 fileShowList.remove(i);
                 i--;
             }

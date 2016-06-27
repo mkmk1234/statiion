@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kun.station.MyApplication;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
 import com.kun.station.db.DbManager;
@@ -50,7 +49,7 @@ public class CatalogFragment extends BaseFragment implements AdapterView.OnItemC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDbManager = MyApplication.getInstance().getDbManager();
+        mDbManager = DbManager.getInstace(getContext());
     }
 
     @Nullable

@@ -10,12 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
+import com.kun.station.db.DbManager;
 import com.kun.station.model.NoticeModel;
+import com.kun.station.util.Log;
 import com.kun.station.widget.CustomPop;
 
 import java.text.SimpleDateFormat;
@@ -34,11 +38,15 @@ public class NoticeFragment extends BaseFragment {
     @Bind(R.id.list)
     ListView listview;
     List<NoticeModel> datas;
+    List<NoticeModel> datastemp;
     ListAdapter adapter;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            datas.addAll(datastemp);
+            datas.addAll(DbManager.getInstace(getContext()).getNoitce());
+            saveNotice();
             adapter.notifyDataSetChanged();
         }
     };
@@ -53,13 +61,12 @@ public class NoticeFragment extends BaseFragment {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) view.findViewById(R.id.title)).setTextColor(Color.parseColor("#9b9b9b"));
-                ((TextView) view.findViewById(R.id.txt_read)).setTextColor(Color.parseColor("#9b9b9b"));
-                ((TextView) view.findViewById(R.id.txt_read)).setText("已阅");
-                ((TextView) view.findViewById(R.id.txt_read_time)).setText(getDate());
-                ((TextView) view.findViewById(R.id.txt_read_time)).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.img_right).setVisibility(View.GONE);
+                NoticeModel noticeModel = adapter.getItem(position);
+                noticeModel.readTime = getDate();
+                noticeModel.hasRead = true;
+                DbManager.getInstace(getContext()).updateNotice(noticeModel);
                 new CustomPop(getActivity()).show();
+                adapter.notifyDataSetChanged();
             }
         });
         getData();
@@ -72,8 +79,16 @@ public class NoticeFragment extends BaseFragment {
         return df.format(d);
     }
 
+    private void saveNotice() {
+        for (int i = 0; i < datastemp.size(); i++) {
+            DbManager.getInstace(getContext()).insertNotice(datastemp.get(i));
+        }
+    }
+
     private void getData() {
+        datastemp = new ArrayList<>();
         datas = new ArrayList<>();
+        Log.i("sss", "size" + datas.size());
         new Thread() {
             @Override
             public void run() {
@@ -81,7 +96,7 @@ public class NoticeFragment extends BaseFragment {
                 try {
                     sleep(100);
                     for (int i = 0; i < 10; i++) {
-                        datas.add(new NoticeModel(1, "这是一个公告", "第" + (i + 1) + "个公告", "公告内容"));
+                        datastemp.add(new NoticeModel(datas.size() + i, "这是一个公告", "第" + (i + 1) + "个公告", "公告内容", false));
                     }
                     handler.sendEmptyMessage(1);
                 } catch (InterruptedException e) {
@@ -90,6 +105,7 @@ public class NoticeFragment extends BaseFragment {
             }
         }.start();
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -118,14 +134,51 @@ public class NoticeFragment extends BaseFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder;
             if (convertView == null) {
                 convertView = LayoutInflater.from(getActivity()).inflate(R.layout.item_new, parent, false);
+                viewHolder = new ViewHolder(convertView);
+                convertView.setTag(viewHolder);
             }
-            TextView title = (TextView) convertView.findViewById(R.id.title);
-            TextView content = (TextView) convertView.findViewById(R.id.content);
-            title.setText(getItem(position).title);
-            content.setText(getItem(position).description);
+            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder.title.setText(getItem(position).title);
+            viewHolder.content.setText(getItem(position).detail);
+            if (getItem(position).hasRead) {
+                viewHolder.title.setTextColor(Color.parseColor("#9b9b9b"));
+                viewHolder.txtRead.setTextColor(Color.parseColor("#9b9b9b"));
+                viewHolder.txtRead.setText("已阅");
+                viewHolder.txtReadTime.setText(getItem(position).readTime);
+                viewHolder.txtReadTime.setVisibility(View.VISIBLE);
+                viewHolder.imgRight.setVisibility(View.GONE);
+            } else {
+                viewHolder.title.setTextColor(Color.parseColor("#333333"));
+                viewHolder.txtRead.setTextColor(Color.parseColor("#333333"));
+                viewHolder.txtRead.setText("未读");
+                viewHolder.txtReadTime.setVisibility(View.GONE);
+                viewHolder.imgRight.setVisibility(View.VISIBLE);
+            }
             return convertView;
+        }
+
+        class ViewHolder {
+            @Bind(R.id.img_recode)
+            ImageView imgRecode;
+            @Bind(R.id.title)
+            TextView title;
+            @Bind(R.id.content)
+            TextView content;
+            @Bind(R.id.txt_read)
+            TextView txtRead;
+            @Bind(R.id.txt_read_time)
+            TextView txtReadTime;
+            @Bind(R.id.img_right)
+            ImageView imgRight;
+            @Bind(R.id.layout_read_state)
+            LinearLayout layoutReadState;
+
+            ViewHolder(View view) {
+                ButterKnife.bind(this, view);
+            }
         }
     }
 }

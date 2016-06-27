@@ -165,7 +165,7 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
 
     private List<FileShowModel> getNewFileList() {
         List<FileShowModel> fileShowList = new ArrayList<>();
-        DbManager dbManager = new DbManager(getContext());
+        DbManager dbManager = DbManager.getInstace(getContext());
         List<FileModel> list = MyApplication.mGson.fromJson(FileUtil.loadRawString(getContext(), R.raw.localdata_list), new TypeToken<ArrayList<FileModel>>() {
         }.getType());
         for (int i = 0; i < list.size(); i++) {
@@ -173,13 +173,13 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
             fileShowList.add(new FileShowModel(fileModel, 0, true, false, dbManager.isStore(fileModel.dirName, fileModel.fileName), false, ""));
         }
         for (int i = 0; i < fileShowList.size(); i++) {
-            MyApplication.getInstance().getDbManager().insertFile(fileShowList.get(i));
+            DbManager.getInstace(getContext()).insertFile(fileShowList.get(i));
         }
         return fileShowList;
     }
 
     private List<FileShowModel> getNoDownloadFileList() {
-        return MyApplication.getInstance().getDbManager().getShowFiles();
+        return DbManager.getInstace(getContext()).getShowFiles();
     }
     @OnClick({R.id.btn_wifi, R.id.tv_download})
     @Override

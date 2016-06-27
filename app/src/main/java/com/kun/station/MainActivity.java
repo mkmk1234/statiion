@@ -72,13 +72,6 @@ public class MainActivity extends BaseActivity {
         list = MyApplication.mGson.fromJson(FileUtil.loadRawString(this, R.raw.localdata), new TypeToken<ArrayList<MenuItemResponse>>() {
         }.getType());
         createDir();
-//        list.add(new Model("系统首页", R.drawable.main_function_home_down, R.drawable.main_function_home));
-//        list.add(new Model("企业简介", R.drawable.main_function_enterprise_down, R.drawable.main_function_enterprise));
-//        list.add(new Model("规章资料", R.drawable.main_function_book_down, R.drawable.main_function_book));
-//        list.add(new Model("岗位建设", R.drawable.main_function_post_constrution_down, R.drawable.main_function_post_constrution));
-//        list.add(new Model("作业标准", R.drawable.main_function_standard_down, R.drawable.main_function_standard));
-//        list.add(new Model("运输生产", R.drawable.main_function_pda_down, R.drawable.main_function_pda));
-//        list.add(new Model("运输生产", R.drawable.main_function_pda_down, R.drawable.main_function_pda));
     }
 
     private void createDir() {
@@ -189,7 +182,6 @@ public class MainActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (KeyEvent.KEYCODE_HOME == keyCode) {
             System.out.println("HOME has been pressed yet ...");
-            // android.os.Process.killProcess(android.os.Process.myPid());
             Toast.makeText(getApplicationContext(), "HOME 键已被禁用...",
                     Toast.LENGTH_LONG).show();
         }

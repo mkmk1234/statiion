@@ -16,6 +16,9 @@ public class FileShowModel {
     public int progress = 0;
     public String readTime;
 
+    public FileShowModel() {
+    }
+
     public FileShowModel(FileModel fileModel, int imageId, boolean isShow, boolean isDownload, boolean isStore, boolean isRead, String readTime) {
         this.fileName = fileModel.fileName;
         this.fileUrl = fileModel.fileUrl;
