@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">station</string>
+    <string name="app_name">乔司站</string>
     <string name="dir_path">当前目录:%s</string>
 </resources>

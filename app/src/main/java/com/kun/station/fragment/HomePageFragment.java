@@ -49,9 +49,7 @@ public class HomePageFragment extends BaseFragment {
 
     private void loadData() {
         data = new ArrayList<>();
-        data.add(R.drawable.home_viewpager_one);
         data.add(R.drawable.home_viewpager_two);
-        data.add(R.drawable.home_viewpager_three);
         adapter.notifyDataSetChanged();
     }
 
