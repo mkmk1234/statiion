@@ -59,14 +59,14 @@ public class FileCombineFragment extends BaseFragment {
 
     private void addItemFragment(int position) {
         Fragment itemFragment = null;
+        Bundle b = new Bundle();
+        b.putString(CatalogFragment.ExtraPATH, TextUtils.isEmpty(rootPath) ? FileUtil.getExternalDir().getPath() : rootPath);
         switch (position) {
             case 0:
-                Bundle b = new Bundle();
-                b.putString(CatalogFragment.ExtraPATH, TextUtils.isEmpty(rootPath) ? FileUtil.getExternalDir().getPath() : rootPath);
                 itemFragment = Fragment.instantiate(getActivity(), CatalogFragment.class.getName(), b);
                 break;
             case 1:
-                itemFragment = Fragment.instantiate(getActivity(), FileSearchFragment.class.getName(), null);
+                itemFragment = Fragment.instantiate(getActivity(), FileSearchFragment.class.getName(), b);
                 break;
             case 2:
                 itemFragment = Fragment.instantiate(getActivity(), FileStoreFragment.class.getName(), null);

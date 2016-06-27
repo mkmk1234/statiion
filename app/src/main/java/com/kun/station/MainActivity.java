@@ -94,6 +94,11 @@ public class MainActivity extends BaseActivity {
                     if (!dirFile.exists()) {
                         dirFile.mkdirs();
                     }
+//                    try {
+//                        new File(dirFile, itemFile.fileName).createNewFile();
+//                    } catch (Exception e){
+//                        e.printStackTrace();
+//                    }
                 }
             }
         }
