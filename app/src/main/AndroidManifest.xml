@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="BootBroadCastReceiver">
+        <receiver android:name=".BootBroadCastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
                 <category android:name="android.intent.category.LAUNCHER" />

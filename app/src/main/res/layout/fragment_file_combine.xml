@@ -47,7 +47,8 @@
             android:background="@drawable/selector_bg_tab"
             android:drawableLeft="@drawable/book_ico_favorites"/>
     </RadioGroup>
-    <LinearLayout
+
+    <FrameLayout
         android:id="@+id/ll_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
