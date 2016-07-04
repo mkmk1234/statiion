@@ -1,6 +1,7 @@
 package com.kun.station;
 
 import android.content.Intent;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -8,8 +9,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.kun.station.base.BaseActivity;
+import com.kun.station.util.FileUtil;
 import com.kun.station.util.PreferencesUtils;
 import com.kun.station.widget.DialogPop;
+
+import java.io.File;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -31,6 +35,8 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
             Intent i = new Intent(FirstActivity.this, MainActivity.class);
             startActivity(i);
             finish();
+        } else {
+            FileUtil.deleteAllDir(new File(Environment.getExternalStorageDirectory(), "乔司站"));
         }
     }
 

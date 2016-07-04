@@ -1,5 +1,7 @@
 package com.kun.station.model;
 
+import net.tsz.afinal.annotation.sqlite.Id;
+
 /**
  * Created by kun on 16/6/27.
  */
@@ -11,7 +13,7 @@ public class DirectoryModel {
      * dirName :
      * parentDirName :
      */
-
+    @Id(column = "id")
     private int id;
     private int dirType;
     private String dirName;

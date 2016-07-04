@@ -1,11 +1,20 @@
 [
 {"id":0, "icon":"", "title":"系统首页", "type":0},
-{"id":1, "icon":"", "title":"企业简介", "type":2},
+{"id":1, "icon":"", "title":"企业简介", "type":2,"fileList":[
+{"id":231,"fileName":"车站状况.jpg","dirName":"企业简介/车站状况"},
+{"id":232,"fileName":"车站精神.doc","dirName":"企业简介/车站精神"},
+{"id":233,"fileName":"安全文化.pdf","dirName":"企业简介/安全文化"},
+{"id":234,"fileName":"经营文化.jpg","dirName":"企业简介/经营文化"},
+{"id":235,"fileName":"廉政文化.doc","dirName":"企业简介/廉政文化"},
+{"id":236,"fileName":"车间文化.pdf","dirName":"企业简介/车间文化"},
+{"id":237,"fileName":"班组文化基本原则.jpg","dirName":"企业简介/班组文化基本原则"},
+{"id":238,"fileName":"上海铁路局员工守则.doc","dirName":"企业简介/上海铁路局员工守则"}
+]},
 {"id":2, "icon":"", "title":"标准化车间创建", "type":1, "fileList":
 [
-{"id":1,"fileName":"路局指导意见01.pdf","dirName":"标准化车间创建/路局、直属站车间管理制度/路局指导意见"},
-{"id":2,"fileName":"路局指导意见02.jpg","dirName":"标准化车间创建/路局、直属站车间管理制度/路局指导意见"},
-{"id":3,"fileName":"路局指导意见03.doc","dirName":"标准化车间创建/路局、直属站车间管理制度/路局指导意见"},
+{"id":1,"fileName":"路局指导意见01.xls","dirName":"标准化车间创建/路局、直属站车间管理制度/路局指导意见"},
+{"id":2,"fileName":"路局指导意见02.xlsx","dirName":"标准化车间创建/路局、直属站车间管理制度/路局指导意见"},
+{"id":3,"fileName":"路局指导意见03.xlsm","dirName":"标准化车间创建/路局、直属站车间管理制度/路局指导意见"},
 {"id":4,"fileName":"专业处室实施办法01.pdf","dirName":"标准化车间创建/路局、直属站车间管理制度/专业处室实施办法"},
 {"id":5,"fileName":"专业处室实施办法02.doc","dirName":"标准化车间创建/路局、直属站车间管理制度/专业处室实施办法"},
 {"id":6,"fileName":"专业处室实施办法03.jpg","dirName":"标准化车间创建/路局、直属站车间管理制度/专业处室实施办法"},

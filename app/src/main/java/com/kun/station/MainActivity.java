@@ -7,8 +7,11 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +21,6 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.kun.station.base.BaseActivity;
@@ -49,6 +51,7 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.txt_wifi_state)
     TextView txtWifiState;
     WifiStateChangedReceiver wifiStateChangedReceiver;
+    ScreenBroadcastReceiver screenBroadcastReceiver;
     Fragment currentFragment;
 
     private ListAdapter mAdapter;
@@ -71,7 +74,10 @@ public class MainActivity extends BaseActivity {
         mAdapter = new ListAdapter();
         list = MyApplication.mGson.fromJson(FileUtil.loadRawString(this, R.raw.localdata), new TypeToken<ArrayList<MenuItemResponse>>() {
         }.getType());
-        createDir();
+        File ext = new File(Environment.getExternalStorageDirectory(), "乔司站");
+        if (!ext.exists()) {
+            createDir();
+        }
     }
 
     private void createDir() {
@@ -81,17 +87,12 @@ public class MainActivity extends BaseActivity {
         File stationDir = FileUtil.getExternalDir();
         File dirFile;
         for (MenuItemResponse itemResponse : list) {
-            if (itemResponse.type == 1 && itemResponse.fileList.size() > 0) {
+            if (itemResponse.type != 0 && itemResponse.fileList.size() > 0) {
                 for (FileModel itemFile : itemResponse.fileList) {
                     dirFile = new File(stationDir, itemFile.dirName);
                     if (!dirFile.exists()) {
                         dirFile.mkdirs();
                     }
-//                    try {
-//                        new File(dirFile, itemFile.fileName).createNewFile();
-//                    } catch (Exception e){
-//                        e.printStackTrace();
-//                    }
                 }
             }
         }
@@ -102,6 +103,7 @@ public class MainActivity extends BaseActivity {
         super.setUpView();
         initData();
         regReceiver();
+        registerScreenActionReceiver();
         leftMenuList.setAdapter(mAdapter);
         leftMenuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -137,7 +139,6 @@ public class MainActivity extends BaseActivity {
     }
 
 
-
     private void showFragment(Class<?> clss, Bundle b) {
         FragmentTransaction ft = getSupportFragmentManager()
                 .beginTransaction();
@@ -167,10 +168,39 @@ public class MainActivity extends BaseActivity {
         registerReceiver(wifiStateChangedReceiver, filter);
     }
 
+    private void registerScreenActionReceiver() {
+        screenBroadcastReceiver = new ScreenBroadcastReceiver(this);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_USER_PRESENT);
+        registerReceiver(screenBroadcastReceiver, filter);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(wifiStateChangedReceiver);
+        unregisterReceiver(screenBroadcastReceiver);
+        Log.i("sss", "onDestroy");
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.i("sss", "onDestroy");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i("sss", "onRestart");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.i("sss", "onRestoreInstanceState");
     }
 
     @Override
@@ -185,12 +215,16 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_HOME == keyCode) {
-            System.out.println("HOME has been pressed yet ...");
-            Toast.makeText(getApplicationContext(), "HOME 键已被禁用...",
-                    Toast.LENGTH_LONG).show();
+        switch (keyCode) {
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+                return true;
+            default:
+                return super.onKeyDown(keyCode, event);
         }
-        return true;
     }
 
     class ListAdapter extends BaseAdapter {

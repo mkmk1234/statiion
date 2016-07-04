@@ -1,10 +1,12 @@
 package com.kun.station.model;
 
+import net.tsz.afinal.annotation.sqlite.Id;
+
 /**
  * Created by kun on 16/6/15.
  */
 public class NoticeModel {
-
+    @Id(column = "id")
     public int id;
     public String title;
     public String detail;

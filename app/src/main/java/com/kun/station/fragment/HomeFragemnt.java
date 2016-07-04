@@ -43,6 +43,8 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     TextView txtDeviceID;
     @Bind(R.id.btn_wifi)
     ImageView btnWifi;
+    @Bind(R.id.iv_wifi)
+    ImageView ivWifi;
     String deviceID;
     HomePageFragment homePageFragment;
     NoticeFragment noticeFragment;
@@ -111,6 +113,7 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
         ft.commit();
 
     }
+
     private void getDeviceID() {
         deviceID = PreferencesUtils.getString(getActivity(), "deviceID");
     }
@@ -123,6 +126,7 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
             btnWifi.setImageResource(R.drawable.img_open_3g);
         }
     }
+
     private int getWifiState() {
         WifiManager wifiManger = (WifiManager) getActivity().getSystemService(Service.WIFI_SERVICE);
         return wifiManger.getWifiState();
@@ -181,6 +185,7 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     private List<FileShowModel> getNoDownloadFileList() {
         return DbManager.getInstace(getContext()).getShowFiles();
     }
+
     @OnClick({R.id.btn_wifi, R.id.tv_download})
     @Override
     public void onClick(View v) {
@@ -192,10 +197,12 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                 if (getWifiState() == WifiManager.WIFI_STATE_DISABLED) {
                     openWifi();
                     btnWifi.setImageResource(R.drawable.img_open_3g);
+                    ivWifi.setImageResource(R.drawable.ico_set_wifi);
 
                 } else {
                     closeWifi();
                     btnWifi.setImageResource(R.drawable.img_close_3g);
+                    ivWifi.setImageResource(R.drawable.ico_set_wifi_off);
                 }
                 break;
 
@@ -203,6 +210,7 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                 List<FileShowModel> list = getNewFileList();
                 list.addAll(getNoDownloadFileList());
                 newDownloadFileFragment.update(list);
+                topMenu.check(R.id.rb_thd);
                 break;
         }
     }

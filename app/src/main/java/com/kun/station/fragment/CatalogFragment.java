@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -25,24 +24,20 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by kun on 16/5/25.
  */
-public class CatalogFragment extends BaseFragment implements AdapterView.OnItemClickListener {
+public class CatalogFragment extends BaseFragment {
     public static final String ExtraPATH = "extra_path";
     @Bind(R.id.list)
     ListView list;
     @Bind(R.id.tv_dir_path)
     TextView pathTv;
-    @Bind(R.id.btn_store)
-    TextView storeBtn;
 
     private ArrayList<FileItem> dataList = new ArrayList<>();
     private FileListAdapter mAdapter;
     private DbManager mDbManager;
-    private FileItem mSelectFileItem;
     private String currentPath;
     private String firstPath;
 
@@ -64,20 +59,10 @@ public class CatalogFragment extends BaseFragment implements AdapterView.OnItemC
             firstPath = FileUtil.getExternalDir().getPath();
         }
         loadData(firstPath);
-        list.setOnItemClickListener(this);
+        //list.setOnItemClickListener(this);
         return view;
     }
 
-
-    @OnClick(R.id.btn_store)
-    void handleClick(View v) {
-        if (mSelectFileItem != null) {
-            mDbManager.updateStore(mSelectFileItem.path, mSelectFileItem.dir);
-            mAdapter.notifyDataSetChanged();
-            v.setVisibility(View.GONE);
-            loadData(currentPath);
-        }
-    }
 
     @Override
     public void onDestroyView() {
@@ -88,7 +73,7 @@ public class CatalogFragment extends BaseFragment implements AdapterView.OnItemC
     private void loadData(String path) {
         currentPath = path;
         pathTv.setText(String.format(getResources().getString(R.string.dir_path), path.replace(FileUtil.getExternalDir().getPath(), "/乔司站")));
-        dataList.removeAll(dataList);
+        dataList.clear();
         File file = new File(path);
         File[] fileList = file.listFiles();
         if (fileList != null) {
@@ -103,63 +88,32 @@ public class CatalogFragment extends BaseFragment implements AdapterView.OnItemC
                 continue;
             }
             FileItem item = new FileItem();
-            item.dir = fileList[i].getName();
+            item.name = fileList[i].getName();
             item.path = fileList[i].getAbsolutePath();
             if (fileList[i].isDirectory()) {
-                if (fileList[i].list() != null) {
-                    item.imageId = R.drawable.dir;
-                } else {
-//                    item.imageId = R.mipmap.ic_launcher;
-                    item.imageId = R.drawable.dir;
-                }
+                item.imageId = R.drawable.dir;
                 item.isStore = false;
             } else {
-                if (item.dir.endsWith(".pdf")) {
+                if (item.name.endsWith(".pdf")) {
                     item.imageId = R.drawable.pdf_pic;
-                } else if (item.dir.endsWith(".doc")) {
+                } else if (item.name.endsWith(".doc")) {
                     item.imageId = R.drawable.word_pic;
-                } else if (item.dir.endsWith(".png")) {
+                } else if (item.name.endsWith(".png")) {
                     item.imageId = R.drawable.png_pic;
                 } else {
                     item.imageId = R.drawable.file;
                 }
-                item.isStore = mDbManager.isStore(item.path, item.dir);
+                item.isStore = mDbManager.isStore(getRealPath(item.path, item.name), item.name);
             }
             dataList.add(item);
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        FileItem itemFile = dataList.get(position);
-        if (itemFile.imageId == R.drawable.dir || itemFile.imageId == R.drawable.back) {
-            loadData(itemFile.path);
-            storeBtn.setVisibility(View.GONE);
-            mSelectFileItem = null;
-        } else {
-            try {
-                if (itemFile.dir.endsWith("doc")) {
-                    startActivity(FileUtil.getWordFileIntent(itemFile.path));
-                }
-                if (itemFile.dir.endsWith("pdf")) {
-                    startActivity(FileUtil.getPdfFileIntent(itemFile.path));
-                }
-                if (itemFile.dir.endsWith("xls")) {
-                    startActivity(FileUtil.getExcelFileIntent(itemFile.path));
-                }
-                if (itemFile.dir.endsWith("jpg") || itemFile.dir.endsWith("png")) {
-                    CustomPop customPop = new CustomPop(getActivity(), CustomPop.Type.Type_Img);
-                    customPop.setImageResource(R.drawable.home_viewpager_one);
-                    customPop.show();
-                }
-            } catch (Exception e) {
-                Toast.makeText(getActivity(), "请安装软件打开文件。", Toast.LENGTH_SHORT).show();
-            }
-            storeBtn.setVisibility(View.VISIBLE);
-            storeBtn.setText(itemFile.isStore ? "取消收藏" : "收藏");
-            mSelectFileItem = itemFile;
-        }
+    private String getRealPath(String path, String name) {
+        return path.replace("/" + name, "").replace(FileUtil.getExternalDir().getPath() + "/", "");
+
     }
+
 
     public void back() {
         if (currentPath.equals(firstPath)) {
@@ -172,7 +126,7 @@ public class CatalogFragment extends BaseFragment implements AdapterView.OnItemC
 
     class FileItem {
         public int imageId;
-        public String dir;
+        public String name;
         public String path;
         public boolean isStore;
     }
@@ -202,7 +156,7 @@ public class CatalogFragment extends BaseFragment implements AdapterView.OnItemC
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             Holder mHolder;
             if (convertView == null) {
                 convertView = mInflater.inflate(R.layout.item_catalog, null);
@@ -216,8 +170,53 @@ public class CatalogFragment extends BaseFragment implements AdapterView.OnItemC
             }
             FileItem fileItem = mDataList.get(position);
             mHolder.imageView.setImageResource(fileItem.imageId);
-            mHolder.nameTv.setText(fileItem.dir);
+            mHolder.nameTv.setText(fileItem.name);
             mHolder.storeIv.setVisibility(fileItem.isStore ? View.VISIBLE : View.GONE);
+            convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    FileItem itemFile = dataList.get(position);
+                    if (itemFile != null && itemFile.imageId != R.drawable.dir) {
+                        if (mDbManager.isStore(getRealPath(itemFile.path, itemFile.name), itemFile.name)) {
+                            Toast.makeText(getContext(), "取消收藏", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "收藏成功", Toast.LENGTH_SHORT).show();
+                        }
+                        mDbManager.updateStore(getRealPath(itemFile.path, itemFile.name), itemFile.name);
+                        mAdapter.notifyDataSetChanged();
+                        loadData(currentPath);
+                    }
+                    return true;
+                }
+            });
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FileItem itemFile = dataList.get(position);
+                    if (itemFile.imageId == R.drawable.dir) {
+                        loadData(itemFile.path);
+                    }
+                    try {
+                        if (itemFile.name.endsWith("doc")) {
+                            startActivity(FileUtil.getWordFileIntent(itemFile.path));
+                        }
+                        if (itemFile.name.endsWith("pdf")) {
+                            startActivity(FileUtil.getPdfFileIntent(itemFile.path));
+                        }
+                        if (itemFile.name.endsWith("xls") || itemFile.name.endsWith("xlsx") || itemFile.name.endsWith("xlsm")) {
+                            startActivity(FileUtil.getExcelFileIntent(itemFile.path));
+                        }
+                        if (itemFile.name.endsWith("jpg") || itemFile.name.endsWith("png")) {
+                            CustomPop customPop = new CustomPop(getActivity(), CustomPop.Type.Type_Img);
+                            customPop.setImageResource(R.drawable.home_viewpager_one);
+                            customPop.show();
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(getActivity(), "请安装软件打开文件。", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
             return convertView;
         }
 

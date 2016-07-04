@@ -70,10 +70,10 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
                         e.printStackTrace();
                     }
                 }
-                if (hasDownLoadList.size() == fileShowList.size()) {
-                    isDownload = false;
-                }
 
+            }
+            if (hasDownLoadList.size() == fileShowList.size()) {
+                isDownload = false;
             }
             mAdapter.notifyDataSetChanged();
         }
@@ -94,6 +94,9 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
     public void update(List<FileShowModel> list) {
         if (fileShowList == null) {
             fileShowList = new ArrayList<>();
+        }
+        if (fileShowList.size() > 0) {
+            return;
         }
         fileShowList.clear();
         fileShowList.addAll(list);

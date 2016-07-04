@@ -2,6 +2,7 @@ package com.kun.station.db;
 
 import android.content.Context;
 
+import com.kun.station.model.DirectoryModel;
 import com.kun.station.model.FileShowModel;
 import com.kun.station.model.NoticeModel;
 
@@ -43,6 +44,22 @@ public class DbManager {
         return db.findAll(NoticeModel.class);
     }
 
+    public void insertDir(DirectoryModel directoryModel) {
+        db.save(directoryModel);
+    }
+
+    public void updateDir(DirectoryModel directoryModel) {
+        db.update(directoryModel);
+    }
+
+    public void deleteDir(DirectoryModel directoryModel) {
+        db.delete(directoryModel);
+    }
+
+    public void getDir() {
+        db.findAll(DirectoryModel.class);
+    }
+
     public void insertFile(FileShowModel fileShowModel) {
         if (isHas(fileShowModel.dirName, fileShowModel.fileName)) {
             db.update(fileShowModel);
@@ -50,6 +67,7 @@ public class DbManager {
             db.save(fileShowModel);
         }
     }
+
     public void deleteFile(FileShowModel fileShowModel) {
         db.delete(fileShowModel);
     }
@@ -97,6 +115,14 @@ public class DbManager {
 
     public List<FileShowModel> getFile(String filePath, String fileName) {
         List<FileShowModel> list = db.findAllByWhere(FileShowModel.class, " fileName=\"" + fileName + "\"" + " and dirName=\"" + filePath + "\"");
+        if (list != null && list.size() > 0) {
+            return list;
+        }
+        return new ArrayList<>();
+    }
+
+    public List<FileShowModel> getFiles() {
+        List<FileShowModel> list = db.findAll(FileShowModel.class);
         if (list != null && list.size() > 0) {
             return list;
         }

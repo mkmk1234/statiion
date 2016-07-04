@@ -3,7 +3,6 @@ package com.kun.station;
 import android.app.Application;
 
 import com.google.gson.Gson;
-import com.kun.station.db.DbManager;
 import com.kun.station.network.NetworkManager;
 
 /**
@@ -11,7 +10,6 @@ import com.kun.station.network.NetworkManager;
  */
 public class MyApplication extends Application{
     private static MyApplication mInstance;
-    private DbManager mDbManager;
     private NetworkManager networkManager;
     public static Gson mGson;
 

@@ -23,14 +23,6 @@
                 android:layout_margin="10dp"
                 android:textColor="#333333"
                 android:text="当前目录://" />
-            <Button
-                android:id="@+id/btn_store"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="收藏"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:visibility="gone"/>
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"

@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
@@ -83,7 +84,7 @@ public class FileStoreFragment extends BaseFragment{
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder mHolder;
             if(convertView == null){
                 convertView = mInflater.inflate(R.layout.item_store_file, null);
@@ -99,6 +100,22 @@ public class FileStoreFragment extends BaseFragment{
             mHolder.nameTv.setText(item.fileName);
             mHolder.imageIv.setImageResource(item.imageId);
             mHolder.pathTv.setText(item.dirName);
+            convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    FileShowModel itemFile = mDataList.get(position);
+                    if (itemFile != null) {
+                        if (mDbManager.isStore(itemFile.dirName, itemFile.fileName)) {
+                            Toast.makeText(getContext(), "取消收藏", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "收藏成功", Toast.LENGTH_SHORT).show();
+                        }
+                        mDbManager.updateStore(itemFile.dirName, itemFile.fileName);
+                        refreshData();
+                    }
+                    return true;
+                }
+            });
             return convertView;
         }
 

@@ -1,9 +1,12 @@
 package com.kun.station.model;
 
+import net.tsz.afinal.annotation.sqlite.Id;
+
 /**
  * Created by admin on 2016/6/18.
  */
 public class FileShowModel {
+    @Id(column = "id")
     public int id;
     public int imageId;
     public String fileName;

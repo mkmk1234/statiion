@@ -1,6 +1,5 @@
 package com.kun.station.util;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -9,7 +8,6 @@ import android.os.Environment;
 import android.widget.Toast;
 
 import com.kun.station.MyApplication;
-import com.kun.station.R;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -95,11 +93,22 @@ public class FileUtil {
         File external = Environment.getExternalStorageDirectory();
         if (external == null)
             return null;
-        File ext = new File(Environment.getExternalStorageDirectory(), "Station");
+        File ext = new File(Environment.getExternalStorageDirectory(), "乔司站");
         if(ext != null && !ext.exists()){
             ext.mkdirs();
         }
         return ext;
+    }
+
+    public static void deleteAllDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                deleteAllDir(new File(dir, children[i]));
+            }
+        }
+        dir.delete();
+
     }
 
     public static String loadRawString(Context context , int resId) {
