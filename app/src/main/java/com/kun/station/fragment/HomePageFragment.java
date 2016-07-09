@@ -6,9 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
+import com.kun.station.model.HomeBannerModel;
+import com.kun.station.network.NetworkApi;
 import com.kun.station.widget.LoopPageAdapter;
 import com.kun.station.widget.LoopViewPager;
 
@@ -25,7 +31,7 @@ public class HomePageFragment extends BaseFragment {
     @Bind(R.id.viewpager)
     LoopViewPager viewpager;
     MyLoopViewPageAdapter adapter;
-    List<Integer> data;
+    List<HomeBannerModel> data;
 
 
     @Nullable
@@ -49,8 +55,18 @@ public class HomePageFragment extends BaseFragment {
 
     private void loadData() {
         data = new ArrayList<>();
-        data.add(R.drawable.home_viewpager_two);
-        adapter.notifyDataSetChanged();
+        NetworkApi.getHomeBanner(new Response.Listener<ArrayList<HomeBannerModel>>() {
+            @Override
+            public void onResponse(ArrayList<HomeBannerModel> response) {
+                data.addAll(response);
+                adapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT);
+            }
+        });
     }
 
     class MyLoopViewPageAdapter extends LoopPageAdapter {
@@ -69,11 +85,10 @@ public class HomePageFragment extends BaseFragment {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_loop_page, container, false);
             }
 
-            ((ImageView) convertView).setImageResource(data.get(position));
-//            Glide.with(getContext())
-//                    .load(data.get(position))
-//                    .crossFade()
-//                    .into((ImageView) convertView);
+            Glide.with(getContext())
+                    .load(data.get(position).getImageUrl())
+                    .crossFade()
+                    .into((ImageView) convertView);
             return convertView;
         }
     }

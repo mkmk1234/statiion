@@ -1,9 +1,11 @@
 package com.kun.station.model;
 
+import java.io.Serializable;
+
 /**
  * Created by kun on 16/6/27.
  */
-public class DeviceModel {
+public class DeviceModel extends BaseModel {
 
     /**
      * id :
@@ -11,31 +13,15 @@ public class DeviceModel {
      * station :
      */
 
-    private String id;
-    private String deptName;
-    private String station;
+    public String erialId;
+    public String deptName;
+    public String station;
+    public String equipmentNumber;
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setDeptName(String deptName) {
+    public DeviceModel(String equipmentNumber, String station, String deptName) {
+        this.equipmentNumber = equipmentNumber;
+        this.station = station;
         this.deptName = deptName;
     }
 
-    public void setStation(String station) {
-        this.station = station;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getDeptName() {
-        return deptName;
-    }
-
-    public String getStation() {
-        return station;
-    }
 }

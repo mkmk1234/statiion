@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.kun.station.MyApplication;
 
 import org.apache.http.client.HttpClient;
 
@@ -119,7 +120,8 @@ public class NetworkManager {
                 builder.append(item.getKey()).append("=").append(item.getValue()).append("&");
             }
         }
-        builder.append("timestamp_now=").append(System.currentTimeMillis());
+        builder.append("erialId=").append(MyApplication.erialId);
+
         return builder.toString();
     }
 }

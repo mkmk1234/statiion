@@ -4,7 +4,9 @@ import android.content.Context;
 
 import com.kun.station.model.DirectoryModel;
 import com.kun.station.model.FileShowModel;
+import com.kun.station.model.MenuModel;
 import com.kun.station.model.NoticeModel;
+import com.kun.station.model.SubMenuModel;
 
 import net.tsz.afinal.FinalDb;
 
@@ -31,7 +33,21 @@ public class DbManager {
         return dbManager;
     }
 
+    public void insertMenu(MenuModel menuModel) {
+        db.save(menuModel);
+    }
 
+    public List<MenuModel> getMenu() {
+        return db.findAll(MenuModel.class);
+    }
+
+    public void insertSubMenu(SubMenuModel subMenuModel) {
+        db.save(subMenuModel);
+    }
+
+    public List<SubMenuModel> getSubMenu(int menuId) {
+        return db.findAllByWhere(SubMenuModel.class, " menuId=\"" + menuId + "\"");
+    }
     public void insertNotice(NoticeModel noticeModel) {
         db.save(noticeModel);
     }

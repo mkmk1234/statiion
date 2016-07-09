@@ -13,14 +13,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
 import com.kun.station.db.DbManager;
+import com.kun.station.model.DeviceModel;
+import com.kun.station.model.FileShowModel;
+import com.kun.station.network.NetworkApi;
 import com.kun.station.util.FileUtil;
+import com.kun.station.util.ToastUtils;
 import com.kun.station.widget.CustomPop;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -177,12 +184,29 @@ public class CatalogFragment extends BaseFragment {
                 public boolean onLongClick(View v) {
                     FileItem itemFile = dataList.get(position);
                     if (itemFile != null && itemFile.imageId != R.drawable.dir) {
-                        if (mDbManager.isStore(getRealPath(itemFile.path, itemFile.name), itemFile.name)) {
-                            Toast.makeText(getContext(), "取消收藏", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), "收藏成功", Toast.LENGTH_SHORT).show();
+                        List<FileShowModel> list = mDbManager.getFile(getRealPath(itemFile.path, itemFile.name), itemFile.name);
+                        FileShowModel fileShowModel = null;
+                        if (list.size() > 0) {
+                            fileShowModel = list.get(0);
                         }
-                        mDbManager.updateStore(getRealPath(itemFile.path, itemFile.name), itemFile.name);
+                        final FileShowModel finalFileShowModel = fileShowModel;
+                        NetworkApi.changeCollection(fileShowModel.id + "", finalFileShowModel.isStore ? "0" : "1",
+                                new Response.Listener<DeviceModel>() {
+                                    @Override
+                                    public void onResponse(DeviceModel response) {
+                                        if (finalFileShowModel.isStore) {
+                                            ToastUtils.showToast("取消收藏");
+                                        } else {
+                                            ToastUtils.showToast("收藏成功");
+                                        }
+                                        mDbManager.updateStore(finalFileShowModel.dirName, finalFileShowModel.fileName);
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        ToastUtils.showToast(error.getMessage());
+                                    }
+                                });
                         mAdapter.notifyDataSetChanged();
                         loadData(currentPath);
                     }

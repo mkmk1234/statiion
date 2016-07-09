@@ -2,10 +2,12 @@ package com.kun.station.model;
 
 import net.tsz.afinal.annotation.sqlite.Id;
 
+import java.io.Serializable;
+
 /**
  * Created by admin on 2016/6/18.
  */
-public class FileShowModel {
+public class FileShowModel implements Serializable {
     @Id(column = "id")
     public int id;
     public int imageId;

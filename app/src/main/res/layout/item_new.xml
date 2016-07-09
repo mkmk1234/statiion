@@ -40,6 +40,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_siz_small"
             android:singleLine="true"
+            android:maxLength="20"
             android:text="行车资料／行车资料／行车资料／行车资料"
             android:textColor="#9b9b9b" />
     </LinearLayout>

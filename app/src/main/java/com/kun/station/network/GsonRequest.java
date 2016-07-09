@@ -9,6 +9,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
+import com.kun.station.MyApplication;
+import com.kun.station.util.Log;
 
 import org.json.JSONObject;
 
@@ -53,8 +55,7 @@ public class GsonRequest extends Request{
     @Override
     protected Response parseNetworkResponse(NetworkResponse response) {
         try {
-            String responseString = new String(response.data,
-                    HttpHeaderParser.parseCharset(response.headers));
+            String responseString = new String(response.data);
             JSONObject resultObject;
             if(response.headers.get("Content-Encoding") != null &&
                     response.headers.get("Content-Encoding").indexOf("gzip") > -1){
@@ -75,7 +76,7 @@ public class GsonRequest extends Request{
                 return Response.success(mGson.fromJson(resultObject.getString("data"), mClass == null ? mType : mClass),
                         HttpHeaderParser.parseCacheHeaders(response));
             } else {
-                return Response.error(new VolleyError(resultObject.getString("data"), resultObject.getInt("code")));
+                return Response.error(new VolleyError(resultObject.getString("message"), resultObject.getInt("code")));
             }
         } catch (Exception exception){
             return Response.error(new ParseError(exception));
@@ -119,10 +120,8 @@ public class GsonRequest extends Request{
         if(mParams == null){
             mParams = new HashMap<>();
         }
-        mParams.put("timestamp_now", String.valueOf(System.currentTimeMillis()));
-//        if(!TextUtils.isEmpty(Application.userToken)){
-//            mParams.put("user_token", Application.userToken);
-//        }
+        mParams.put("erialId", MyApplication.erialId);
+
         return mParams;
     }
 

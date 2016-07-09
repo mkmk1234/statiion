@@ -12,11 +12,13 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.kun.station.R;
+import com.kun.station.model.NoticeModel;
 import com.senab.photoview.PhotoView;
 import com.senab.photoview.PhotoViewAttacher;
 
@@ -29,18 +31,19 @@ public class CustomPop extends PopupWindow implements View.OnClickListener{
     Activity mActivity;
     @Bind(R.id.txt_title)
     TextView txtTitle;
-    @Bind(R.id.txt_content)
-    TextView txtContent;
+    @Bind(R.id.web_content)
+    WebView webContent;
     @Bind(R.id.iv_img)
     PhotoView imageView;
     @Bind(R.id.ll_txt)
     LinearLayout llTxt;
     View rootView;
 
+
     private Type mShowType;
     private Bitmap mBitmap;
     private int mResource = -1;
-
+    private NoticeModel noticeModel;
     public enum Type {
         Type_Txt, Type_Img
     }
@@ -49,6 +52,7 @@ public class CustomPop extends PopupWindow implements View.OnClickListener{
         super(activity);
         mActivity = activity;
         initView(activity);
+        mShowType = Type.Type_Txt;
     }
 
     public CustomPop(Activity activity, Type type) {
@@ -58,6 +62,13 @@ public class CustomPop extends PopupWindow implements View.OnClickListener{
         initView(activity);
     }
 
+    public CustomPop(Activity activity, Type type, NoticeModel noticeModel) {
+        super(activity);
+        mShowType = type;
+        mActivity = activity;
+        this.noticeModel = noticeModel;
+        initView(activity);
+    }
     public void setImageBitmap(Bitmap bitmap) {
         mShowType = Type.Type_Img;
         mBitmap = bitmap;
@@ -72,9 +83,10 @@ public class CustomPop extends PopupWindow implements View.OnClickListener{
         rootView = LayoutInflater.from(context).inflate(R.layout.pop_text, null);
         rootView.setOnClickListener(this);
         setContentView(rootView);
-//        ButterKnife.bind(rootView);
         llTxt = (LinearLayout) rootView.findViewById(R.id.ll_txt);
         imageView = (PhotoView) rootView.findViewById(R.id.iv_img);
+        webContent = (WebView) rootView.findViewById(R.id.web_content);
+        txtTitle = (TextView) rootView.findViewById(R.id.txt_title);
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         setFocusable(true);
@@ -130,6 +142,14 @@ public class CustomPop extends PopupWindow implements View.OnClickListener{
                 imageView.setImageBitmap(mBitmap);
             } else if (mResource != -1) {
                 imageView.setImageResource(mResource);
+            }
+        } else {
+            if (noticeModel != null) {
+                txtTitle.setText(noticeModel.title);
+                webContent.getSettings().setDefaultTextEncodingName("UTF -8");
+                webContent.loadDataWithBaseURL(null, noticeModel.noticeContent, "text/html", "utf-8", null);
+//                webContent.loadData(URLEncoder.encode(noticeModel.noticeContent), "text/html; charset=UTF-8", null);
+
             }
         }
         Animation trans = AnimationUtils.loadAnimation(mActivity, R.anim.anim_enter);

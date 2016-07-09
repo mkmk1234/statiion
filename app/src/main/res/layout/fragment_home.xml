@@ -112,6 +112,7 @@
                 android:text="设备： 099" />
 
             <TextView
+                android:id="@+id/txt_station"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -122,6 +123,7 @@
                 android:text="车间： 到达场车间" />
 
             <TextView
+                android:id="@+id/txt_deptname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"

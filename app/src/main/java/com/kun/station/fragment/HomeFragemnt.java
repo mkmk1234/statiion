@@ -14,14 +14,12 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.google.gson.reflect.TypeToken;
-import com.kun.station.MyApplication;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
 import com.kun.station.db.DbManager;
+import com.kun.station.model.DeviceModel;
 import com.kun.station.model.FileModel;
 import com.kun.station.model.FileShowModel;
-import com.kun.station.util.FileUtil;
 import com.kun.station.util.PreferencesUtils;
 
 import java.util.ArrayList;
@@ -45,7 +43,11 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     ImageView btnWifi;
     @Bind(R.id.iv_wifi)
     ImageView ivWifi;
-    String deviceID;
+    @Bind(R.id.txt_station)
+    TextView txtStation;
+    @Bind(R.id.txt_deptname)
+    TextView txtDeptname;
+    DeviceModel deviceModel;
     HomePageFragment homePageFragment;
     NoticeFragment noticeFragment;
     NewDownloadFileFragment newDownloadFileFragment;
@@ -55,9 +57,11 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
-        getDeviceID();
+        getDeviceInfo();
         showWifiBtn();
-        txtDeviceID.setText("设备： " + deviceID);
+        txtDeviceID.setText("设备： " + deviceModel.equipmentNumber);
+        txtDeptname.setText("岗位： " + deviceModel.deptName);
+        txtStation.setText("车间： " + deviceModel.station);
         initFragment();
         topMenu.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -114,8 +118,8 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
 
     }
 
-    private void getDeviceID() {
-        deviceID = PreferencesUtils.getString(getActivity(), "deviceID");
+    private void getDeviceInfo() {
+        deviceModel = new DeviceModel(PreferencesUtils.getString(getActivity(), "equipmentNumber"), PreferencesUtils.getString(getActivity(), "deptName"), PreferencesUtils.getString(getActivity(), "station"));
     }
 
     private void showWifiBtn() {
@@ -170,8 +174,9 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     private List<FileShowModel> getNewFileList() {
         List<FileShowModel> fileShowList = new ArrayList<>();
         DbManager dbManager = DbManager.getInstace(getContext());
-        List<FileModel> list = MyApplication.mGson.fromJson(FileUtil.loadRawString(getContext(), R.raw.localdata_list), new TypeToken<ArrayList<FileModel>>() {
-        }.getType());
+        List<FileModel> list = null;
+//        List<FileModel> list = MyApplication.mGson.fromJson(FileUtil.loadRawString(getContext(), R.raw.localdata_list), new TypeToken<ArrayList<FileModel>>() {
+//        }.getType());
         for (int i = 0; i < list.size(); i++) {
             FileModel fileModel = list.get(i);
             fileShowList.add(new FileShowModel(fileModel, 0, true, false, dbManager.isStore(fileModel.dirName, fileModel.fileName), false, ""));

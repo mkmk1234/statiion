@@ -2,8 +2,6 @@ package com.kun.station.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +13,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
 import com.kun.station.db.DbManager;
 import com.kun.station.model.NoticeModel;
-import com.kun.station.util.Log;
+import com.kun.station.network.NetworkApi;
+import com.kun.station.util.PreferencesUtils;
+import com.kun.station.util.ToastUtils;
 import com.kun.station.widget.CustomPop;
 
 import java.text.SimpleDateFormat;
@@ -40,16 +42,7 @@ public class NoticeFragment extends BaseFragment {
     List<NoticeModel> datas;
     List<NoticeModel> datastemp;
     ListAdapter adapter;
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            datas.addAll(datastemp);
-            datas.addAll(DbManager.getInstace(getContext()).getNoitce());
-            saveNotice();
-            adapter.notifyDataSetChanged();
-        }
-    };
+
 
     @Nullable
     @Override
@@ -62,10 +55,10 @@ public class NoticeFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 NoticeModel noticeModel = adapter.getItem(position);
-                noticeModel.readTime = getDate();
+                noticeModel.readTime = getDate(new Date());
                 noticeModel.hasRead = true;
                 DbManager.getInstace(getContext()).updateNotice(noticeModel);
-                new CustomPop(getActivity()).show();
+                new CustomPop(getActivity(), CustomPop.Type.Type_Txt, noticeModel).show();
                 adapter.notifyDataSetChanged();
             }
         });
@@ -73,8 +66,7 @@ public class NoticeFragment extends BaseFragment {
         return view;
     }
 
-    private String getDate() {
-        Date d = new Date();
+    private String getDate(Date d) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日");
         return df.format(d);
     }
@@ -88,22 +80,26 @@ public class NoticeFragment extends BaseFragment {
     private void getData() {
         datastemp = new ArrayList<>();
         datas = new ArrayList<>();
-        Log.i("sss", "size" + datas.size());
-        new Thread() {
+        NetworkApi.getHomeNotice(new Response.Listener<ArrayList<NoticeModel>>() {
             @Override
-            public void run() {
-                super.run();
-                try {
-                    sleep(100);
-                    for (int i = 0; i < 10; i++) {
-                        datastemp.add(new NoticeModel(datas.size() + i, "这是一个公告", "第" + (i + 1) + "个公告", "公告内容", false));
-                    }
-                    handler.sendEmptyMessage(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            public void onResponse(ArrayList<NoticeModel> response) {
+                datastemp.clear();
+                datas.clear();
+                datastemp.addAll(response);
+                datas.addAll(datastemp);
+                datas.addAll(DbManager.getInstace(getContext()).getNoitce());
+                saveNotice();
+                if (datastemp.size() > 0) {
+                    PreferencesUtils.putString(getContext(), "noticeLastTime", datastemp.get(0).lastTime + "");
                 }
+                adapter.notifyDataSetChanged();
             }
-        }.start();
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ToastUtils.showToast(error.getMessage());
+            }
+        }, getContext());
     }
 
     @Override
@@ -142,7 +138,7 @@ public class NoticeFragment extends BaseFragment {
             }
             viewHolder = (ViewHolder) convertView.getTag();
             viewHolder.title.setText(getItem(position).title);
-            viewHolder.content.setText(getItem(position).detail);
+            viewHolder.content.setText(getDate(new Date(Long.parseLong(getItem(position).lastTime))));
             if (getItem(position).hasRead) {
                 viewHolder.title.setTextColor(Color.parseColor("#9b9b9b"));
                 viewHolder.txtRead.setTextColor(Color.parseColor("#9b9b9b"));

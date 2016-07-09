@@ -2,62 +2,76 @@ package com.kun.station.model;
 
 import net.tsz.afinal.annotation.sqlite.Id;
 
+import java.io.Serializable;
+
 /**
  * Created by kun on 16/6/27.
  */
-public class DirectoryModel {
-
+public class DirectoryModel implements Serializable {
     /**
-     * id : 0
-     * dirType : 0
-     * dirName :
-     * parentDirName :
+     * dirName : 车站状况
+     * dirPath : /车站状况
+     * id : 1
+     * lastTime : 1468077987000
+     * status : 0
      */
     @Id(column = "id")
     private int id;
-    private int dirType;
     private String dirName;
-    private String parentDirName;
+    private String dirPath;
+    private String lastTime;
+    private int status;
 
     public DirectoryModel() {
     }
 
-    public DirectoryModel(int id, int dirType, String dirName, String parentDirName) {
+    public DirectoryModel(int id, String dirName, String dirPath, String lastTime, int status) {
         this.id = id;
-        this.dirType = dirType;
         this.dirName = dirName;
-        this.parentDirName = parentDirName;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setDirType(int dirType) {
-        this.dirType = dirType;
+        this.dirPath = dirPath;
+        this.lastTime = lastTime;
+        this.status = status;
     }
 
     public void setDirName(String dirName) {
         this.dirName = dirName;
     }
 
-    public void setParentDirName(String parentDirName) {
-        this.parentDirName = parentDirName;
+    public void setDirPath(String dirPath) {
+        this.dirPath = dirPath;
     }
 
-    public int getId() {
-        return id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getDirType() {
-        return dirType;
+    public void setLastTime(String lastTime) {
+        this.lastTime = lastTime;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getDirName() {
         return dirName;
     }
 
-    public String getParentDirName() {
-        return parentDirName;
+    public String getDirPath() {
+        return dirPath;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getLastTime() {
+        return lastTime;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+
 }

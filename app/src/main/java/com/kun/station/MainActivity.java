@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,14 +21,15 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.gson.reflect.TypeToken;
 import com.kun.station.base.BaseActivity;
+import com.kun.station.db.DbManager;
 import com.kun.station.fragment.CatalogFragment;
 import com.kun.station.fragment.FileCombineFragment;
 import com.kun.station.fragment.GanWeiFragment;
 import com.kun.station.fragment.HomeFragemnt;
-import com.kun.station.model.FileModel;
-import com.kun.station.response.MenuItemResponse;
+import com.kun.station.model.MenuItemModel;
+import com.kun.station.model.MenuModel;
+import com.kun.station.model.SubMenuModel;
 import com.kun.station.util.FileUtil;
 
 import java.io.File;
@@ -45,7 +45,6 @@ public class MainActivity extends BaseActivity {
     ListView leftMenuList;
     @Bind(R.id.detail_layout)
     FrameLayout detailLayout;
-    List<MenuItemResponse> list;
     @Bind(R.id.txt_time)
     TextView txtTime;
     @Bind(R.id.txt_wifi_state)
@@ -57,6 +56,7 @@ public class MainActivity extends BaseActivity {
     private ListAdapter mAdapter;
     private FileCombineFragment mFileCombineFragment;
     private HomeFragemnt homeFragemnt;
+    private List<MenuItemModel> menuItemModelList;
     int[] selelctedImg = {R.drawable.main_function_home_down, R.drawable.main_function_enterprise_down,
             R.drawable.main_function_book_down, R.drawable.main_function_post_constrution_down
             , R.drawable.main_function_standard_down, R.drawable.main_function_pda_down, R.drawable.main_function_pda_down, R.drawable.main_function_pda_down};
@@ -72,31 +72,19 @@ public class MainActivity extends BaseActivity {
 
     private void initData() {
         mAdapter = new ListAdapter();
-        list = MyApplication.mGson.fromJson(FileUtil.loadRawString(this, R.raw.localdata), new TypeToken<ArrayList<MenuItemResponse>>() {
-        }.getType());
-        File ext = new File(Environment.getExternalStorageDirectory(), "乔司站");
-        if (!ext.exists()) {
-            createDir();
+        List<MenuModel> list = DbManager.getInstace(MainActivity.this).getMenu();
+        menuItemModelList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            MenuModel menuModel = list.get(i);
+            List<SubMenuModel> subMenuModelList = new ArrayList<>();
+            if (menuModel.getType() == 1) {
+                subMenuModelList = DbManager.getInstace(MainActivity.this).getSubMenu(menuModel.getId());
+            }
+            MenuItemModel menuItemModel = new MenuItemModel(menuModel, subMenuModelList);
+            menuItemModelList.add(menuItemModel);
         }
     }
 
-    private void createDir() {
-        if (list == null || list.size() == 0) {
-            return;
-        }
-        File stationDir = FileUtil.getExternalDir();
-        File dirFile;
-        for (MenuItemResponse itemResponse : list) {
-            if (itemResponse.type != 0 && itemResponse.fileList.size() > 0) {
-                for (FileModel itemFile : itemResponse.fileList) {
-                    dirFile = new File(stationDir, itemFile.dirName);
-                    if (!dirFile.exists()) {
-                        dirFile.mkdirs();
-                    }
-                }
-            }
-        }
-    }
 
     @Override
     protected void setUpView() {
@@ -110,15 +98,15 @@ public class MainActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mAdapter.setSelectPosition(position);
                 Bundle b = new Bundle();
-                MenuItemResponse itemResponse = list.get(position);
-                switch (itemResponse.type) {
+                MenuItemModel menuItemModel = menuItemModelList.get(position);
+                switch (menuItemModel.getType()) {
                     case 0:
                         showHomeFragment();
                         currentFragment = homeFragemnt;
                         break;
-                    case 1:
+                    case 2:
                         mFileCombineFragment = new FileCombineFragment();
-                        File rootFile = new File(FileUtil.getExternalDir(), itemResponse.title);
+                        File rootFile = new File(FileUtil.getExternalDir(), menuItemModel.getTitle());
                         Bundle mBundle = new Bundle();
                         mBundle.putString(CatalogFragment.ExtraPATH, rootFile.getAbsolutePath());
                         mFileCombineFragment.setArguments(mBundle);
@@ -128,7 +116,7 @@ public class MainActivity extends BaseActivity {
                         ft.commitAllowingStateLoss();
                         currentFragment = mFileCombineFragment;
                         break;
-                    case 2:
+                    case 1:
                         showFragment(GanWeiFragment.class, b);
                         break;
                 }
@@ -188,7 +176,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i("sss", "onDestroy");
+        Log.i("sss", "onCreate");
     }
 
     @Override
@@ -232,12 +220,12 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return list == null ? 0 : list.size();
+            return menuItemModelList == null ? 0 : menuItemModelList.size();
         }
 
         @Override
-        public MenuItemResponse getItem(int position) {
-            return list.get(position);
+        public MenuItemModel getItem(int position) {
+            return menuItemModelList.get(position);
         }
 
         @Override
@@ -256,7 +244,7 @@ public class MainActivity extends BaseActivity {
                 convertView = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_menu, parent, false);
             }
             TextView tv = (TextView) convertView.findViewById(R.id.menu_txt);
-            tv.setText(getItem(position).title);
+            tv.setText(getItem(position).getTitle());
             convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(R.drawable.main_function_home_down);
             if (position == selectPosition) {
                 convertView.findViewById(R.id.iv_arrow).setVisibility(View.VISIBLE);

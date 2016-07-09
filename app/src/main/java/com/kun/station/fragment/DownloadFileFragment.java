@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.gson.reflect.TypeToken;
-import com.kun.station.MyApplication;
 import com.kun.station.R;
 import com.kun.station.adapter.DownLoadFileAdapter;
 import com.kun.station.base.BaseFragment;
@@ -36,7 +34,7 @@ public class DownloadFileFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
-        fileList = MyApplication.mGson.fromJson(FileUtil.loadRawString(mContext, R.raw.localdata_list), new TypeToken<ArrayList<FileModel>>() {}.getType());
+//        fileList = MyApplication.mGson.fromJson(FileUtil.loadRawString(mContext, R.raw.localdata_list), new TypeToken<ArrayList<FileModel>>() {}.getType());
     }
 
     @Nullable
