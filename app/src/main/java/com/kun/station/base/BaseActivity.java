@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.kun.station.util.Log;
+import com.kun.station.widget.LoadingDialog;
 
 import butterknife.ButterKnife;
 
@@ -17,6 +18,8 @@ import butterknife.ButterKnife;
  * Created by kun on 16/6/3.
  */
 public abstract class BaseActivity extends FragmentActivity {
+    private LoadingDialog mLoadingDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +65,23 @@ public abstract class BaseActivity extends FragmentActivity {
         }
 
         return i.getIntExtra(name, defaultValue);
+    }
+
+    public void showLoadingDialog() {
+        showLoadingDialog(null);
+    }
+
+    public void showLoadingDialog(String message) {
+        if (mLoadingDialog == null) {
+            mLoadingDialog = new LoadingDialog(this, message);
+        }
+        mLoadingDialog.show();
+    }
+
+    public void hideLoadingDialog() {
+        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
+            mLoadingDialog.dismiss();
+        }
     }
 
     public int getIntParam(String name) {
