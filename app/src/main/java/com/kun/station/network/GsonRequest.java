@@ -77,9 +77,12 @@ public class GsonRequest extends Request{
                 }
             }
             if(resultObject.getInt("code") == 200){
-
-                return Response.success(mGson.fromJson(resultObject.getString("data"), mClass == null ? mType : mClass),
-                        HttpHeaderParser.parseCacheHeaders(response));
+                if (resultObject.has("data")) {
+                    return Response.success(mGson.fromJson(resultObject.getString("data"), mClass == null ? mType : mClass),
+                            HttpHeaderParser.parseCacheHeaders(response));
+                } else {
+                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
+                }
             } else {
                 return Response.error(new VolleyError(resultObject.getString("message"), resultObject.getInt("code")));
             }
