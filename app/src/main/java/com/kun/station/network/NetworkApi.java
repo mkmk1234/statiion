@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NetworkApi {
-    public static final String BASEURL = "http://192.168.2.129:8080/api";
+    public static final String BASEURL = "http://114.215.182.202:8080/core-web/api";
 
     public static void bindDevice(String erialNumber, String equipmentNumber, Response.Listener<DeviceModel> listener, Response.ErrorListener errorListener) {
         Map<String, String> params = new HashMap<>();
@@ -59,8 +59,8 @@ public class NetworkApi {
 
     public static void getDirInfo(Response.Listener<ArrayList<DirectoryModel>> listener, Response.ErrorListener errorListener, Context context) {
         Map<String, String> params = new HashMap<>();
-        String url = BASEURL + "/file/getFileInfo";
-        params.put("lastTime", PreferencesUtils.getString(context, "dirLastTime"));
+        String url = BASEURL + "/file/getDirInfo";
+        params.put("lastTime", PreferencesUtils.getString(context, "dirLastTime", ""));
         MyApplication.getInstance().getNetworkManager().getResultClass(url, params, new TypeToken<ArrayList<DirectoryModel>>() {
         }.getType(), listener, errorListener);
     }

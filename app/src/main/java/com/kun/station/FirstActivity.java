@@ -22,6 +22,7 @@ import com.kun.station.response.MenuItemResponse;
 import com.kun.station.util.AndroidUtils;
 import com.kun.station.util.FileUtil;
 import com.kun.station.util.PreferencesUtils;
+import com.kun.station.util.ToastUtils;
 import com.kun.station.widget.DialogPop;
 
 import java.io.File;
@@ -50,6 +51,7 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
             startActivity(i);
             finish();
         } else {
+            ToastUtils.showToast("delete");
             FileUtil.deleteAllDir(new File(Environment.getExternalStorageDirectory(), "乔司站"));
         }
     }
@@ -92,18 +94,6 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void initApp() {
-//        NetworkApi.getCollectionInfo(new Response.Listener<ArrayList<FileModel>>() {
-//            @Override
-//            public void onResponse(ArrayList<FileModel> response) {
-//                list = response;
-//                checkInit();
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                showToast("初始化失败。");
-//            }
-//        });
         NetworkApi.getMenuInfo(new Response.Listener<MenuItemResponse>() {
             @Override
             public void onResponse(MenuItemResponse response) {

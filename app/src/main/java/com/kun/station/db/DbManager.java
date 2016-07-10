@@ -68,12 +68,16 @@ public class DbManager {
         db.update(directoryModel);
     }
 
-    public void deleteDir(DirectoryModel directoryModel) {
-        db.delete(directoryModel);
+    public void deleteDirById(int id) {
+        db.deleteByWhere(DirectoryModel.class, " id=\"" + id + "\"");
     }
 
-    public void getDir() {
-        db.findAll(DirectoryModel.class);
+    public DirectoryModel getDirById(int id) {
+        List<DirectoryModel> list = db.findAllByWhere(DirectoryModel.class, " id=\"" + id + "\"");
+        if (list != null && list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
     }
 
     public void insertFile(FileShowModel fileShowModel) {
@@ -88,6 +92,10 @@ public class DbManager {
         db.delete(fileShowModel);
     }
 
+    public void deleteFileById(int id) {
+        db.deleteByWhere(FileShowModel.class, " fileShowID=\"" + id + "\"");
+    }
+
 
     public boolean isHas(String filePath, String fileName) {
         List<FileShowModel> list = db.findAllByWhere(FileShowModel.class, " fileName=\"" + fileName + "\"" + " and dirName=\"" + filePath + "\"");
@@ -95,6 +103,14 @@ public class DbManager {
             return true;
         }
         return false;
+    }
+
+    public FileShowModel getFileShowModleById(int id) {
+        List<FileShowModel> list = db.findAllByWhere(FileShowModel.class, " fileShowID=\"" + id + "\"");
+        if (list != null & list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
     }
 
     public boolean isDownload(String filePath, String fileName) {
@@ -146,7 +162,7 @@ public class DbManager {
     }
 
     public void updateFile(FileShowModel fileShowModel) {
-        db.update(fileShowModel);
+        db.update(fileShowModel, " fileShowID=\"" + fileShowModel.fileShowID + "\"");
     }
 
     public void updateShow(FileShowModel fileShowModel) {

@@ -19,6 +19,7 @@ import com.kun.station.base.BaseFragment;
 import com.kun.station.db.DbManager;
 import com.kun.station.model.FileShowModel;
 import com.kun.station.util.FileUtil;
+import com.kun.station.util.Log;
 import com.kun.station.widget.CustomPop;
 
 import java.io.File;
@@ -63,6 +64,7 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
                     String filename = downLoadList.get(i).fileName;
                     fileShowList.get(i).isDownload = true;
                     hasDownLoadList.add(fileShowList.get(i));
+                    Log.i("sss", dirFile1.getAbsolutePath() + " " + filename);
                     try {
                         new File(dirFile1, filename).createNewFile();
                         DbManager.getInstace(getContext()).updateFile(fileShowList.get(i));
