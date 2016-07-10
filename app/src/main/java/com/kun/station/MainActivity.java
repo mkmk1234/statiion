@@ -105,6 +105,7 @@ public class MainActivity extends BaseActivity {
                         currentFragment = homeFragemnt;
                         break;
                     case 2:
+                        DbManager.getInstace(MainActivity.this).getSubMenu()
                         mFileCombineFragment = new FileCombineFragment();
                         File rootFile = new File(FileUtil.getExternalDir(), menuItemModel.getTitle());
                         Bundle mBundle = new Bundle();
