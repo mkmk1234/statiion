@@ -165,6 +165,15 @@ public class DbManager {
         db.update(fileShowModel, " fileShowID=\"" + fileShowModel.fileShowID + "\"");
     }
 
+    public void updateStoreStatus(int id){
+        FileShowModel fileShowModel = getFileShowModleById(id);
+        if (fileShowModel == null) {
+            return;
+        }
+        fileShowModel.isStore = true;
+        updateFile(fileShowModel);
+    }
+
     public void updateShow(FileShowModel fileShowModel) {
         updateFile(fileShowModel);
     }

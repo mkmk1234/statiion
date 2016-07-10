@@ -46,13 +46,14 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onSetContentView() {
         setContentView(R.layout.activity_first);
-        if (!TextUtils.isEmpty(PreferencesUtils.getString(FirstActivity.this, "erialId", ""))) {
+        File envirFile = new File(Environment.getExternalStorageDirectory(), "乔司站");
+        if (!TextUtils.isEmpty(PreferencesUtils.getString(FirstActivity.this, "erialId", "")) && envirFile.exists()) {
             Intent i = new Intent(FirstActivity.this, MainActivity.class);
             startActivity(i);
             finish();
         } else {
             ToastUtils.showToast("delete");
-            FileUtil.deleteAllDir(new File(Environment.getExternalStorageDirectory(), "乔司站"));
+            FileUtil.deleteAllDir(envirFile);
         }
     }
 
