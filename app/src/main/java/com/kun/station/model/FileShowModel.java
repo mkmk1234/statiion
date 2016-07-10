@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class FileShowModel implements Serializable {
     @Id(column = "id")
     public int id;
+    public int fileShowID;
     public int imageId;
     public String fileName;
     public String fileUrl;
@@ -28,6 +29,7 @@ public class FileShowModel implements Serializable {
         this.fileName = fileModel.fileName;
         this.fileUrl = fileModel.fileUrl;
         this.dirName = fileModel.dirName;
+        this.fileShowID = fileModel.id;
         this.imageId = imageId;
         this.isShow = isShow;
         this.isDownload = isDownload;
@@ -37,11 +39,11 @@ public class FileShowModel implements Serializable {
     }
 
     public int getId() {
-        return id;
+        return fileShowID;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.fileShowID = id;
     }
 
     public int getImageId() {
@@ -124,5 +126,13 @@ public class FileShowModel implements Serializable {
 
     public void setReadTime(String readTime) {
         this.readTime = readTime;
+    }
+
+    public int getFileShowID() {
+        return fileShowID;
+    }
+
+    public void setFileShowID(int fileShowID) {
+        this.fileShowID = fileShowID;
     }
 }

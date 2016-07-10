@@ -3,6 +3,7 @@ package com.kun.station.fragment;
 import android.app.Service;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,14 +15,19 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.android.volley.Response;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
 import com.kun.station.db.DbManager;
 import com.kun.station.model.DeviceModel;
+import com.kun.station.model.DirectoryModel;
 import com.kun.station.model.FileModel;
 import com.kun.station.model.FileShowModel;
+import com.kun.station.network.NetworkApi;
+import com.kun.station.util.FileUtil;
 import com.kun.station.util.PreferencesUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,20 +177,45 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     }
 
 
-    private List<FileShowModel> getNewFileList() {
+    private List<FileShowModel> getNewFileList(List<FileModel> list) {
         List<FileShowModel> fileShowList = new ArrayList<>();
         DbManager dbManager = DbManager.getInstace(getContext());
-        List<FileModel> list = null;
-//        List<FileModel> list = MyApplication.mGson.fromJson(FileUtil.loadRawString(getContext(), R.raw.localdata_list), new TypeToken<ArrayList<FileModel>>() {
-//        }.getType());
         for (int i = 0; i < list.size(); i++) {
             FileModel fileModel = list.get(i);
-            fileShowList.add(new FileShowModel(fileModel, 0, true, false, dbManager.isStore(fileModel.dirName, fileModel.fileName), false, ""));
+            if (fileModel.fileType == 1) {
+                new File(Environment.getExternalStorageDirectory(), fileModel.dirName + "/" + fileModel.fileName).delete();
+                dbManager.deleteFileById(fileModel.id);
+            } else {
+                FileShowModel fileShowModel = dbManager.getFileShowModleById(fileModel.id);
+                if (fileShowModel != null) {
+                    new File(FileUtil.getExternalDir(), fileShowModel.dirName + "/" + fileShowModel.fileName).delete();
+                    dbManager.deleteFileById(fileShowModel.fileShowID);
+                }
+                fileShowList.add(new FileShowModel(fileModel, 0, true, false, dbManager.isStore(fileModel.dirName, fileModel.fileName), false, ""));
+            }
         }
         for (int i = 0; i < fileShowList.size(); i++) {
             DbManager.getInstace(getContext()).insertFile(fileShowList.get(i));
         }
         return fileShowList;
+    }
+
+    private void initDir(List<DirectoryModel> list) {
+        DbManager dbManager = DbManager.getInstace(getContext());
+        for (DirectoryModel directoryModel : list) {
+            if (directoryModel.getStatus() == 1) {
+                new File(Environment.getExternalStorageDirectory(), directoryModel.getDirPath()).delete();
+                dbManager.deleteDirById(directoryModel.getId());
+            } else {
+                DirectoryModel directoryModel1 = dbManager.getDirById(directoryModel.getId());
+//                if (directoryModel1 != null) {
+//                    new File(FileUtil.getExternalDir(), directoryModel1.getDirPath()).renameTo(new File(FileUtil.getExternalDir(), directoryModel.getDirPath()));
+//                } else {
+//                    File file = new File(FileUtil.getExternalDir(), directoryModel.getDirPath());
+//                    file.mkdirs();
+//                }
+            }
+        }
     }
 
     private List<FileShowModel> getNoDownloadFileList() {
@@ -212,9 +243,25 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                 break;
 
             case R.id.tv_download:
-                List<FileShowModel> list = getNewFileList();
-                list.addAll(getNoDownloadFileList());
-                newDownloadFileFragment.update(list);
+                NetworkApi.getFileInfo(new Response.Listener<ArrayList<FileModel>>() {
+                    @Override
+                    public void onResponse(ArrayList<FileModel> response) {
+                        if (response.size() > 0) {
+                            PreferencesUtils.putString(getContext(), "fileLastTime", response.get(0).lastTime);
+                        }
+                        getNewFileList(response);
+                        newDownloadFileFragment.update(getNoDownloadFileList());
+                    }
+                }, null, getContext());
+                NetworkApi.getDirInfo(new Response.Listener<ArrayList<DirectoryModel>>() {
+                    @Override
+                    public void onResponse(ArrayList<DirectoryModel> response) {
+                        if (response.size() > 0) {
+                            PreferencesUtils.putString(getContext(), "dirLastTime", response.get(0).getLastTime());
+                        }
+                        initDir(response);
+                    }
+                }, null, getContext());
                 topMenu.check(R.id.rb_thd);
                 break;
         }

@@ -17,6 +17,7 @@ public class DirectoryModel implements Serializable {
      */
     @Id(column = "id")
     private int id;
+    private int dirId;
     private String dirName;
     private String dirPath;
     private String lastTime;
@@ -73,5 +74,11 @@ public class DirectoryModel implements Serializable {
         return status;
     }
 
+    public int getDirId() {
+        return dirId;
+    }
 
+    public void setDirId(int dirId) {
+        this.dirId = dirId;
+    }
 }

@@ -117,7 +117,7 @@ public class CatalogFragment extends BaseFragment {
     }
 
     private String getRealPath(String path, String name) {
-        return path.replace("/" + name, "").replace(FileUtil.getExternalDir().getPath() + "/", "");
+        return "/" + path.replace("/" + name, "").replace(FileUtil.getExternalDir().getPath() + "/", "");
 
     }
 
@@ -188,9 +188,11 @@ public class CatalogFragment extends BaseFragment {
                         FileShowModel fileShowModel = null;
                         if (list.size() > 0) {
                             fileShowModel = list.get(0);
+                        } else {
+                            return true;
                         }
                         final FileShowModel finalFileShowModel = fileShowModel;
-                        NetworkApi.changeCollection(fileShowModel.id + "", finalFileShowModel.isStore ? "0" : "1",
+                        NetworkApi.changeCollection(fileShowModel.fileShowID + "", finalFileShowModel.isStore ? "0" : "1",
                                 new Response.Listener<DeviceModel>() {
                                     @Override
                                     public void onResponse(DeviceModel response) {
