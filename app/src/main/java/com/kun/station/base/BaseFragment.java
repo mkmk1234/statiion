@@ -5,11 +5,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
+import com.kun.station.widget.LoadingDialog;
+
 /**
  * Created by kun on 16/6/3.
  */
 public abstract class BaseFragment extends Fragment {
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -58,6 +59,22 @@ public abstract class BaseFragment extends Fragment {
             return bundle.getBoolean(name);
         }
         return defaultValue;
+    }
+
+    public void showLoadingDialog() {
+        showLoadingDialog(null);
+    }
+
+    public void showLoadingDialog(String message) {
+        if (getActivity() instanceof BaseActivity){
+            ((BaseActivity)getActivity()).showLoadingDialog(message);
+        }
+    }
+
+    public void hideLoadingDialog() {
+        if (getActivity() instanceof BaseActivity){
+            ((BaseActivity)getActivity()).hideLoadingDialog();
+        }
     }
 
     public boolean getBooleanParam(String name) {
