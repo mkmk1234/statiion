@@ -5,8 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
-import com.kun.station.widget.LoadingDialog;
-
 /**
  * Created by kun on 16/6/3.
  */
@@ -37,8 +35,8 @@ public abstract class BaseFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             try {
-                String val = bundle.getString(name);
-                return Integer.parseInt(val);
+                Integer val = bundle.getInt(name);
+                return val;
             } catch (Exception e) {
             }
             return bundle.getInt(name, defaultValue);

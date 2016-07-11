@@ -122,6 +122,8 @@ public class MainActivity extends BaseActivity {
                         currentFragment = mFileCombineFragment;
                         break;
                     case 1:
+                        b.putInt("menuId", menuItemModel.getId());
+                        b.putString("menuTitle", menuItemModel.getTitle());
                         showFragment(GanWeiFragment.class, b);
                         break;
                 }

@@ -17,7 +17,11 @@ import android.widget.TextView;
 
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
+import com.kun.station.db.DbManager;
+import com.kun.station.model.SubMenuModel;
 import com.kun.station.util.FileUtil;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,11 +38,11 @@ public class GanWeiFragment extends BaseFragment {
     FrameLayout layout;
     @Bind(R.id.listview)
     ListView listview;
+    List<SubMenuModel> list;
+    String menu;
     int selectedPosition = 0;
     SubMenuAdapter subMenuAdapter;
-    //android:background="@drawable/img_pda_dirselect"
 
-    String[] data = {"车站状况", "车站精神", "安全文化", "经营文化", "廉政文化", "车间文化", "班组文化基本原则", "车间班组文化理念", "上海铁路局员工守则"};
     int[] drawbles = {R.drawable.post_environment_ico, R.drawable.post_customization_ico, R.drawable.post_duty_ico, R.drawable.post_personlist_ico,
             R.drawable.post_environment_ico, R.drawable.post_customization_ico, R.drawable.post_duty_ico, R.drawable.post_personlist_ico, R.drawable.post_customization_ico};
 
@@ -47,26 +51,38 @@ public class GanWeiFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_ganwei, container, false);
         ButterKnife.bind(this, view);
-        subMenuAdapter = new SubMenuAdapter();
-        listview.setAdapter(subMenuAdapter);
-        Bundle b = new Bundle();
-        b.putString(SebMenuFileFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/企业简介/" + data[0]);
-        showFragment(SebMenuFileFragment.class, b);
+        initData();
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedPosition = position;
                 subMenuAdapter.notifyDataSetChanged();
-                if (position == 7) {
-                    showFragment(TeamCultureFragment.class, null);
+                if (list.get(position).getType() == 101) {
+                    Bundle b = new Bundle();
+                    b.putString("teamConcept", list.get(position).getTeamConcept());
+                    showFragment(TeamCultureFragment.class, b);
                 } else {
                     Bundle b = new Bundle();
-                    b.putString(SebMenuFileFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/企业简介/" + data[position]);
+                    b.putString(SebMenuFileFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/" + menu + "/" + list.get(position).getTitle());
                     showFragment(SebMenuFileFragment.class, b);
                 }
             }
         });
         return view;
+    }
+
+    private void initData() {
+        subMenuAdapter = new SubMenuAdapter();
+        listview.setAdapter(subMenuAdapter);
+        menu = getStringParam("menuTitle");
+        list = DbManager.getInstace(getContext()).getSubMenu(getIntParam("menuId"));
+        if (list.get(0).getType() == 101) {
+            showFragment(TeamCultureFragment.class, null);
+        } else {
+            Bundle b = new Bundle();
+            b.putString(SebMenuFileFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/" + menu + "/" + list.get(0).getTitle());
+            showFragment(SebMenuFileFragment.class, b);
+        }
     }
 
     private void showFragment(Class<?> clss, Bundle b) {
@@ -88,7 +104,10 @@ public class GanWeiFragment extends BaseFragment {
 
         @Override
         public int getCount() {
-            return data.length;
+            if (list == null) {
+                return 0;
+            }
+            return list.size();
         }
 
         @Override
@@ -110,7 +129,7 @@ public class GanWeiFragment extends BaseFragment {
             ImageView iv = (ImageView) convertView.findViewById(R.id.iv_submenu);
             View view = convertView.findViewById(R.id.layout_submenu);
             iv.setImageResource(drawbles[position]);
-            tv.setText(data[position]);
+            tv.setText(list.get(position).getTitle());
             if (position == selectedPosition) {
                 view.setBackgroundResource(R.drawable.img_pda_dirselect);
             } else {
