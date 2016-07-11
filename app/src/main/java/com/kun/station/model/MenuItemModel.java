@@ -24,7 +24,7 @@ public class MenuItemModel {
 
     public MenuItemModel(MenuModel menuModel, List<SubMenuModel> subMenuList) {
         this.subMenuList = subMenuList;
-        this.id = menuModel.getId();
+        this.id = menuModel.getMenuId();
         this.icon = menuModel.getIcon();
         this.title = menuModel.getTitle();
         this.type = menuModel.getType();

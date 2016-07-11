@@ -8,12 +8,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="乔司运转车间"
+        android:text="乔司站"
         android:textSize="@dimen/text_size_big"
         android:layout_marginTop="20dp"
         android:textColor="@color/textBlack" />
 
     <TextView
+        android:id="@+id/teamconcept"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="安全  高效  敬业  友善"

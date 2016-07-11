@@ -19,6 +19,7 @@ public class MenuModel implements Serializable {
      */
     @Id(column = "id")
     private int id;
+    private int menuId;
     private String icon;
     private String title;
     private int type;
@@ -26,8 +27,8 @@ public class MenuModel implements Serializable {
     public MenuModel() {
     }
 
-    public MenuModel(int id, String icon, String title, int type) {
-        this.id = id;
+    public MenuModel(int menuId, String icon, String title, int type) {
+        this.menuId = menuId;
         this.icon = icon;
         this.title = title;
         this.type = type;
@@ -66,4 +67,11 @@ public class MenuModel implements Serializable {
         return type;
     }
 
+    public int getMenuId() {
+        return menuId;
+    }
+
+    public void setMenuId(int menuId) {
+        this.menuId = menuId;
+    }
 }

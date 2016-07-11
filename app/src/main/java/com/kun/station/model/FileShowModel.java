@@ -29,7 +29,7 @@ public class FileShowModel implements Serializable {
         this.fileName = fileModel.fileName;
         this.fileUrl = fileModel.fileUrl;
         this.dirName = fileModel.dirName;
-        this.fileShowID = fileModel.id;
+        this.fileShowID = fileModel.fileId;
         this.imageId = imageId;
         this.isShow = isShow;
         this.isDownload = isDownload;

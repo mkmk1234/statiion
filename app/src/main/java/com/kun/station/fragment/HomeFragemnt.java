@@ -184,15 +184,16 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
             FileModel fileModel = list.get(i);
             if (fileModel.fileType == 1) {
                 new File(Environment.getExternalStorageDirectory(), fileModel.dirName + "/" + fileModel.fileName).delete();
-                dbManager.deleteFileById(fileModel.id);
+                dbManager.deleteFileById(fileModel.fileId);
             } else {
-                FileShowModel fileShowModel = dbManager.getFileShowModleById(fileModel.id);
+                FileShowModel fileShowModel = dbManager.getFileShowModleById(fileModel.fileId);
                 if (fileShowModel != null) {
                     new File(FileUtil.getExternalDir(), fileShowModel.dirName + "/" + fileShowModel.fileName).delete();
                     dbManager.deleteFileById(fileShowModel.fileShowID);
                 }
                 fileShowList.add(new FileShowModel(fileModel, 0, true, false, dbManager.isStore(fileModel.dirName, fileModel.fileName), false, ""));
             }
+
         }
         for (int i = 0; i < fileShowList.size(); i++) {
             DbManager.getInstace(getContext()).insertFile(fileShowList.get(i));
@@ -205,16 +206,19 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
         for (DirectoryModel directoryModel : list) {
             if (directoryModel.getStatus() == 1) {
                 new File(Environment.getExternalStorageDirectory(), directoryModel.getDirPath()).delete();
-                dbManager.deleteDirById(directoryModel.getId());
+                dbManager.deleteDirById(directoryModel.getDirId());
             } else {
-                DirectoryModel directoryModel1 = dbManager.getDirById(directoryModel.getId());
-//                if (directoryModel1 != null) {
-//                    new File(FileUtil.getExternalDir(), directoryModel1.getDirPath()).renameTo(new File(FileUtil.getExternalDir(), directoryModel.getDirPath()));
-//                } else {
-//                    File file = new File(FileUtil.getExternalDir(), directoryModel.getDirPath());
-//                    file.mkdirs();
-//                }
+                DirectoryModel directoryModel1 = dbManager.getDirById(directoryModel.getDirId());
+                if (directoryModel1 != null) {
+                    if (!directoryModel1.getDirName().equals(directoryModel.getDirName())) {
+                        new File(FileUtil.getExternalDir(), directoryModel1.getDirPath()).renameTo(new File(FileUtil.getExternalDir(), directoryModel.getDirPath()));
+                    }
+                } else {
+                    File file = new File(FileUtil.getExternalDir(), directoryModel.getDirPath());
+                    file.mkdirs();
+                }
             }
+            dbManager.insertDir(directoryModel);
         }
     }
 
@@ -222,6 +226,18 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
         return DbManager.getInstace(getContext()).getShowFiles();
     }
 
+    private void getDirNew() {
+        NetworkApi.getDirInfo(new Response.Listener<ArrayList<DirectoryModel>>() {
+            @Override
+            public void onResponse(ArrayList<DirectoryModel> response) {
+                if (response.size() > 0) {
+                    PreferencesUtils.putString(getContext(), "dirLastTime", response.get(0).getLastTime());
+                }
+                initDir(response);
+                newDownloadFileFragment.update(getNoDownloadFileList());
+            }
+        }, null, getContext());
+    }
     @OnClick({R.id.btn_wifi, R.id.tv_download})
     @Override
     public void onClick(View v) {
@@ -250,18 +266,10 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                             PreferencesUtils.putString(getContext(), "fileLastTime", response.get(0).lastTime);
                         }
                         getNewFileList(response);
-                        newDownloadFileFragment.update(getNoDownloadFileList());
+                        getDirNew();
                     }
                 }, null, getContext());
-                NetworkApi.getDirInfo(new Response.Listener<ArrayList<DirectoryModel>>() {
-                    @Override
-                    public void onResponse(ArrayList<DirectoryModel> response) {
-                        if (response.size() > 0) {
-                            PreferencesUtils.putString(getContext(), "dirLastTime", response.get(0).getLastTime());
-                        }
-                        initDir(response);
-                    }
-                }, null, getContext());
+
                 topMenu.check(R.id.rb_thd);
                 break;
         }

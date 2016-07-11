@@ -119,7 +119,7 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
                 List<SubMenuModel> subMenuModelList = menuItemModel.getSubMenuList();
                 for (int j = 0; j < subMenuModelList.size(); j++) {
                     subMenuModelList.get(j).setMenuId(menuItemModel.getId());
-                    DbManager.getInstace(FirstActivity.this).insertSubMenu(subMenuModelList.get(i));
+                    DbManager.getInstace(FirstActivity.this).insertSubMenu(subMenuModelList.get(j));
                 }
             }
             MenuModel menuModel = new MenuModel(menuItemModel.getId(), menuItemModel.getIcon(), menuItemModel.getTitle(), menuItemModel.getType());

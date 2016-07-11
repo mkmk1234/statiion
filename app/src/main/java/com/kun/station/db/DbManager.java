@@ -61,19 +61,23 @@ public class DbManager {
     }
 
     public void insertDir(DirectoryModel directoryModel) {
-        db.save(directoryModel);
+        if (getDirById(directoryModel.getDirId()) != null) {
+            updateDir(directoryModel);
+        } else {
+            db.save(directoryModel);
+        }
     }
 
     public void updateDir(DirectoryModel directoryModel) {
-        db.update(directoryModel);
+        db.update(directoryModel, " dirId=\"" + directoryModel.getDirId() + "\"");
     }
 
     public void deleteDirById(int id) {
-        db.deleteByWhere(DirectoryModel.class, " id=\"" + id + "\"");
+        db.deleteByWhere(DirectoryModel.class, " dirId=\"" + id + "\"");
     }
 
     public DirectoryModel getDirById(int id) {
-        List<DirectoryModel> list = db.findAllByWhere(DirectoryModel.class, " id=\"" + id + "\"");
+        List<DirectoryModel> list = db.findAllByWhere(DirectoryModel.class, " dirId=\"" + id + "\"");
         if (list != null && list.size() > 0) {
             return list.get(0);
         }

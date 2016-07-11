@@ -1,8 +1,6 @@
 package com.kun.station.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +20,11 @@ import com.kun.station.util.FileUtil;
 import com.kun.station.util.Log;
 import com.kun.station.widget.CustomPop;
 
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.HttpHandler;
+
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,93 +44,82 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
     @Bind(R.id.btn_clear)
     Button btnClear;
     private DownloadFileAdapter mAdapter;
-    boolean isDownload;
     private List<FileShowModel> fileShowList;
-    private List<FileShowModel> downLoadList;
-    private List<FileShowModel> hasDownLoadList;
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            for (int i = 0; i < downLoadList.size(); i++) {
-                if (fileShowList.get(i).isDownload) {
-                    continue;
-                }
-                downLoadList.get(i).progress = downLoadList.get(i).progress + 5;
-                fileShowList.get(i).progress = downLoadList.get(i).progress;
-                if (downLoadList.get(i).progress >= 100) {
-                    File dir = FileUtil.getExternalDir();
-                    File dirFile1 = new File(dir, downLoadList.get(i).dirName);
-                    String filename = downLoadList.get(i).fileName;
-                    fileShowList.get(i).isDownload = true;
-                    hasDownLoadList.add(fileShowList.get(i));
-                    Log.i("sss", dirFile1.getAbsolutePath() + " " + filename);
-                    try {
-                        new File(dirFile1, filename).createNewFile();
-                        DbManager.getInstace(getContext()).updateFile(fileShowList.get(i));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-            if (hasDownLoadList.size() == fileShowList.size()) {
-                isDownload = false;
-            }
-            mAdapter.notifyDataSetChanged();
-        }
-
-    };
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_download_file, null);
         ButterKnife.bind(this, view);
+        initData();
         lvList.setOnItemClickListener(this);
-        mAdapter = new DownloadFileAdapter();
         lvList.setAdapter(mAdapter);
         return view;
+    }
+
+    private void initData() {
+        mAdapter = new DownloadFileAdapter();
+        fileShowList = DbManager.getInstace(getContext()).getShowFiles();
+        if (fileShowList.size() > 0) {
+            startDownloadFile(0);
+        }
+    }
+
+    private void startDownloadFile(final int position) {
+        if (fileShowList.size() <= position) {
+            return;
+        }
+        final FileShowModel fileShowModel = fileShowList.get(position);
+        if (fileShowModel.isDownload) {
+            startDownloadFile(position + 1);
+            return;
+        }
+        FinalHttp fh = new FinalHttp();
+        //调用download方法开始下载
+        HttpHandler handler = fh.download("http://www.panda-e.com//public/download/pandaol.apk",
+                new File(FileUtil.getExternalDir(), fileShowModel.getDirName() + fileShowModel.getFileName()).getAbsolutePath(), true,
+                new AjaxCallBack() {
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        Log.i("sss", "start");
+                    }
+
+                    @Override
+                    public void onLoading(long count, long current) {
+                        fileShowModel.progress = (int) (current * 100 / count);
+                        mAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t, int errorNo, String strMsg) {
+                        super.onFailure(t, errorNo, strMsg);
+                    }
+
+                    @Override
+                    public void onSuccess(Object o) {
+                        super.onSuccess(o);
+                        startDownloadFile(position + 1);
+                    }
+                });
+
+
+        //调用stop()方法停止下载
     }
 
     public void update(List<FileShowModel> list) {
         if (fileShowList == null) {
             fileShowList = new ArrayList<>();
         }
-        if (fileShowList.size() > 0) {
-            return;
-        }
         fileShowList.clear();
         fileShowList.addAll(list);
+        if (fileShowList.size() > 0) {
+            startDownloadFile(0);
+        }
         mAdapter.notifyDataSetChanged();
-        startDownload();
     }
 
-    private void startDownload() {
-        if (downLoadList == null) {
-            downLoadList = new ArrayList<>();
-        }
-        if (hasDownLoadList == null) {
-            hasDownLoadList = new ArrayList<>();
-        }
-        downLoadList.addAll(fileShowList);
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                isDownload = true;
-                while (isDownload) {
-                    try {
-                        sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    handler.sendEmptyMessage(1);
-                }
-            }
-        }.start();
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
