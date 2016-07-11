@@ -14,8 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.kun.station.R;
 import com.kun.station.base.BaseFragment;
 import com.kun.station.db.DbManager;
@@ -198,7 +200,27 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
         for (int i = 0; i < fileShowList.size(); i++) {
             DbManager.getInstace(getContext()).insertFile(fileShowList.get(i));
         }
+        updateStore();
         return fileShowList;
+    }
+
+    private void updateStore() {
+        NetworkApi.getCollectionInfo(new Response.Listener<ArrayList<FileModel>>() {
+            @Override
+            public void onResponse(ArrayList<FileModel> response) {
+                if (response == null) {
+                    return;
+                }
+                for (FileModel item : response) {
+                    DbManager.getInstace(getActivity()).updateStoreStatus(item.id);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initDir(List<DirectoryModel> list) {

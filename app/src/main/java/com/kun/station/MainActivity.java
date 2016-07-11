@@ -20,16 +20,21 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.kun.station.base.BaseActivity;
 import com.kun.station.db.DbManager;
 import com.kun.station.fragment.CatalogFragment;
 import com.kun.station.fragment.FileCombineFragment;
 import com.kun.station.fragment.GanWeiFragment;
 import com.kun.station.fragment.HomeFragemnt;
+import com.kun.station.model.FileModel;
 import com.kun.station.model.MenuItemModel;
 import com.kun.station.model.MenuModel;
 import com.kun.station.model.SubMenuModel;
+import com.kun.station.network.NetworkApi;
 import com.kun.station.util.FileUtil;
 
 import java.io.File;
