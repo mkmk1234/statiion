@@ -212,7 +212,7 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                     return;
                 }
                 for (FileModel item : response) {
-                    DbManager.getInstace(getActivity()).updateStoreStatus(item.id);
+                    DbManager.getInstace(getActivity()).updateStoreStatus(item.fileId);
                 }
             }
         }, new Response.ErrorListener() {
