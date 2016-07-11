@@ -202,6 +202,8 @@ public class CatalogFragment extends BaseFragment {
                                             ToastUtils.showToast("收藏成功");
                                         }
                                         mDbManager.updateStore(finalFileShowModel.dirName, finalFileShowModel.fileName);
+                                        mAdapter.notifyDataSetChanged();
+                                        loadData(currentPath);
                                     }
                                 }, new Response.ErrorListener() {
                                     @Override
@@ -209,8 +211,6 @@ public class CatalogFragment extends BaseFragment {
                                         ToastUtils.showToast(error.getMessage());
                                     }
                                 });
-                        mAdapter.notifyDataSetChanged();
-                        loadData(currentPath);
                     }
                     return true;
                 }
