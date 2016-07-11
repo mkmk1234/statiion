@@ -78,7 +78,7 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
         FinalHttp fh = new FinalHttp();
         //调用download方法开始下载
         HttpHandler handler = fh.download("http://www.panda-e.com//public/download/pandaol.apk",
-                new File(FileUtil.getExternalDir(), fileShowModel.getDirName() + fileShowModel.getFileName()).getAbsolutePath(), true,
+                new File(FileUtil.getExternalDir(), fileShowModel.getDirName() + "/" + fileShowModel.getFileName()).getAbsolutePath(), true,
                 new AjaxCallBack() {
                     @Override
                     public void onStart() {
@@ -95,15 +95,16 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
                     @Override
                     public void onFailure(Throwable t, int errorNo, String strMsg) {
                         super.onFailure(t, errorNo, strMsg);
+                        Log.i("sss", "failure" + strMsg);
                     }
 
                     @Override
                     public void onSuccess(Object o) {
                         super.onSuccess(o);
                         startDownloadFile(position + 1);
+                        DbManager.getInstace(getContext()).updateDownload(fileShowModel);
                     }
                 });
-
 
         //调用stop()方法停止下载
     }
@@ -213,6 +214,8 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
 
             if (!fileShowModel.isDownload) {
                 holder.txtStatus.setText("未更新");
+            } else {
+                holder.txtStatus.setText("直接打开");
             }
             if (fileShowModel.progress > 0 && fileShowModel.progress < 100) {
                 holder.txtStatus.setText(fileShowModel.progress + "%");
