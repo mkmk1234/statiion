@@ -183,6 +183,7 @@ public class DbManager {
     }
 
     public void updateDownload(FileShowModel fileShowModel) {
+        fileShowModel.isDownload = true;
         updateFile(fileShowModel);
     }
 
