@@ -30,9 +30,9 @@ public class LoadingDialog extends Dialog {
 				.getDisplayMetrics();
 		Window window = getWindow();
 		LayoutParams attributes = window.getAttributes();
-		attributes.alpha = 0.7f;
-		attributes.width = displayMetrics.widthPixels / 2;
-		attributes.height = attributes.width;
+		attributes.alpha = 0.3f;
+		attributes.width = displayMetrics.widthPixels;
+		attributes.height = displayMetrics.heightPixels;
 		window.setAttributes(attributes);
 		setCanceledOnTouchOutside(false);
 	}

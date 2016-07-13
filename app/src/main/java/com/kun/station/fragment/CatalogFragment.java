@@ -192,18 +192,18 @@ public class CatalogFragment extends BaseFragment {
                             return true;
                         }
                         final FileShowModel finalFileShowModel = fileShowModel;
-                        NetworkApi.changeCollection(fileShowModel.fileShowID + "", finalFileShowModel.isStore ? "0" : "1",
+                        NetworkApi.changeCollection(fileShowModel.fileShowID + "", finalFileShowModel.isStore == 1 ? "0" : "1",
                                 new Response.Listener<DeviceModel>() {
                                     @Override
                                     public void onResponse(DeviceModel response) {
-                                        if (finalFileShowModel.isStore) {
+                                        if (finalFileShowModel.isStore == 1) {
                                             ToastUtils.showToast("取消收藏");
                                         } else {
                                             ToastUtils.showToast("收藏成功");
                                         }
                                         mDbManager.updateStore(finalFileShowModel.dirName, finalFileShowModel.fileName);
-                                        mAdapter.notifyDataSetChanged();
                                         loadData(currentPath);
+                                        mAdapter.notifyDataSetChanged();
                                     }
                                 }, new Response.ErrorListener() {
                                     @Override

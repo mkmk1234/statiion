@@ -88,6 +88,7 @@ public class HomePageFragment extends BaseFragment {
             Glide.with(getContext())
                     .load(data.get(position).getImageUrl())
                     .crossFade()
+                    .error(R.drawable.imgerr)
                     .into((ImageView) convertView);
             return convertView;
         }

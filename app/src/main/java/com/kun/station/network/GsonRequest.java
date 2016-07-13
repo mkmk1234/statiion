@@ -56,9 +56,6 @@ public class GsonRequest extends Request{
     protected Response parseNetworkResponse(NetworkResponse response) {
         try {
             String responseString = new String(response.data);
-//            if (responseString.contains("dirPath")) {
-//                responseString = "{\"code\":200,\"data\":[{\"dirId\":12,\"dirName\":\"意见\",\"dirPath\":\"/标准化车间/路局、直属站车间管理制度/意见\",\"lastTime\":\"1468054700000\",\"status\":0},{\"dirId\":11,\"dirName\":\"班组概况\",\"dirPath\":\"/标准化车间/班组概况\",\"lastTime\":\"1468054609000\",\"status\":0},{\"dirId\":9,\"dirName\":\"上海铁路局员工守则\",\"dirPath\":\"/企业简介/上海铁路局员工守则\",\"lastTime\":\"1468054514000\",\"status\":0},{\"dirId\":7,\"dirName\":\"班组文化基本原则\",\"dirPath\":\"/企业简介/班组文化基本原则\",\"lastTime\":\"1468054514000\",\"status\":0},{\"dirId\":5,\"dirName\":\"廉政文化\",\"dirPath\":\"/企业简介/廉政文化\",\"lastTime\":\"1468054514000\",\"status\":0},{\"dirId\":10,\"dirName\":\"路局、直属站车间管理制度\",\"dirPath\":\"/标准化车间/路局、直属站车间管理制度\",\"lastTime\":\"1468054514000\",\"status\":0},{\"dirId\":8,\"dirName\":\"车间班组文化理念\",\"dirPath\":\"/企业简介/车间班组文化理念\",\"lastTime\":\"1468054514000\",\"status\":0},{\"dirId\":6,\"dirName\":\"车间文化\",\"dirPath\":\"/企业简介/车间文化\",\"lastTime\":\"1468054514000\",\"status\":0},{\"dirId\":4,\"dirName\":\"经营文化\",\"dirPath\":\"/企业简介/经营文化\",\"lastTime\":\"1468054217000\",\"status\":0},{\"dirId\":3,\"dirName\":\"安全文化\",\"dirPath\":\"/企业简介/安全文化\",\"lastTime\":\"1468053882000\",\"status\":0},{\"dirId\":2,\"dirName\":\"车站精神\",\"dirPath\":\"/企业简介/车站精神\",\"lastTime\":\"1468024028000\",\"status\":0},{\"dirId\":1,\"dirName\":\"车站状况\",\"dirPath\":\"/企业简介/车站状况\",\"lastTime\":\"1468023987000\",\"status\":0}],\"message\":\"加载成功\"}";
-//            }
             Log.i("sss", responseString);
             JSONObject resultObject;
             if(response.headers.get("Content-Encoding") != null &&

@@ -20,21 +20,17 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.kun.station.base.BaseActivity;
 import com.kun.station.db.DbManager;
 import com.kun.station.fragment.CatalogFragment;
 import com.kun.station.fragment.FileCombineFragment;
 import com.kun.station.fragment.GanWeiFragment;
 import com.kun.station.fragment.HomeFragemnt;
-import com.kun.station.model.FileModel;
+import com.kun.station.fragment.ToolsFragment;
 import com.kun.station.model.MenuItemModel;
 import com.kun.station.model.MenuModel;
 import com.kun.station.model.SubMenuModel;
-import com.kun.station.network.NetworkApi;
 import com.kun.station.util.FileUtil;
 
 import java.io.File;
@@ -125,6 +121,9 @@ public class MainActivity extends BaseActivity {
                         b.putInt("menuId", menuItemModel.getId());
                         b.putString("menuTitle", menuItemModel.getTitle());
                         showFragment(GanWeiFragment.class, b);
+                        break;
+                    case 3:
+                        showFragment(ToolsFragment.class, null);
                         break;
                 }
 
@@ -255,10 +254,14 @@ public class MainActivity extends BaseActivity {
             convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(R.drawable.main_function_home_down);
             if (position == selectPosition) {
                 convertView.findViewById(R.id.iv_arrow).setVisibility(View.VISIBLE);
-                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(selelctedImg[position]);
+                if (position < selelctedImg.length) {
+                    convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(selelctedImg[position]);
+                }
             } else {
                 convertView.findViewById(R.id.iv_arrow).setVisibility(View.GONE);
-                convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(unSelectedImg[position]);
+                if (position < selelctedImg.length) {
+                    convertView.findViewById(R.id.iv_item_icon).setBackgroundResource(unSelectedImg[position]);
+                }
             }
             return convertView;
         }

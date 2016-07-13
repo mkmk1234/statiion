@@ -15,17 +15,17 @@ public class FileShowModel implements Serializable {
     public String fileName;
     public String fileUrl;
     public String dirName;
-    public boolean isShow;
-    public boolean isDownload;
-    public boolean isStore;
-    public boolean isRead;
+    public int isShow;
+    public int isDownload;
+    public int isStore;
+    public int isRead;
     public int progress = 0;
     public String readTime;
 
     public FileShowModel() {
     }
 
-    public FileShowModel(FileModel fileModel, int imageId, boolean isShow, boolean isDownload, boolean isStore, boolean isRead, String readTime) {
+    public FileShowModel(FileModel fileModel, int imageId, int isShow, int isDownload, int isStore, int isRead, String readTime) {
         this.fileName = fileModel.fileName;
         this.fileUrl = fileModel.fileUrl;
         this.dirName = fileModel.dirName;
@@ -80,29 +80,11 @@ public class FileShowModel implements Serializable {
     }
 
 
-    public boolean isShow() {
-        return isShow;
-    }
 
-    public void setShow(boolean show) {
-        isShow = show;
-    }
 
-    public boolean isDownload() {
-        return isDownload;
-    }
 
-    public void setDownload(boolean download) {
-        isDownload = download;
-    }
 
-    public boolean isStore() {
-        return isStore;
-    }
 
-    public void setStore(boolean store) {
-        isStore = store;
-    }
 
     public int getProgress() {
         return progress;
@@ -112,12 +94,36 @@ public class FileShowModel implements Serializable {
         this.progress = progress;
     }
 
-    public boolean isRead() {
+    public int getIsShow() {
+        return isShow;
+    }
+
+    public void setIsShow(int isShow) {
+        this.isShow = isShow;
+    }
+
+    public int getIsDownload() {
+        return isDownload;
+    }
+
+    public void setIsDownload(int isDownload) {
+        this.isDownload = isDownload;
+    }
+
+    public int getIsRead() {
         return isRead;
     }
 
-    public void setRead(boolean read) {
-        isRead = read;
+    public void setIsRead(int isRead) {
+        this.isRead = isRead;
+    }
+
+    public int getIsStore() {
+        return isStore;
+    }
+
+    public void setIsStore(int isStore) {
+        this.isStore = isStore;
     }
 
     public String getReadTime() {

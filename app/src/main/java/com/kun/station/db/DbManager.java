@@ -37,6 +37,17 @@ public class DbManager {
         db.save(menuModel);
     }
 
+    public void deleteMenu() {
+        List<MenuModel> list = getMenu();
+        for (int i = 0; i < list.size(); i++) {
+            List<SubMenuModel> subMenuModelList = getSubMenu(list.get(i).getMenuId());
+            for (int j = 0; j < subMenuModelList.size(); j++) {
+                db.delete(subMenuModelList.get(j));
+            }
+            db.delete(list.get(i));
+        }
+    }
+
     public List<MenuModel> getMenu() {
         return db.findAll(MenuModel.class);
     }
@@ -174,7 +185,7 @@ public class DbManager {
         if (fileShowModel == null) {
             return;
         }
-        fileShowModel.isStore = true;
+        fileShowModel.isStore = 1;
         updateFile(fileShowModel);
     }
 
@@ -183,14 +194,18 @@ public class DbManager {
     }
 
     public void updateDownload(FileShowModel fileShowModel) {
-        fileShowModel.isDownload = true;
+        fileShowModel.isDownload = 1;
         updateFile(fileShowModel);
     }
 
     public void updateStore(String dirName, String fileName) {
         List<FileShowModel> list = getFile(dirName, fileName);
         if (list.size() > 0) {
-            list.get(0).isStore = !list.get(0).isStore;
+            if (list.get(0).isStore == 1) {
+                list.get(0).isStore = 0;
+            } else {
+                list.get(0).isStore = 1;
+            }
         }
         updateFile(list.get(0));
     }
