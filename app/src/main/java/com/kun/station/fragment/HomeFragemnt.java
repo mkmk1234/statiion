@@ -28,6 +28,7 @@ import com.kun.station.model.FileShowModel;
 import com.kun.station.network.NetworkApi;
 import com.kun.station.util.FileUtil;
 import com.kun.station.util.PreferencesUtils;
+import com.kun.station.util.ToastUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,10 +56,13 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
     TextView txtStation;
     @Bind(R.id.txt_deptname)
     TextView txtDeptname;
+    @Bind(R.id.tv_download)
+    TextView tvDownload;
     DeviceModel deviceModel;
     HomePageFragment homePageFragment;
     NoticeFragment noticeFragment;
     NewDownloadFileFragment newDownloadFileFragment;
+
 
     @Nullable
     @Override
@@ -193,7 +197,7 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                     new File(FileUtil.getExternalDir(), fileShowModel.dirName + "/" + fileShowModel.fileName).delete();
                     dbManager.deleteFileById(fileShowModel.fileShowID);
                 }
-                fileShowList.add(new FileShowModel(fileModel, 0, true, false, dbManager.isStore(fileModel.dirName, fileModel.fileName), false, ""));
+                fileShowList.add(new FileShowModel(fileModel, 0, 1, 0, dbManager.isStore(fileModel.dirName, fileModel.fileName) ? 1 : 0, 0, ""));
             }
 
         }
@@ -211,8 +215,8 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                 if (response == null) {
                     return;
                 }
-                for (FileModel item : response) {
-                    DbManager.getInstace(getActivity()).updateStoreStatus(item.fileId);
+                for (FileModel fileModel : response) {
+                    DbManager.getInstace(getActivity()).updateStoreStatus(fileModel.id);
                 }
             }
         }, new Response.ErrorListener() {
@@ -257,9 +261,17 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                 }
                 initDir(response);
                 newDownloadFileFragment.update(getNoDownloadFileList());
+                tvDownload.setClickable(true);
             }
-        }, null, getContext());
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ToastUtils.showToast(error.getMessage());
+                tvDownload.setClickable(true);
+            }
+        }, getContext());
     }
+
     @OnClick({R.id.btn_wifi, R.id.tv_download})
     @Override
     public void onClick(View v) {
@@ -281,6 +293,7 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                 break;
 
             case R.id.tv_download:
+                tvDownload.setClickable(false);
                 NetworkApi.getFileInfo(new Response.Listener<ArrayList<FileModel>>() {
                     @Override
                     public void onResponse(ArrayList<FileModel> response) {
@@ -290,7 +303,13 @@ public class HomeFragemnt extends BaseFragment implements View.OnClickListener {
                         getNewFileList(response);
                         getDirNew();
                     }
-                }, null, getContext());
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        ToastUtils.showToast(error.getMessage());
+                        tvDownload.setClickable(true);
+                    }
+                }, getContext());
 
                 topMenu.check(R.id.rb_thd);
                 break;

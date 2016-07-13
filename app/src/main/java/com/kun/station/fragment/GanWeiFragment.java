@@ -77,7 +77,9 @@ public class GanWeiFragment extends BaseFragment {
         menu = getStringParam("menuTitle");
         list = DbManager.getInstace(getContext()).getSubMenu(getIntParam("menuId"));
         if (list.get(0).getType() == 101) {
-            showFragment(TeamCultureFragment.class, null);
+            Bundle b = new Bundle();
+            b.putString("teamConcept", list.get(0).getTeamConcept());
+            showFragment(TeamCultureFragment.class, b);
         } else {
             Bundle b = new Bundle();
             b.putString(SebMenuFileFragment.ExtraPATH, FileUtil.getExternalDir().getPath() + "/" + menu + "/" + list.get(0).getTitle());

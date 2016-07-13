@@ -18,6 +18,7 @@ import com.kun.station.db.DbManager;
 import com.kun.station.model.FileShowModel;
 import com.kun.station.util.FileUtil;
 import com.kun.station.util.Log;
+import com.kun.station.util.ToastUtils;
 import com.kun.station.widget.CustomPop;
 
 import net.tsz.afinal.FinalHttp;
@@ -45,6 +46,7 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
     Button btnClear;
     private DownloadFileAdapter mAdapter;
     private List<FileShowModel> fileShowList;
+    HttpHandler handler;
 
 
     @Nullable
@@ -71,13 +73,13 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
             return;
         }
         final FileShowModel fileShowModel = fileShowList.get(position);
-        if (fileShowModel.isDownload) {
+        if (fileShowModel.isDownload == 1) {
             startDownloadFile(position + 1);
             return;
         }
         FinalHttp fh = new FinalHttp();
         //调用download方法开始下载
-        HttpHandler handler = fh.download("http://www.panda-e.com//public/download/pandaol.apk",
+        handler = fh.download("http://www.panda-e.com//public/download/pandaol.apk",
                 new File(FileUtil.getExternalDir(), fileShowModel.getDirName() + "/" + fileShowModel.getFileName()).getAbsolutePath(), true,
                 new AjaxCallBack() {
                     @Override
@@ -95,7 +97,10 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
                     @Override
                     public void onFailure(Throwable t, int errorNo, String strMsg) {
                         super.onFailure(t, errorNo, strMsg);
-                        Log.i("sss", "failure" + strMsg);
+                        ToastUtils.showToast(strMsg);
+                        fileShowModel.progress = -1;
+                        mAdapter.notifyDataSetChanged();
+                        startDownloadFile(position + 1);
                     }
 
                     @Override
@@ -126,7 +131,7 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         FileShowModel fileShowModel = mAdapter.getItem(position);
         String path = FileUtil.getExternalDir().getPath() + "/" + fileShowModel.dirName + "/" + fileShowModel.fileName;
-        if (fileShowModel.isDownload) {
+        if (fileShowModel.isDownload == 1) {
             try {
                 if (fileShowModel.fileName.endsWith("doc")) {
                     startActivity(FileUtil.getWordFileIntent(path));
@@ -142,7 +147,7 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
                     customPop.setImageResource(R.drawable.home_viewpager_one);
                     customPop.show();
                 }
-                fileShowModel.isRead = true;
+                fileShowModel.isRead = 1;
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
                 fileShowModel.readTime = sdf.format(new Date());
                 DbManager.getInstace(getContext()).updateFile(fileShowModel);
@@ -150,8 +155,11 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
                 Toast.makeText(getActivity(), "请安装软件打开文件。", Toast.LENGTH_SHORT).show();
             }
             mAdapter.notifyDataSetChanged();
-        } else {
-
+        } else if (fileShowModel.progress < 0) {
+            if (handler != null) {
+                handler.stop();
+            }
+            startDownloadFile(position);
         }
     }
 
@@ -159,6 +167,9 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        if (handler != null) {
+            handler.stop();
+        }
     }
 
     @OnClick(R.id.btn_clear)
@@ -168,8 +179,8 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
             return;
         }
         for (int i = 0; i < fileShowList.size(); i++) {
-            if (fileShowList.get(i).isDownload) {
-                fileShowList.get(i).isShow = false;
+            if (fileShowList.get(i).isDownload == 1) {
+                fileShowList.get(i).isShow = 0;
                 DbManager.getInstace(getContext()).updateFile(fileShowList.get(i));
                 fileShowList.remove(i);
                 i--;
@@ -212,18 +223,20 @@ public class NewDownloadFileFragment extends BaseFragment implements AdapterView
             holder.txtFileName.setText(fileShowModel.fileName);
             holder.txtFileDir.setText("文件目录：" + fileShowModel.dirName);
 
-            if (!fileShowModel.isDownload) {
+            if (fileShowModel.isDownload == 0) {
                 holder.txtStatus.setText("未更新");
             } else {
                 holder.txtStatus.setText("直接打开");
             }
             if (fileShowModel.progress > 0 && fileShowModel.progress < 100) {
                 holder.txtStatus.setText(fileShowModel.progress + "%");
+            } else if (fileShowModel.progress < 0) {
+                holder.txtStatus.setText("下载失败");
             }
             if (fileShowModel.progress >= 100) {
                 holder.txtStatus.setText("直接打开");
             }
-            if (fileShowModel.isRead) {
+            if (fileShowModel.isRead == 1) {
                 holder.txtStatus.setText(fileShowModel.readTime + "  已阅");
                 holder.txtStatus.setTextColor(getContext().getResources().getColor(R.color.textGrey));
                 holder.txtFileName.setTextColor(getContext().getResources().getColor(R.color.textGrey));

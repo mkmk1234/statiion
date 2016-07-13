@@ -48,9 +48,23 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
         setContentView(R.layout.activity_first);
         File envirFile = new File(Environment.getExternalStorageDirectory(), "乔司站");
         if (!TextUtils.isEmpty(PreferencesUtils.getString(FirstActivity.this, "erialId", "")) && envirFile.exists()) {
-            Intent i = new Intent(FirstActivity.this, MainActivity.class);
-            startActivity(i);
-            finish();
+            showLoadingDialog("初始化。。。");
+            NetworkApi.getMenuInfo(new Response.Listener<MenuItemResponse>() {
+                @Override
+                public void onResponse(MenuItemResponse response) {
+                    directoryModelList = response.getDirList();
+                    deleteMenu();
+                    initMenuModel(response.getMenuList());
+                    startMainActivity();
+                    hideLoadingDialog();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideLoadingDialog();
+                    showToast("初始化失败。");
+                }
+            });
         } else {
             ToastUtils.showToast("delete");
             FileUtil.deleteAllDir(envirFile);
@@ -95,6 +109,7 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void initApp() {
+        showLoadingDialog("初始化。。。");
         NetworkApi.getMenuInfo(new Response.Listener<MenuItemResponse>() {
             @Override
             public void onResponse(MenuItemResponse response) {
@@ -103,14 +118,20 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
                 for (int i = 0; i < response.getDirList().size(); i++) {
                     DbManager.getInstace(FirstActivity.this).insertDir(response.getDirList().get(i));
                 }
+                hideLoadingDialog();
                 createDir();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 showToast("初始化失败。");
+                hideLoadingDialog();
             }
         });
+    }
+
+    private void deleteMenu() {
+        DbManager.getInstace(FirstActivity.this).deleteMenu();
     }
 
     private void initMenuModel(List<MenuItemModel> list) {
