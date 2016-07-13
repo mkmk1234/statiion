@@ -33,16 +33,25 @@
             android:textSize="@dimen/text_size_big" />
 
         <TextView
+            android:id="@+id/tv_battery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/txt_time"
+            android:layout_toLeftOf="@+id/iv_battery"
             android:layout_marginRight="10dp"
             android:textSize="@dimen/text_siz_small"
             android:gravity="center"
             android:layout_centerVertical="true"
             android:text="10%"
-            android:drawableRight="@drawable/ic_battery_50"
             android:textColor="#ffffff" />
+
+        <ImageView
+            android:id="@+id/iv_battery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/txt_time"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_battery_50"/>
 
         <TextView
             android:id="@+id/txt_time"

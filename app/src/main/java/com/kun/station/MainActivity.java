@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,7 +36,9 @@ import com.kun.station.model.SubMenuModel;
 import com.kun.station.util.FileUtil;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -48,6 +52,10 @@ public class MainActivity extends BaseActivity {
     FrameLayout detailLayout;
     @Bind(R.id.txt_time)
     TextView txtTime;
+    @Bind(R.id.iv_battery)
+    ImageView batteryIv;
+    @Bind(R.id.tv_battery)
+    TextView batteryTv;
     @Bind(R.id.txt_wifi_state)
     TextView txtWifiState;
     WifiStateChangedReceiver wifiStateChangedReceiver;
@@ -65,6 +73,7 @@ public class MainActivity extends BaseActivity {
             R.drawable.main_function_book, R.drawable.main_function_post_constrution
             , R.drawable.main_function_standard, R.drawable.main_function_pda, R.drawable.main_function_pda, R.drawable.main_function_pda};
 
+    private SimpleDateFormat mDateFormat = new SimpleDateFormat("HH:mm");
 
     @Override
     protected void onSetContentView() {
@@ -93,6 +102,7 @@ public class MainActivity extends BaseActivity {
         initData();
         regReceiver();
         registerScreenActionReceiver();
+        txtTime.setText(mDateFormat.format(new Date(System.currentTimeMillis())));
         leftMenuList.setAdapter(mAdapter);
         leftMenuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -160,7 +170,32 @@ public class MainActivity extends BaseActivity {
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         wifiStateChangedReceiver = new WifiStateChangedReceiver();
         registerReceiver(wifiStateChangedReceiver, filter);
+
+        IntentFilter timeAndBatteryFilter = new IntentFilter();
+        timeAndBatteryFilter.addAction(Intent.ACTION_TIME_TICK);
+        timeAndBatteryFilter.addAction(Intent.ACTION_TIME_CHANGED);
+        timeAndBatteryFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(mTimeAndBatteryReceiver, timeAndBatteryFilter);
     }
+
+    private BroadcastReceiver mTimeAndBatteryReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()){
+                case Intent.ACTION_BATTERY_CHANGED:
+                    int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+                    int total = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 0);
+                    batteryTv.setText((level * 100)/total + "%");
+                    break;
+                case Intent.ACTION_TIME_TICK:
+                case Intent.ACTION_TIME_CHANGED:
+                    txtTime.setText(mDateFormat.format(new Date(System.currentTimeMillis())));
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     private void registerScreenActionReceiver() {
         screenBroadcastReceiver = new ScreenBroadcastReceiver(this);
@@ -176,7 +211,7 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         unregisterReceiver(wifiStateChangedReceiver);
         unregisterReceiver(screenBroadcastReceiver);
-        Log.i("sss", "onDestroy");
+        unregisterReceiver(mTimeAndBatteryReceiver);
     }
 
     @Override
@@ -288,7 +323,6 @@ public class MainActivity extends BaseActivity {
                     //
                 }
             }
-
         }
     }
 }
